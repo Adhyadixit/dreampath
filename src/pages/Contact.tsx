@@ -8,21 +8,107 @@ import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Phone, Mail, MapPin, Clock } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import { createClient } from "@supabase/supabase-js";
+import { useState } from "react";
+
+// Define the form schema with validation
+const formSchema = z.object({
+  firstName: z.string().min(2, { message: "First name must be at least 2 characters." }),
+  lastName: z.string().min(2, { message: "Last name must be at least 2 characters." }),
+  email: z.string().email({ message: "Please enter a valid email address." }),
+  phone: z.string().regex(/^\+?[0-9\-\s()]{10,15}$/, { 
+    message: "Please enter a valid phone number (10-15 digits)." 
+  }),
+  company: z.string().optional(),
+  service: z.string({
+    required_error: "Please select a service you're interested in.",
+  }),
+  budget: z.string().optional(),
+  message: z.string().min(10, { message: "Message must be at least 10 characters." }),
+});
+
+// Define the type based on the schema
+type FormValues = z.infer<typeof formSchema>;
 
 const Contact = () => {
   const { toast } = useToast();
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  // Initialize the form with react-hook-form and zod validation
+  const form = useForm<FormValues>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      firstName: "",
+      lastName: "",
+      email: "",
+      phone: "",
+      company: "",
+      service: "",
+      budget: "",
+      message: "",
+    },
+  });
+
+  // Handle form submission
+  const handleSubmit = async (data: FormValues) => {
+    setIsSubmitting(true);
     
-    // In a real app, you'd send this data to your backend
-    toast({
-      title: "Message sent",
-      description: "We'll get back to you as soon as possible.",
-    });
-    
-    // Reset form
-    e.currentTarget.reset();
+    try {
+      // Initiate Supabase client - in production, you should use environment variables
+      const supabaseUrl = import.meta.env.VITE_SUPABASE_URL || '';
+      const supabaseKey = import.meta.env.VITE_SUPABASE_ANON_KEY || '';
+      const supabase = createClient(supabaseUrl, supabaseKey);
+
+      // Insert data into the user_requirements table
+      const { error } = await supabase
+        .from('user_requirements')
+        .insert([
+          { 
+            first_name: data.firstName,
+            last_name: data.lastName,
+            email: data.email,
+            phone: data.phone,
+            company: data.company,
+            service_interested: data.service,
+            budget_range: data.budget,
+            message: data.message,
+            status: 'new' 
+          }
+        ]);
+
+      if (error) throw error;
+
+      // Show success toast
+      toast({
+        title: "Form submitted successfully",
+        description: "We'll get back to you as soon as possible.",
+      });
+
+      // Reset the form
+      form.reset();
+    } catch (error) {
+      console.error("Error submitting form:", error);
+      
+      // Show error toast
+      toast({
+        title: "Error",
+        description: "There was a problem submitting your form. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -35,7 +121,168 @@ const Contact = () => {
       <section className="section-padding bg-white">
         <div className="container-wide">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-            <div>
+            <div className="bg-gray-50 p-6 md:p-8 rounded-lg order-1 lg:order-1">
+              <h2 className="text-2xl font-bold mb-6 text-dreampath-primary">Send Us a Message</h2>
+              <Form {...form}>
+                <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-6">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <FormField
+                      control={form.control}
+                      name="firstName"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>First Name *</FormLabel>
+                          <FormControl>
+                            <Input placeholder="Enter your first name" {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    <FormField
+                      control={form.control}
+                      name="lastName"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Last Name *</FormLabel>
+                          <FormControl>
+                            <Input placeholder="Enter your last name" {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </div>
+                  
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <FormField
+                      control={form.control}
+                      name="email"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Email *</FormLabel>
+                          <FormControl>
+                            <Input type="email" placeholder="Enter your email address" {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    <FormField
+                      control={form.control}
+                      name="phone"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Phone Number *</FormLabel>
+                          <FormControl>
+                            <Input placeholder="Enter your phone number (e.g., 123-456-7890)" {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </div>
+                  
+                  <FormField
+                    control={form.control}
+                    name="company"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Company</FormLabel>
+                        <FormControl>
+                          <Input placeholder="Enter your company name" {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  
+                  <FormField
+                    control={form.control}
+                    name="service"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Service Interested In *</FormLabel>
+                        <Select 
+                          onValueChange={field.onChange} 
+                          defaultValue={field.value}
+                        >
+                          <FormControl>
+                            <SelectTrigger>
+                              <SelectValue placeholder="Select a service" />
+                            </SelectTrigger>
+                          </FormControl>
+                          <SelectContent>
+                            <SelectItem value="web">Web Development</SelectItem>
+                            <SelectItem value="mobile">Mobile App Development</SelectItem>
+                            <SelectItem value="custom">Custom Software Development</SelectItem>
+                            <SelectItem value="ui-ux">UI/UX Design</SelectItem>
+                            <SelectItem value="cloud">Cloud Solutions</SelectItem>
+                            <SelectItem value="consulting">IT Consulting</SelectItem>
+                            <SelectItem value="other">Other Services</SelectItem>
+                          </SelectContent>
+                        </Select>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  
+                  <FormField
+                    control={form.control}
+                    name="budget"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Budget Range</FormLabel>
+                        <Select 
+                          onValueChange={field.onChange} 
+                          defaultValue={field.value}
+                        >
+                          <FormControl>
+                            <SelectTrigger>
+                              <SelectValue placeholder="Select a budget range" />
+                            </SelectTrigger>
+                          </FormControl>
+                          <SelectContent>
+                            <SelectItem value="500-2000">$500 - $2,000</SelectItem>
+                            <SelectItem value="2000-5000">$2,000 - $5,000</SelectItem>
+                            <SelectItem value="5000-10000">$5,000 - $10,000</SelectItem>
+                          </SelectContent>
+                        </Select>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  
+                  <FormField
+                    control={form.control}
+                    name="message"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Message *</FormLabel>
+                        <FormControl>
+                          <Textarea 
+                            placeholder="Tell us about your project and requirements" 
+                            className="min-h-[120px]" 
+                            {...field} 
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  
+                  <Button 
+                    type="submit" 
+                    className="w-full bg-dreampath-primary hover:bg-dreampath-dark"
+                    disabled={isSubmitting}
+                  >
+                    {isSubmitting ? "Sending..." : "Send Message"}
+                  </Button>
+                </form>
+              </Form>
+            </div>
+            
+            <div className="order-2 lg:order-2">
               <h2 className="text-2xl font-bold mb-6 text-dreampath-primary">Get in Touch</h2>
               <p className="mb-6 text-gray-700">
                 We're eager to hear about your project. Fill out the form and one of our experts will contact you 
@@ -94,82 +341,6 @@ const Contact = () => {
                   referrerPolicy="no-referrer-when-downgrade"
                 />
               </div>
-            </div>
-            
-            <div className="bg-gray-50 p-6 md:p-8 rounded-lg">
-              <h2 className="text-2xl font-bold mb-6 text-dreampath-primary">Send Us a Message</h2>
-              <form onSubmit={handleSubmit}>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-                  <div className="space-y-2">
-                    <Label htmlFor="firstName">First Name *</Label>
-                    <Input id="firstName" required placeholder="Enter your first name" />
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="lastName">Last Name *</Label>
-                    <Input id="lastName" required placeholder="Enter your last name" />
-                  </div>
-                </div>
-                
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-                  <div className="space-y-2">
-                    <Label htmlFor="email">Email *</Label>
-                    <Input id="email" type="email" required placeholder="Enter your email address" />
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="phone">Phone</Label>
-                    <Input id="phone" placeholder="Enter your phone number" />
-                  </div>
-                </div>
-                
-                <div className="mb-4 space-y-2">
-                  <Label htmlFor="company">Company</Label>
-                  <Input id="company" placeholder="Enter your company name" />
-                </div>
-                
-                <div className="mb-4 space-y-2">
-                  <Label htmlFor="service">Service Interested In *</Label>
-                  <Select required>
-                    <SelectTrigger>
-                      <SelectValue placeholder="Select a service" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="web">Web Development</SelectItem>
-                      <SelectItem value="mobile">Mobile App Development</SelectItem>
-                      <SelectItem value="custom">Custom Software Development</SelectItem>
-                      <SelectItem value="ui-ux">UI/UX Design</SelectItem>
-                      <SelectItem value="cloud">Cloud Solutions</SelectItem>
-                      <SelectItem value="consulting">IT Consulting</SelectItem>
-                      <SelectItem value="other">Other Services</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-                
-                <div className="mb-4 space-y-2">
-                  <Label htmlFor="budget">Budget Range</Label>
-                  <Select>
-                    <SelectTrigger>
-                      <SelectValue placeholder="Select a budget range" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="under10k">Under $10,000</SelectItem>
-                      <SelectItem value="10k-25k">$10,000 - $25,000</SelectItem>
-                      <SelectItem value="25k-50k">$25,000 - $50,000</SelectItem>
-                      <SelectItem value="50k-100k">$50,000 - $100,000</SelectItem>
-                      <SelectItem value="over100k">Over $100,000</SelectItem>
-                      <SelectItem value="notSure">Not sure yet</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-                
-                <div className="mb-6 space-y-2">
-                  <Label htmlFor="message">Message *</Label>
-                  <Textarea id="message" required placeholder="Tell us about your project and requirements" className="min-h-[120px]" />
-                </div>
-                
-                <Button type="submit" className="w-full bg-dreampath-primary hover:bg-dreampath-dark">
-                  Send Message
-                </Button>
-              </form>
             </div>
           </div>
         </div>
