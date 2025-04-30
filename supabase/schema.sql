@@ -111,6 +111,38 @@ CREATE POLICY "Hero content can be updated by authenticated users only"
 CREATE POLICY "Hero content can be deleted by authenticated users only"
   ON hero_content FOR DELETE USING (auth.role() = 'authenticated');
 
+-- User Requirements Table (Contact Form Submissions)
+CREATE TABLE IF NOT EXISTS user_requirements (
+  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  first_name TEXT NOT NULL,
+  last_name TEXT NOT NULL,
+  email TEXT NOT NULL CHECK (email ~* '^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$'),
+  phone TEXT NOT NULL CHECK (phone ~* '^\+?[0-9\-\s()]{10,15}$'),
+  company TEXT,
+  service_interested TEXT NOT NULL,
+  budget_range TEXT,
+  message TEXT NOT NULL,
+  status TEXT NOT NULL DEFAULT 'new' CHECK (status IN ('new', 'contacted', 'in_progress', 'completed', 'archived')),
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+-- Enable Row Level Security for user_requirements
+ALTER TABLE user_requirements ENABLE ROW LEVEL SECURITY;
+
+-- Policies for user_requirements
+CREATE POLICY "User requirements can be inserted by anyone"
+  ON user_requirements FOR INSERT WITH CHECK (true);
+  
+CREATE POLICY "User requirements are viewable by authenticated users only"
+  ON user_requirements FOR SELECT USING (auth.role() = 'authenticated');
+  
+CREATE POLICY "User requirements can be updated by authenticated users only"
+  ON user_requirements FOR UPDATE USING (auth.role() = 'authenticated');
+  
+CREATE POLICY "User requirements can be deleted by authenticated users only"
+  ON user_requirements FOR DELETE USING (auth.role() = 'authenticated');
+
 -- Function to update the updated_at column
 CREATE OR REPLACE FUNCTION update_updated_at_column()
 RETURNS TRIGGER AS $$
@@ -138,5 +170,10 @@ EXECUTE FUNCTION update_updated_at_column();
 
 CREATE TRIGGER update_hero_content_updated_at
 BEFORE UPDATE ON hero_content
+FOR EACH ROW
+EXECUTE FUNCTION update_updated_at_column();
+
+CREATE TRIGGER update_user_requirements_updated_at
+BEFORE UPDATE ON user_requirements
 FOR EACH ROW
 EXECUTE FUNCTION update_updated_at_column();
