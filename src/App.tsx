@@ -7,6 +7,7 @@ import { BrowserRouter } from "react-router-dom";
 import Navbar from "./components/layout/Navbar";
 import Footer from "./components/layout/Footer";
 import Index from "./pages/Index";
+import BackToTopButton from "./components/common/BackToTopButton";
 
 const queryClient = new QueryClient();
 
@@ -22,6 +23,7 @@ const App = () => (
           <Footer />
           <Toaster />
           <Sonner />
+          <BackToTopButton />
         </div>
       </TooltipProvider>
     </BrowserRouter>

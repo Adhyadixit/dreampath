@@ -5,6 +5,7 @@ import About from "./About";
 import Services from "./Services";
 import Portfolio from "./Portfolio";
 import Contact from "./Contact";
+import ScrollToTop from "@/components/common/ScrollToTop";
 import Login from "./Login";
 import SignUp from "./SignUp";
 import PrivacyPolicy from "./PrivacyPolicy";
@@ -17,6 +18,8 @@ import NotFound from "./NotFound";
 
 const Index = () => {
   return (
+    <>
+      <ScrollToTop />
     <Routes>
       <Route path="/" element={<Home />} />
       <Route path="/about" element={<About />} />
@@ -32,6 +35,7 @@ const Index = () => {
       <Route path="/account" element={<UserAccount />} />
       <Route path="*" element={<NotFound />} />
     </Routes>
+    </>
   );
 };
 
