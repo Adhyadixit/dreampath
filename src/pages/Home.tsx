@@ -7,8 +7,28 @@ import { Check, ArrowRight, Code, Layout, Globe, Smartphone, Shield, Settings, U
 import { motion } from "framer-motion";
 import CountUp from "react-countup";
 
-// Default YouTube video ID - this would come from admin panel in production
-const youtubeVideoId = "P8gB0vM6i7o";
+// Default hero image URL - this would come from admin panel in production
+const heroImageUrl = "https://images.unsplash.com/photo-1519389950473-47ba0277781c?q=80&w=1920&auto=format&fit=crop";
+
+// Function to get reliable tech logo URLs
+const getTechLogoUrl = (tech: string): string => {
+  const logos: Record<string, string> = {
+    'React': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg',
+    'Node.js': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nodejs/nodejs-original.svg',
+    'Python': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg',
+    'AWS': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/amazonwebservices/amazonwebservices-original.svg',
+    'Flutter': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/flutter/flutter-original.svg',
+    'MongoDB': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mongodb/mongodb-original.svg',
+    'Angular': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/angularjs/angularjs-original.svg',
+    'Vue.js': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/vuejs/vuejs-original.svg',
+    'TypeScript': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/typescript/typescript-original.svg',
+    'Go': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/go/go-original-wordmark.svg',
+    'Docker': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/docker/docker-original.svg',
+    'Kubernetes': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/kubernetes/kubernetes-plain.svg'
+  };
+  
+  return logos[tech] || `https://ui-avatars.com/api/?name=${tech}&background=0D8ABC&color=fff`;
+};
 
 const Home = () => {
   const [isVisible, setIsVisible] = useState(false);
@@ -96,7 +116,7 @@ const Home = () => {
         subtitle="We build innovative, scalable, and high-performance software to help businesses thrive in the digital world."
         ctaText="Start Your Project"
         ctaLink="/contact"
-        youtubeVideoId={youtubeVideoId}
+        imageUrl={heroImageUrl}
       />
 
       {/* 3D Feature Section */}
@@ -327,7 +347,7 @@ const Home = () => {
               >
                 <div className="h-24 w-24 rounded-full bg-white shadow-lg flex items-center justify-center mb-3 hover:shadow-xl transition-shadow duration-300">
                   <img 
-                    src={`https://via.placeholder.com/100?text=${tech}`} 
+                    src={getTechLogoUrl(tech)} 
                     alt={`${tech} logo`}
                     className="h-12 w-12 object-contain"
                   />

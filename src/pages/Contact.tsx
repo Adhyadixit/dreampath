@@ -47,7 +47,7 @@ const Contact = () => {
                   <Phone className="h-6 w-6 text-dreampath-secondary mr-4 flex-shrink-0 mt-1" />
                   <div>
                     <h3 className="font-bold">Phone</h3>
-                    <p className="text-gray-700">+1 (555) 123-4567</p>
+                    <p className="text-gray-700">+1 (806) 240-7920</p>
                   </div>
                 </div>
                 
@@ -55,7 +55,7 @@ const Contact = () => {
                   <Mail className="h-6 w-6 text-dreampath-secondary mr-4 flex-shrink-0 mt-1" />
                   <div>
                     <h3 className="font-bold">Email</h3>
-                    <p className="text-gray-700">info@dreampathsolutions.com</p>
+                    <p className="text-gray-700">info@dreampathsolutions.in</p>
                   </div>
                 </div>
                 
@@ -64,8 +64,9 @@ const Contact = () => {
                   <div>
                     <h3 className="font-bold">Office</h3>
                     <p className="text-gray-700">
-                      123 Tech Street, Innovation Park<br />
-                      San Francisco, CA 94107
+                      10214 Maremont Cir<br />
+                      Richmond VA, 23238-3604<br />
+                      United States
                     </p>
                   </div>
                 </div>

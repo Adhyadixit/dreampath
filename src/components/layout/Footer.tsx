@@ -113,17 +113,16 @@ const Footer = () => {
               <li className="flex items-start">
                 <MapPin className="h-6 w-6 mr-3 text-dreampath-accent" />
                 <span className="text-gray-300">
-                  123 Tech Street, Innovation Park<br />
-                  San Francisco, CA 94107
+                  10214 Maremont Cir, Richmond VA, 23238-3604, United States
                 </span>
               </li>
               <li className="flex items-center">
                 <Phone className="h-6 w-6 mr-3 text-dreampath-accent" />
-                <span className="text-gray-300">+1 (555) 123-4567</span>
+                <span className="text-gray-300">+1 (806) 240-7920</span>
               </li>
               <li className="flex items-center">
                 <Mail className="h-6 w-6 mr-3 text-dreampath-accent" />
-                <span className="text-gray-300">info@dreampathsolutions.com</span>
+                <span className="text-gray-300">info@dreampathsolutions.in</span>
               </li>
             </ul>
           </div>

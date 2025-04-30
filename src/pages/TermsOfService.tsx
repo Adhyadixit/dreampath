@@ -91,9 +91,9 @@ const TermsOfService = () => {
               If you have any questions about these Terms, please contact us:
             </p>
             <ul className="list-none mb-6">
-              <li>By email: legal@dreampathsolutions.com</li>
-              <li>By phone: +1 (555) 123-4567</li>
-              <li>By mail: 123 Tech Street, Innovation Park, San Francisco, CA 94107</li>
+              <li>By email: info@dreampathsolutions.in</li>
+              <li>By phone: +1 (806) 240-7920</li>
+              <li>By mail: 10214 Maremont Cir, Richmond VA, 23238-3604, United States</li>
             </ul>
           </div>
         </div>

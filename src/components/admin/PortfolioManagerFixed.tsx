@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -47,6 +46,7 @@ export const PortfolioManager = () => {
     
     fetchProjects();
   }, []);
+  
   const startEditing = (project: Project) => {
     setEditingProject({...project});
     setShowAddForm(false);
@@ -81,42 +81,31 @@ export const PortfolioManager = () => {
         // Update project in Supabase
         const { id, created_at, updated_at, ...projectData } = editingProject;
         
-        // Add extensive logging for debugging
-        console.log('Project being updated:', editingProject);
-        console.log('Project ID type:', typeof id);
-        console.log('Project ID value:', id);
-        console.log('Project data extracted:', projectData);
+        // Add detailed logging
+        console.log('Project ID being updated:', id);
+        console.log('Project data being sent:', projectData);
         
-        // Make sure project data fields match the database schema exactly
+        // Make sure project data fields match the database schema
         const updatedProjectData = {
-          title: projectData.title || '',
-          category: projectData.category || 'web',
-          image: projectData.image || '',
-          link: projectData.link || '',
-          description: projectData.description || '',
-          technologies: Array.isArray(projectData.technologies) ? projectData.technologies : [],
+          title: projectData.title,
+          category: projectData.category,
+          image: projectData.image,
+          link: projectData.link,
+          description: projectData.description,
+          technologies: projectData.technologies,
         };
         
-        console.log('Final data being sent to API:', updatedProjectData);
+        await projectsApi.update(id, updatedProjectData);
         
-        // Call the API with try/catch to capture detailed errors
-        try {
-          const updatedProject = await projectsApi.update(id, updatedProjectData);
-          console.log('API response after update:', updatedProject);
-          
-          // Update local state
-          setProjects(projects.map(p => p.id === editingProject.id ? editingProject : p));
-          setEditingProject(null);
-          toast.success('Project updated successfully');
-          
-          // Scroll back to the project list
-          setTimeout(() => {
-            document.getElementById('project-list')?.scrollIntoView({ behavior: 'smooth' });
-          }, 100);
-        } catch (apiError) {
-          console.error('API Error:', apiError);
-          throw apiError; // Re-throw to be caught by outer catch
-        }
+        // Update local state
+        setProjects(projects.map(p => p.id === editingProject.id ? editingProject : p));
+        setEditingProject(null);
+        toast.success('Project updated successfully');
+        
+        // Scroll back to the project list
+        setTimeout(() => {
+          document.getElementById('project-list')?.scrollIntoView({ behavior: 'smooth' });
+        }, 100);
       } catch (err) {
         console.error('Error updating project:', err);
         // Show more detailed error message
@@ -251,29 +240,25 @@ export const PortfolioManager = () => {
               </Select>
             </div>
             
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div className="space-y-2">
-                <Label htmlFor="new-image">Image URL</Label>
-                <Input 
-                  id="new-image" 
-                  value={newProject.image} 
-                  onChange={(e) => setNewProject({...newProject, image: e.target.value})}
-                  placeholder="https://example.com/image.jpg"
-                />
-              </div>
-              
-              <div className="space-y-2">
-                <Label htmlFor="new-link">Project Link</Label>
-                <Input 
-                  id="new-link" 
-                  value={newProject.link} 
-                  onChange={(e) => setNewProject({...newProject, link: e.target.value})}
-                  placeholder="https://example.com"
-                />
-              </div>
+            <div className="space-y-2">
+              <Label htmlFor="new-image">Image URL</Label>
+              <Input 
+                id="new-image" 
+                value={newProject.image} 
+                onChange={(e) => setNewProject({...newProject, image: e.target.value})}
+                placeholder="https://example.com/image.jpg"
+              />
             </div>
             
-
+            <div className="space-y-2">
+              <Label htmlFor="new-link">Project Link</Label>
+              <Input 
+                id="new-link" 
+                value={newProject.link} 
+                onChange={(e) => setNewProject({...newProject, link: e.target.value})}
+                placeholder="https://example.com"
+              />
+            </div>
             
             <div className="space-y-2">
               <Label htmlFor="new-description">Description</Label>
@@ -294,8 +279,6 @@ export const PortfolioManager = () => {
                 placeholder="React, Node.js, MongoDB"
               />
             </div>
-            
-
           </CardContent>
           <CardFooter className="flex justify-between">
             <Button variant="outline" onClick={() => setShowAddForm(false)}>Cancel</Button>
@@ -337,27 +320,23 @@ export const PortfolioManager = () => {
               </Select>
             </div>
             
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div className="space-y-2">
-                <Label htmlFor="edit-image">Image URL</Label>
-                <Input 
-                  id="edit-image" 
-                  value={editingProject.image} 
-                  onChange={(e) => setEditingProject({...editingProject, image: e.target.value})}
-                />
-              </div>
-              
-              <div className="space-y-2">
-                <Label htmlFor="edit-link">Project Link</Label>
-                <Input 
-                  id="edit-link" 
-                  value={editingProject.link} 
-                  onChange={(e) => setEditingProject({...editingProject, link: e.target.value})}
-                />
-              </div>
+            <div className="space-y-2">
+              <Label htmlFor="edit-image">Image URL</Label>
+              <Input 
+                id="edit-image" 
+                value={editingProject.image} 
+                onChange={(e) => setEditingProject({...editingProject, image: e.target.value})}
+              />
             </div>
             
-
+            <div className="space-y-2">
+              <Label htmlFor="edit-link">Project Link</Label>
+              <Input 
+                id="edit-link" 
+                value={editingProject.link} 
+                onChange={(e) => setEditingProject({...editingProject, link: e.target.value})}
+              />
+            </div>
             
             <div className="space-y-2">
               <Label htmlFor="edit-description">Description</Label>
@@ -377,8 +356,6 @@ export const PortfolioManager = () => {
                 onChange={(e) => handleEditTechChange(e.target.value)}
               />
             </div>
-            
-
           </CardContent>
           <CardFooter className="flex justify-between">
             <Button variant="outline" onClick={() => setEditingProject(null)}>Cancel</Button>

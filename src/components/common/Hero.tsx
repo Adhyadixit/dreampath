@@ -12,6 +12,7 @@ interface HeroProps {
   bgClass?: string;
   videoUrl?: string;
   youtubeVideoId?: string;
+  imageUrl?: string;
 }
 
 const Hero = ({
@@ -23,10 +24,41 @@ const Hero = ({
   bgClass = "bg-gradient-to-r from-dreampath-primary to-dreampath-dark",
   videoUrl,
   youtubeVideoId,
+  imageUrl,
 }: HeroProps) => {
   return (
     <div className="relative text-white">
-      {youtubeVideoId ? (
+      {imageUrl ? (
+        // Image background
+        <>
+          <div className="absolute inset-0 w-full h-full overflow-hidden">
+            <img 
+              src={imageUrl}
+              alt="Hero background"
+              className="w-full h-full object-cover"
+            />
+            {/* Overlay to ensure text is readable over image */}
+            <div className="absolute inset-0 bg-black opacity-60"></div>
+          </div>
+          
+          {/* Content */}
+          <div className="relative py-16 md:py-32">
+            <div className="container-wide">
+              <div className="max-w-3xl mx-auto text-center">
+                <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-6">{title}</h1>
+                <p className="text-lg md:text-xl mb-8 text-gray-100">{subtitle}</p>
+                {showCta && (
+                  <Link to={ctaLink}>
+                    <Button className="bg-white text-dreampath-primary hover:bg-gray-100 text-lg px-8 py-6">
+                      {ctaText}
+                    </Button>
+                  </Link>
+                )}
+              </div>
+            </div>
+          </div>
+        </>
+      ) : youtubeVideoId ? (
         // YouTube video background
         <>
           <div className="absolute inset-0 w-full h-full overflow-hidden">
