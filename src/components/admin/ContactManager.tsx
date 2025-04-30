@@ -24,7 +24,8 @@ interface ContactDetails {
 export const ContactManager = () => {
   const [contactDetails, setContactDetails] = useState<ContactDetails>({
     email: "info@dreampathsolutions.in",
-    phone: "+1 (806) 240-7920",
+    phone: "+1 (831) 295-5365",
+    whatsappPhone: "+1 (806) 240-7920",
     address: "10214 Maremont Cir Richmond VA, 23238-3604 United States",
     mapEmbedUrl: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3168.6495767312993!2d-122.08403558439696!3d37.42199997982631!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x808fba02425dad8f%3A0x29cdf01a44fc687f!2sGoogle%20Building%2040!5e0!3m2!1sen!2sus!4v1651258593640!5m2!1sen!2sus",
     socialLinks: {

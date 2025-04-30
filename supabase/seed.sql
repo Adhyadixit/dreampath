@@ -10,8 +10,8 @@ VALUES
   ('HealthTrack - Wellness Platform', 'mobile', 'https://images.unsplash.com/photo-1594882645126-14020914d58d?q=80&w=885&auto=format&fit=crop', 'https://apps.apple.com/', 'A comprehensive health tracking application that integrates with wearable devices, offering personalized insights and coaching for users wellness journeys.', '["Flutter", "Firebase", "HealthKit API", "Google Fit API"]');
 
 -- Insert contact info
-INSERT INTO contact_info (email, phone, address, map_embed_url)
-VALUES ('info@dreampathsolutions.in', '+1 (806) 240-7920', '10214 Maremont Cir Richmond VA, 23238-3604 United States', 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3168.6495767312993!2d-122.08403558439696!3d37.42199997982631!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x808fba02425dad8f%3A0x29cdf01a44fc687f!2sGoogle%20Building%2040!5e0!3m2!1sen!2sus!4v1651258593640!5m2!1sen!2sus');
+INSERT INTO contact_info (email, phone, address, map_embed_url, whatsapp_phone)
+VALUES ('info@dreampathsolutions.in', '+1 (831) 295-5365', '10214 Maremont Cir Richmond VA, 23238-3604 United States', 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3168.6495767312993!2d-122.08403558439696!3d37.42199997982631!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x808fba02425dad8f%3A0x29cdf01a44fc687f!2sGoogle%20Building%2040!5e0!3m2!1sen!2sus!4v1651258593640!5m2!1sen!2sus', '+1 (806) 240-7920');
 
 -- Insert social links
 INSERT INTO social_links (platform, url)

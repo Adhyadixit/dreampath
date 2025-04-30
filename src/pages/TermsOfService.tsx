@@ -92,7 +92,8 @@ const TermsOfService = () => {
             </p>
             <ul className="list-none mb-6">
               <li>By email: info@dreampathsolutions.in</li>
-              <li>By phone: +1 (806) 240-7920</li>
+              <li>By phone: +1 (831) 295-5365</li>
+              <li>By WhatsApp: +1 (806) 240-7920</li>
               <li>By mail: 10214 Maremont Cir, Richmond VA, 23238-3604, United States</li>
             </ul>
           </div>
