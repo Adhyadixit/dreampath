@@ -1,9 +1,9 @@
-
 import React from "react";
 import PageHeader from "@/components/common/PageHeader";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { ArrowRight, Code, Layout, Globe, Smartphone, Shield, Settings, Database, Cloud, Clock, Sparkle } from "lucide-react";
 import { Link } from "react-router-dom";
+import ServiceKeywords from "@/components/services/ServiceKeywords";
 
 const Services = () => {
   const services = [
@@ -206,6 +206,26 @@ const Services = () => {
                 After thorough testing, we deploy your solution and provide ongoing maintenance and support.
               </p>
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Service Keywords Section */}
+      <section className="section-padding bg-gray-50">
+        <div className="container-wide">
+          <div className="text-center max-w-3xl mx-auto mb-12">
+            <h2 className="text-3xl font-bold text-dreampath-primary">Explore Our Specialized Services</h2>
+            <p className="mt-4 text-lg text-gray-700">
+              Click on any service to request more information or get a quote for your project.
+            </p>
+          </div>
+          
+          <ServiceKeywords displayStyle="grid" showTitles={false} />
+          
+          <div className="text-center mt-10">
+            <Link to="/service-keywords" className="inline-block bg-dreampath-primary text-white hover:bg-dreampath-dark px-6 py-3 rounded-md font-medium transition-colors">
+              View All Services
+            </Link>
           </div>
         </div>
       </section>

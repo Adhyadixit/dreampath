@@ -1,4 +1,3 @@
-
 import React from "react";
 import PageHeader from "@/components/common/PageHeader";
 import { Button } from "@/components/ui/button";
@@ -294,7 +293,9 @@ const Contact = () => {
                   <Phone className="h-6 w-6 text-dreampath-secondary mr-4 flex-shrink-0 mt-1" />
                   <div>
                     <h3 className="font-bold">Call Us</h3>
-                    <p className="text-gray-700">+1 (831) 295-5365</p>
+                    <p className="text-gray-700">
+                      <a href="tel:+18312955365" className="hover:text-dreampath-primary">+1 (831) 295-5365</a>
+                    </p>
                   </div>
                 </div>
                 
@@ -304,7 +305,9 @@ const Contact = () => {
                   </svg>
                   <div>
                     <h3 className="font-bold">WhatsApp</h3>
-                    <p className="text-gray-700">+1 (806) 240-7920</p>
+                    <p className="text-gray-700">
+                      <a href="https://wa.me/18062407920" target="_blank" rel="noopener noreferrer" className="hover:text-dreampath-primary">+1 (806) 240-7920</a>
+                    </p>
                   </div>
                 </div>
                 
@@ -312,7 +315,9 @@ const Contact = () => {
                   <Mail className="h-6 w-6 text-dreampath-secondary mr-4 flex-shrink-0 mt-1" />
                   <div>
                     <h3 className="font-bold">Email</h3>
-                    <p className="text-gray-700">info@dreampathsolutions.in</p>
+                    <p className="text-gray-700">
+                      <a href="mailto:info@dreampathsolutions.in" className="hover:text-dreampath-primary">info@dreampathsolutions.in</a>
+                    </p>
                   </div>
                 </div>
                 

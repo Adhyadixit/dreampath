@@ -15,6 +15,7 @@ import AdminLogin from "./AdminLogin";
 import AdminDashboard from "./AdminDashboard";
 import UserAccount from "./UserAccount";
 import NotFound from "./NotFound";
+import ServiceKeywordsPage from "./ServiceKeywords";
 
 const Index = () => {
   return (
@@ -24,6 +25,7 @@ const Index = () => {
       <Route path="/" element={<Home />} />
       <Route path="/about" element={<About />} />
       <Route path="/services" element={<Services />} />
+      <Route path="/service-keywords" element={<ServiceKeywordsPage />} />
       <Route path="/portfolio" element={<Portfolio />} />
       <Route path="/contact" element={<Contact />} />
       <Route path="/signup" element={<SignUp />} />

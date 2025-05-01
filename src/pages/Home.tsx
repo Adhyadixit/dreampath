@@ -6,6 +6,7 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Check, ArrowRight, Code, Layout, Globe, Smartphone, Shield, Settings, Users, Zap, Award } from "lucide-react";
 import { motion } from "framer-motion";
 import CountUp from "react-countup";
+import ServiceKeywords from "@/components/services/ServiceKeywords";
 
 // Default hero image URL - this would come from admin panel in production
 const heroImageUrl = "https://images.unsplash.com/photo-1519389950473-47ba0277781c?q=80&w=1920&auto=format&fit=crop";
@@ -355,6 +356,41 @@ const Home = () => {
                 <span className="font-medium text-dreampath-primary">{tech}</span>
               </motion.div>
             ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Service Keywords Section */}
+      <section className="section-padding bg-white relative overflow-hidden">
+        <div className="absolute inset-0 overflow-hidden">
+          <div className="absolute top-1/3 right-1/4 w-64 h-64 bg-blue-100 rounded-full mix-blend-multiply filter blur-3xl opacity-70 animate-float"></div>
+          <div className="absolute bottom-1/3 left-1/3 w-80 h-80 bg-teal-100 rounded-full mix-blend-multiply filter blur-3xl opacity-70 animate-float-delayed"></div>
+        </div>
+        
+        <div className="container-wide relative z-10">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={isVisible ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.5 }}
+            className="text-center max-w-3xl mx-auto mb-12"
+          >
+            <h2 className="text-4xl font-bold mb-6 text-dreampath-primary">
+              Explore Our Specialized Services
+            </h2>
+            <p className="text-xl text-gray-700">
+              Click on any service to request more information or get a quote for your project.
+            </p>
+          </motion.div>
+          
+          <ServiceKeywords displayStyle="categories" showTitles={true} />
+          
+          <div className="text-center mt-12">
+            <Link to="/service-keywords">
+              <Button className="bg-dreampath-primary hover:bg-dreampath-dark relative overflow-hidden group">
+                <span className="relative z-10">View All Services</span>
+                <div className="absolute inset-0 bg-dreampath-secondary transform scale-x-0 group-hover:scale-x-100 transition-transform origin-left"></div>
+              </Button>
+            </Link>
           </div>
         </div>
       </section>
