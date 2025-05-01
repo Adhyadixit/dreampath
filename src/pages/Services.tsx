@@ -1,11 +1,25 @@
-import React from "react";
+import React, { useState } from "react";
 import PageHeader from "@/components/common/PageHeader";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
 import { ArrowRight, Code, Layout, Globe, Smartphone, Shield, Settings, Database, Cloud, Clock, Sparkle } from "lucide-react";
 import { Link } from "react-router-dom";
 import ServiceKeywords from "@/components/services/ServiceKeywords";
+import { Button } from "@/components/ui/button";
+import ContactFormPopup from "@/components/common/ContactFormPopup";
 
 const Services = () => {
+  const [isPopupOpen, setIsPopupOpen] = useState(false);
+  const [selectedService, setSelectedService] = useState('');
+
+  const handleServiceClick = (serviceValue: string) => {
+    setSelectedService(serviceValue);
+    setIsPopupOpen(true);
+  };
+
+  const closePopup = () => {
+    setIsPopupOpen(false);
+  };
+
   const services = [
     {
       icon: <Code className="h-10 w-10 text-dreampath-secondary" />,
@@ -149,6 +163,19 @@ const Services = () => {
                     ))}
                   </ul>
                 </CardContent>
+                <CardFooter className="pt-4 flex justify-between items-center">
+                  <Link to="/services" className="text-dreampath-secondary hover:text-dreampath-primary inline-flex items-center group">
+                    Learn More 
+                    <ArrowRight className="ml-2 h-4 w-4 transform group-hover:translate-x-1 transition-transform" />
+                  </Link>
+                  <Button 
+                    variant="default" 
+                    className="bg-dreampath-primary hover:bg-dreampath-dark"
+                    onClick={() => handleServiceClick(service.title.toLowerCase().replace(/\s+/g, '-'))}
+                  >
+                    Request Info
+                  </Button>
+                </CardFooter>
               </Card>
             ))}
           </div>
@@ -229,6 +256,12 @@ const Services = () => {
           </div>
         </div>
       </section>
+
+      <ContactFormPopup 
+        isOpen={isPopupOpen} 
+        onClose={closePopup} 
+        preselectedService={selectedService} 
+      />
 
       {/* CTA */}
       <section className="section-padding bg-dreampath-primary text-white">
