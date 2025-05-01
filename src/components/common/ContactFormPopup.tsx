@@ -125,20 +125,40 @@ const ContactFormPopup: React.FC<ContactFormPopupProps> = ({
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
-      <div className="bg-white rounded-lg shadow-xl w-full max-w-2xl max-h-[90vh] overflow-y-auto">
+    <div className="fixed inset-0 bg-black bg-opacity-70 z-50 flex items-center justify-center p-4 animate-fadeIn">
+      <div className="bg-white rounded-lg shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto animate-scaleIn">
+        <div className="sticky top-0 bg-white p-4 border-b flex justify-between items-center z-10">
+          <h2 className="text-2xl font-bold text-dreampath-primary">Request Service Information</h2>
+          <Button 
+            variant="ghost" 
+            size="icon" 
+            onClick={onClose}
+            className="hover:bg-gray-100 rounded-full"
+          >
+            <X className="h-6 w-6" />
+          </Button>
+        </div>
+        
         <div className="p-6">
-          <div className="flex justify-between items-center mb-6">
-            <h2 className="text-2xl font-bold text-dreampath-primary">Request Service Information</h2>
-            <Button 
-              variant="ghost" 
-              size="icon" 
-              onClick={onClose}
-              className="hover:bg-gray-100 rounded-full"
-            >
-              <X className="h-6 w-6" />
-            </Button>
-          </div>
+          {preselectedService && (
+            <div className="mb-6 p-4 bg-dreampath-primary/10 rounded-lg">
+              <p className="font-medium">You're requesting information about: <span className="font-bold text-dreampath-primary">{
+                preselectedService === 'ios-app' ? 'iOS App Development' :
+                preselectedService === 'android-app' ? 'Android App Development' :
+                preselectedService === 'cross-platform' ? 'Cross-Platform App Development' :
+                preselectedService === 'react-native' ? 'React Native Development' :
+                preselectedService === 'dating-app' ? 'Dating App Development' :
+                preselectedService === 'real-estate-app' ? 'Real Estate App Development' :
+                preselectedService === 'ecommerce-app' ? 'E-commerce App Development' :
+                preselectedService === 'travel-app' ? 'Travel App Development' :
+                preselectedService === 'video-chat-app' ? 'Video Chat App Development' :
+                preselectedService === 'b2b-marketplace' ? 'B2B Marketplace Development' :
+                preselectedService === 'website-to-app' ? 'Website to App Conversion' :
+                preselectedService === 'custom-website' ? 'Custom Website Development' :
+                'Other Services'
+              }</span></p>
+            </div>
+          )}
 
           <Form {...form}>
             <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-6">

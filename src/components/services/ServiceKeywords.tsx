@@ -100,12 +100,12 @@ const ServiceKeywords: React.FC<ServiceKeywordsProps> = ({
     
     return (
       <div className="w-full">
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
           {allKeywords.map((keyword) => (
             <Button
               key={keyword.id}
               variant="outline"
-              className="h-auto py-3 px-4 text-sm justify-start hover:bg-dreampath-primary hover:text-white transition-colors"
+              className="h-auto py-4 px-5 text-base justify-start hover:bg-dreampath-primary hover:text-white transition-colors border-2 border-dreampath-primary/20 shadow-sm"
               onClick={() => handleServiceClick(keyword.value)}
             >
               {keyword.label}
@@ -124,22 +124,24 @@ const ServiceKeywords: React.FC<ServiceKeywordsProps> = ({
 
   // Render by categories
   return (
-    <div className="w-full space-y-8">
+    <div className="w-full space-y-10">
       {serviceCategories.map((category) => (
-        <div key={category.id} className="space-y-4">
+        <div key={category.id} className="space-y-5">
           {showTitles && (
-            <div className="flex items-center">
-              {category.icon}
+            <div className="flex items-center bg-dreampath-primary/5 p-3 rounded-lg">
+              <div className="bg-dreampath-primary/10 p-2 rounded-full mr-3">
+                {category.icon}
+              </div>
               <h3 className="text-xl font-bold text-dreampath-primary">{category.title}</h3>
             </div>
           )}
           
-          <div className="flex flex-wrap gap-3">
+          <div className="flex flex-wrap gap-4">
             {category.keywords.map((keyword) => (
               <Button
                 key={keyword.id}
                 variant="outline"
-                className="h-auto py-2 px-4 text-sm hover:bg-dreampath-primary hover:text-white transition-colors"
+                className="h-auto py-3 px-5 text-base hover:bg-dreampath-primary hover:text-white transition-colors border-2 border-dreampath-primary/20 shadow-sm"
                 onClick={() => handleServiceClick(keyword.value)}
               >
                 {keyword.label}
