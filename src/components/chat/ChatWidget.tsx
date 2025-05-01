@@ -50,6 +50,18 @@ const ChatWidget = () => {
     
     setVisitorId(newVisitorId);
     
+    // Check if this is the first visit
+    const hasVisitedBefore = localStorage.getItem('hasVisitedBefore');
+    if (!hasVisitedBefore) {
+      // This is the first visit, automatically open the chat widget after a short delay
+      setTimeout(() => {
+        setIsOpen(true);
+      }, 3000); // 3 second delay
+      
+      // Set the flag to indicate the user has visited before
+      localStorage.setItem('hasVisitedBefore', 'true');
+    }
+    
     // Check if user has an existing chat session
     const checkExistingSession = async () => {
       try {
