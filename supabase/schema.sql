@@ -143,6 +143,55 @@ CREATE POLICY "User requirements can be updated by authenticated users only"
 CREATE POLICY "User requirements can be deleted by authenticated users only"
   ON user_requirements FOR DELETE USING (auth.role() = 'authenticated');
 
+-- Chat Sessions Table
+CREATE TABLE IF NOT EXISTS chat_sessions (
+  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  visitor_id TEXT NOT NULL,
+  visitor_name TEXT NOT NULL,
+  visitor_email TEXT NOT NULL,
+  status TEXT NOT NULL DEFAULT 'active' CHECK (status IN ('active', 'closed')),
+  unread_admin INTEGER NOT NULL DEFAULT 0,
+  unread_visitor INTEGER NOT NULL DEFAULT 0,
+  last_message TEXT,
+  last_message_time TIMESTAMPTZ,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+-- Chat Messages Table
+CREATE TABLE IF NOT EXISTS chat_messages (
+  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  session_id UUID NOT NULL REFERENCES chat_sessions(id) ON DELETE CASCADE,
+  sender_type TEXT NOT NULL CHECK (sender_type IN ('visitor', 'admin')),
+  message TEXT NOT NULL,
+  is_read BOOLEAN NOT NULL DEFAULT false,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+-- Enable Row Level Security for chat tables
+ALTER TABLE chat_sessions ENABLE ROW LEVEL SECURITY;
+ALTER TABLE chat_messages ENABLE ROW LEVEL SECURITY;
+
+-- Policies for chat_sessions
+CREATE POLICY "Chat sessions are viewable by everyone"
+  ON chat_sessions FOR SELECT USING (true);
+  
+CREATE POLICY "Chat sessions can be inserted by anyone"
+  ON chat_sessions FOR INSERT WITH CHECK (true);
+  
+CREATE POLICY "Chat sessions can be updated by anyone"
+  ON chat_sessions FOR UPDATE USING (true);
+
+-- Policies for chat_messages
+CREATE POLICY "Chat messages are viewable by everyone"
+  ON chat_messages FOR SELECT USING (true);
+  
+CREATE POLICY "Chat messages can be inserted by anyone"
+  ON chat_messages FOR INSERT WITH CHECK (true);
+  
+CREATE POLICY "Chat messages can be updated by anyone"
+  ON chat_messages FOR UPDATE USING (true);
+
 -- Function to update the updated_at column
 CREATE OR REPLACE FUNCTION update_updated_at_column()
 RETURNS TRIGGER AS $$
@@ -177,3 +226,51 @@ CREATE TRIGGER update_user_requirements_updated_at
 BEFORE UPDATE ON user_requirements
 FOR EACH ROW
 EXECUTE FUNCTION update_updated_at_column();
+
+CREATE TRIGGER update_chat_sessions_updated_at
+BEFORE UPDATE ON chat_sessions
+FOR EACH ROW
+EXECUTE FUNCTION update_updated_at_column();
+
+-- Create function for handling new chat messages and sending notifications
+CREATE OR REPLACE FUNCTION handle_new_chat_message()
+RETURNS TRIGGER AS $$
+DECLARE
+  session_data RECORD;
+BEGIN
+  -- Update the last message and time in the session
+  UPDATE chat_sessions
+  SET 
+    last_message = NEW.message,
+    last_message_time = NEW.created_at,
+    unread_admin = CASE WHEN NEW.sender_type = 'visitor' THEN unread_admin + 1 ELSE unread_admin END,
+    unread_visitor = CASE WHEN NEW.sender_type = 'admin' THEN unread_visitor + 1 ELSE unread_visitor END
+  WHERE id = NEW.session_id;
+  
+  -- Send email notification for visitor messages
+  IF NEW.sender_type = 'visitor' THEN
+    -- Get session data to include visitor information
+    SELECT * INTO session_data FROM chat_sessions WHERE id = NEW.session_id;
+    
+    -- Send email notification using pg_net extension
+    PERFORM pg_notify(
+      'email_notifications',
+      json_build_object(
+        'to', 'info@dreampathsolutions.in',
+        'subject', 'New Chat Message from ' || session_data.visitor_name,
+        'body', 'You have received a new message from ' || session_data.visitor_name || ' (' || session_data.visitor_email || ').' || E'\n\n' ||
+                'Message: ' || NEW.message || E'\n\n' ||
+                'Please log in to the admin dashboard to respond: https://dreampathsolutions.in/admin-dashboard'
+      )::text
+    );
+  END IF;
+  
+  RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+-- Create trigger for new chat messages
+CREATE TRIGGER on_new_chat_message
+AFTER INSERT ON chat_messages
+FOR EACH ROW
+EXECUTE FUNCTION handle_new_chat_message();

@@ -5,17 +5,17 @@ import About from "./About";
 import Services from "./Services";
 import Portfolio from "./Portfolio";
 import Contact from "./Contact";
-import ScrollToTop from "@/components/common/ScrollToTop";
-import Login from "./Login";
 import SignUp from "./SignUp";
+import Login from "./Login";
 import PrivacyPolicy from "./PrivacyPolicy";
 import TermsOfService from "./TermsOfService";
-import Admin from "./Admin";
 import AdminLogin from "./AdminLogin";
 import AdminDashboard from "./AdminDashboard";
 import UserAccount from "./UserAccount";
 import NotFound from "./NotFound";
-import ServiceKeywordsPage from "./ServiceKeywords";
+import ScrollToTop from "@/components/common/ScrollToTop";
+import ServiceKeywords from "./ServiceKeywords";
+import SupabaseTest from "./SupabaseTest";
 
 const Index = () => {
   return (
@@ -25,7 +25,6 @@ const Index = () => {
       <Route path="/" element={<Home />} />
       <Route path="/about" element={<About />} />
       <Route path="/services" element={<Services />} />
-      <Route path="/service-keywords" element={<ServiceKeywordsPage />} />
       <Route path="/portfolio" element={<Portfolio />} />
       <Route path="/contact" element={<Contact />} />
       <Route path="/signup" element={<SignUp />} />
@@ -35,6 +34,8 @@ const Index = () => {
       <Route path="/admin" element={<AdminLogin />} />
       <Route path="/admin-dashboard" element={<AdminDashboard />} />
       <Route path="/account" element={<UserAccount />} />
+      <Route path="/service-keywords" element={<ServiceKeywords />} />
+      <Route path="/supabase-test" element={<SupabaseTest />} />
       <Route path="*" element={<NotFound />} />
     </Routes>
     </>
