@@ -19,7 +19,9 @@ const Chatbot: React.FC<ChatbotProps> = ({ onConnectToAgent }) => {
   const [messages, setMessages] = useState<ChatbotMessage[]>([]);
   const [inputValue, setInputValue] = useState('');
   const [showWhatsappLink, setShowWhatsappLink] = useState(false);
+  const [isTyping, setIsTyping] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
 
   // Initialize with a greeting
   useEffect(() => {
@@ -32,6 +34,11 @@ const Chatbot: React.FC<ChatbotProps> = ({ onConnectToAgent }) => {
         timestamp: new Date()
       }
     ]);
+    
+    // Focus the input field when the chat loads
+    setTimeout(() => {
+      inputRef.current?.focus();
+    }, 500);
   }, []);
 
   // Scroll to bottom when messages change
@@ -41,6 +48,27 @@ const Chatbot: React.FC<ChatbotProps> = ({ onConnectToAgent }) => {
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  };
+
+  // Simulate typing effect for bot messages
+  const addBotResponse = (content: string) => {
+    setIsTyping(true);
+    
+    // Simulate typing delay based on message length
+    const typingDelay = Math.min(1000, Math.max(500, content.length * 10));
+    
+    setTimeout(() => {
+      setIsTyping(false);
+      setMessages(prev => [
+        ...prev,
+        {
+          id: Date.now().toString(),
+          content,
+          sender: 'bot',
+          timestamp: new Date()
+        }
+      ]);
+    }, typingDelay);
   };
 
   const handleSendMessage = (e: React.FormEvent) => {
@@ -81,29 +109,13 @@ const Chatbot: React.FC<ChatbotProps> = ({ onConnectToAgent }) => {
       }))
     ) {
       // User wants to connect to an agent - show WhatsApp link directly
-      setTimeout(() => {
-        const botResponse: ChatbotMessage = {
-          id: Date.now().toString(),
-          content: connectToAgentResponses[Math.floor(Math.random() * connectToAgentResponses.length)],
-          sender: 'bot',
-          timestamp: new Date()
-        };
-        
-        setMessages(prev => [...prev, botResponse]);
-        setShowWhatsappLink(true);
-      }, 500);
+      const response = connectToAgentResponses[Math.floor(Math.random() * connectToAgentResponses.length)];
+      addBotResponse(response);
+      setShowWhatsappLink(true);
     } else {
       // Regular response
-      setTimeout(() => {
-        const botResponse: ChatbotMessage = {
-          id: Date.now().toString(),
-          content: findBestResponse(userInput),
-          sender: 'bot',
-          timestamp: new Date()
-        };
-        
-        setMessages(prev => [...prev, botResponse]);
-      }, 500);
+      const response = findBestResponse(userInput);
+      addBotResponse(response);
     }
   };
 
@@ -135,6 +147,19 @@ const Chatbot: React.FC<ChatbotProps> = ({ onConnectToAgent }) => {
           </div>
         ))}
         
+        {/* Typing indicator */}
+        {isTyping && (
+          <div className="flex justify-start">
+            <div className="bg-gray-100 text-gray-800 rounded-lg p-3 max-w-[80%]">
+              <div className="flex space-x-1">
+                <div className="w-2 h-2 rounded-full bg-gray-400 animate-bounce" style={{ animationDelay: '0ms' }}></div>
+                <div className="w-2 h-2 rounded-full bg-gray-400 animate-bounce" style={{ animationDelay: '150ms' }}></div>
+                <div className="w-2 h-2 rounded-full bg-gray-400 animate-bounce" style={{ animationDelay: '300ms' }}></div>
+              </div>
+            </div>
+          </div>
+        )}
+        
         {/* WhatsApp direct link button */}
         {showWhatsappLink && (
           <div className="flex justify-center my-2">
@@ -163,15 +188,17 @@ const Chatbot: React.FC<ChatbotProps> = ({ onConnectToAgent }) => {
       <form onSubmit={handleSendMessage} className="border-t p-4 mt-auto">
         <div className="flex space-x-2">
           <Input
+            ref={inputRef}
             value={inputValue}
             onChange={(e) => setInputValue(e.target.value)}
             placeholder="Type your message..."
             className="flex-1"
+            disabled={isTyping}
           />
           <Button 
             type="submit" 
             size="icon"
-            disabled={!inputValue.trim()}
+            disabled={!inputValue.trim() || isTyping}
           >
             <Send className="h-4 w-4" />
           </Button>
