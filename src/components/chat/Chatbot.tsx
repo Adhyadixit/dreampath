@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Send, Clock } from "lucide-react";
-import { findBestResponse, greetings, connectToAgentResponses, whatsappFallback } from '@/utils/chatbotData';
+import { Send } from "lucide-react";
+import { findBestResponse, greetings, connectToAgentResponses, whatsappDirectLink } from '@/utils/chatbotData';
 
 interface ChatbotMessage {
   id: string;
@@ -18,11 +18,8 @@ interface ChatbotProps {
 const Chatbot: React.FC<ChatbotProps> = ({ onConnectToAgent }) => {
   const [messages, setMessages] = useState<ChatbotMessage[]>([]);
   const [inputValue, setInputValue] = useState('');
-  const [waitingForAgent, setWaitingForAgent] = useState(false);
-  const [timer, setTimer] = useState<number>(0);
-  const [showWhatsappFallback, setShowWhatsappFallback] = useState(false);
+  const [showWhatsappLink, setShowWhatsappLink] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
-  const timerRef = useRef<NodeJS.Timeout | null>(null);
 
   // Initialize with a greeting
   useEffect(() => {
@@ -41,41 +38,6 @@ const Chatbot: React.FC<ChatbotProps> = ({ onConnectToAgent }) => {
   useEffect(() => {
     scrollToBottom();
   }, [messages]);
-
-  // Handle the agent connection timer
-  useEffect(() => {
-    if (waitingForAgent) {
-      timerRef.current = setInterval(() => {
-        setTimer(prevTimer => {
-          if (prevTimer <= 1) {
-            clearInterval(timerRef.current as NodeJS.Timeout);
-            setWaitingForAgent(false);
-            setShowWhatsappFallback(true);
-            
-            // Add WhatsApp fallback message
-            setMessages(prev => [
-              ...prev,
-              {
-                id: Date.now().toString(),
-                content: whatsappFallback,
-                sender: 'bot',
-                timestamp: new Date()
-              }
-            ]);
-            
-            return 0;
-          }
-          return prevTimer - 1;
-        });
-      }, 1000);
-    }
-
-    return () => {
-      if (timerRef.current) {
-        clearInterval(timerRef.current);
-      }
-    };
-  }, [waitingForAgent]);
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -108,15 +70,17 @@ const Chatbot: React.FC<ChatbotProps> = ({ onConnectToAgent }) => {
       userInput.includes('representative') ||
       userInput.includes('real person') ||
       userInput.includes('talk to someone') ||
+      userInput.includes('whatsapp') ||
       (userInput.includes('yes') && messages.some(msg => {
         return msg.sender === 'bot' && (
           msg.content.includes('Would you like to speak with') || 
           msg.content.includes('Would you like me to connect you') ||
-          msg.content.includes('Would you like to chat with a human')
+          msg.content.includes('Would you like to chat with a human') ||
+          msg.content.includes('Would you like to connect with an agent')
         );
       }))
     ) {
-      // User wants to connect to an agent
+      // User wants to connect to an agent - show WhatsApp link directly
       setTimeout(() => {
         const botResponse: ChatbotMessage = {
           id: Date.now().toString(),
@@ -126,27 +90,21 @@ const Chatbot: React.FC<ChatbotProps> = ({ onConnectToAgent }) => {
         };
         
         setMessages(prev => [...prev, botResponse]);
-        setWaitingForAgent(true);
-        setTimer(60); // 60 seconds timer
-        
-        // Notify parent component to prepare for agent connection
-        onConnectToAgent();
+        setShowWhatsappLink(true);
       }, 500);
-      
-      return;
+    } else {
+      // Regular response
+      setTimeout(() => {
+        const botResponse: ChatbotMessage = {
+          id: Date.now().toString(),
+          content: findBestResponse(userInput),
+          sender: 'bot',
+          timestamp: new Date()
+        };
+        
+        setMessages(prev => [...prev, botResponse]);
+      }, 500);
     }
-    
-    // Get bot response
-    setTimeout(() => {
-      const botResponse: ChatbotMessage = {
-        id: Date.now().toString(),
-        content: findBestResponse(userInput),
-        sender: 'bot',
-        timestamp: new Date()
-      };
-      
-      setMessages(prev => [...prev, botResponse]);
-    }, 500);
   };
 
   const formatTime = (date: Date) => {
@@ -177,21 +135,11 @@ const Chatbot: React.FC<ChatbotProps> = ({ onConnectToAgent }) => {
           </div>
         ))}
         
-        {/* Agent waiting indicator */}
-        {waitingForAgent && (
-          <div className="flex justify-center items-center my-2">
-            <div className="bg-amber-100 text-amber-800 px-3 py-2 rounded-full flex items-center text-sm">
-              <Clock className="w-4 h-4 mr-2 animate-pulse" />
-              Connecting to agent... {timer}s
-            </div>
-          </div>
-        )}
-        
-        {/* WhatsApp fallback button */}
-        {showWhatsappFallback && (
+        {/* WhatsApp direct link button */}
+        {showWhatsappLink && (
           <div className="flex justify-center my-2">
             <a 
-              href="https://wa.me/18062407920" 
+              href={whatsappDirectLink}
               target="_blank" 
               rel="noopener noreferrer"
               className="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-full flex items-center text-sm"
@@ -215,12 +163,11 @@ const Chatbot: React.FC<ChatbotProps> = ({ onConnectToAgent }) => {
             onChange={(e) => setInputValue(e.target.value)}
             placeholder="Type your message..."
             className="flex-1"
-            disabled={waitingForAgent}
           />
           <Button 
             type="submit" 
             size="icon"
-            disabled={!inputValue.trim() || waitingForAgent}
+            disabled={!inputValue.trim()}
           >
             <Send className="h-4 w-4" />
           </Button>

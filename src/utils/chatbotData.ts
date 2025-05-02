@@ -68,22 +68,24 @@ export const portfolio: ChatbotResponse = {
 };
 
 export const fallbackResponses: string[] = [
-  "I'm not sure I understand. Could you rephrase your question?",
+  "I couldn't understand your query. Would you like to connect with an agent?",
+  "I'm not sure I understand. Would you like to connect with an agent?",
   "I don't have information on that specific topic. Would you like to speak with a team member?",
   "That's a great question that might need a more detailed answer from our team. Would you like me to connect you with someone?",
-  "I'm a simple assistant and might not have all the answers. Would you like to chat with a human agent?",
-  "I'm still learning! That question might be better answered by our team. Would you like me to connect you?"
+  "I'm a simple assistant and might not have all the answers. Would you like to chat with a human agent?"
 ];
 
 export const connectToAgentResponses: string[] = [
-  "I'll connect you with a team member right away. Please wait a moment...",
-  "Let me get a human agent to assist you better. One moment please...",
-  "I'm transferring you to a team member who can help with your specific needs. Please wait...",
-  "A team member will join this chat shortly to provide you with more detailed information."
+  "For immediate assistance, please reach out via WhatsApp at +1 (806) 240-7920 or click this link: https://wa.me/18062407920",
+  "Our team is available on WhatsApp to help with your specific needs. Contact us at +1 (806) 240-7920 or click: https://wa.me/18062407920",
+  "For personalized assistance, please contact our team on WhatsApp at +1 (806) 240-7920 or click: https://wa.me/18062407920",
+  "Our experts are ready to assist you on WhatsApp. Reach us at +1 (806) 240-7920 or click: https://wa.me/18062407920"
 ];
 
 export const whatsappFallback: string = 
   "It seems our team members are currently unavailable. For immediate assistance, please reach out via WhatsApp at +1 (806) 240-7920 or click this link: https://wa.me/18062407920";
+
+export const whatsappDirectLink: string = "https://wa.me/18062407920";
 
 export const greetings: string[] = [
   "Hello! How can I help you today?",
