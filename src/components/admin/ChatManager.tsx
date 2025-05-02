@@ -324,7 +324,9 @@ const ChatManager = () => {
           session_id: selectedSession.id,
           sender_type: 'admin',
           message: messageContent,
-          is_read: false
+          is_read: false,
+          // Add a flag to indicate this message should trigger a notification
+          should_notify: true
         })
         .select();
       
@@ -345,6 +347,9 @@ const ChatManager = () => {
               msg.id === tempMessage.id ? data[0] : msg
             )
           );
+          
+          // Update the session's last_message_time
+          updateSessionLastMessageTime(selectedSession.id);
         }
       }
     } catch (error) {
@@ -354,6 +359,25 @@ const ChatManager = () => {
         description: "Failed to send message. Please try again.",
         variant: "destructive",
       });
+    }
+  };
+  
+  // Function to update the session's last_message_time
+  const updateSessionLastMessageTime = async (sessionId: string) => {
+    try {
+      const { error } = await supabase
+        .from('chat_sessions')
+        .update({ 
+          last_message_time: new Date().toISOString(),
+          updated_at: new Date().toISOString()
+        })
+        .eq('id', sessionId);
+        
+      if (error) {
+        console.error('Error updating session last_message_time:', error);
+      }
+    } catch (error) {
+      console.error('Error updating session:', error);
     }
   };
 

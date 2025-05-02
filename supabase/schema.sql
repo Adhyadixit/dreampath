@@ -155,7 +155,9 @@ CREATE TABLE IF NOT EXISTS chat_sessions (
   last_message TEXT,
   last_message_time TIMESTAMPTZ,
   created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
-  updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+  updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  has_new_message BOOLEAN NOT NULL DEFAULT false,
+  last_activity_time TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
 
 -- Chat Messages Table
@@ -165,6 +167,7 @@ CREATE TABLE IF NOT EXISTS chat_messages (
   sender_type TEXT NOT NULL CHECK (sender_type IN ('visitor', 'admin')),
   message TEXT NOT NULL,
   is_read BOOLEAN NOT NULL DEFAULT false,
+  should_notify BOOLEAN NOT NULL DEFAULT false,
   created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
 
@@ -232,45 +235,67 @@ BEFORE UPDATE ON chat_sessions
 FOR EACH ROW
 EXECUTE FUNCTION update_updated_at_column();
 
--- Create function for handling new chat messages and sending notifications
+-- Function to handle new chat messages and send notifications
 CREATE OR REPLACE FUNCTION handle_new_chat_message()
 RETURNS TRIGGER AS $$
 DECLARE
-  session_data RECORD;
+  session_record RECORD;
+  visitor_email TEXT;
+  visitor_name TEXT;
+  admin_email TEXT := 'info@dreampathsolutions.com'; -- Default admin email
 BEGIN
-  -- Update the last message and time in the session
-  UPDATE chat_sessions
-  SET 
-    last_message = NEW.message,
-    last_message_time = NEW.created_at,
-    unread_admin = CASE WHEN NEW.sender_type = 'visitor' THEN unread_admin + 1 ELSE unread_admin END,
-    unread_visitor = CASE WHEN NEW.sender_type = 'admin' THEN unread_visitor + 1 ELSE unread_visitor END
-  WHERE id = NEW.session_id;
+  -- Get the session details
+  SELECT * INTO session_record FROM chat_sessions WHERE id = NEW.session_id;
   
-  -- Send email notification for visitor messages
-  IF NEW.sender_type = 'visitor' THEN
-    -- Get session data to include visitor information
-    SELECT * INTO session_data FROM chat_sessions WHERE id = NEW.session_id;
+  IF FOUND THEN
+    visitor_email := session_record.visitor_email;
+    visitor_name := session_record.visitor_name;
     
-    -- Send email notification using pg_net extension
-    PERFORM pg_notify(
-      'email_notifications',
-      json_build_object(
-        'to', 'info@dreampathsolutions.in',
-        'subject', 'New Chat Message from ' || session_data.visitor_name,
-        'body', 'You have received a new message from ' || session_data.visitor_name || ' (' || session_data.visitor_email || ').' || E'\n\n' ||
-                'Message: ' || NEW.message || E'\n\n' ||
-                'Please log in to the admin dashboard to respond: https://dreampathsolutions.in/admin-dashboard'
-      )::text
-    );
+    -- If message is from visitor, send email notification to admin
+    IF NEW.sender_type = 'visitor' THEN
+      -- Send email notification to admin
+      PERFORM http_post(
+        'https://api.sendgrid.com/v3/mail/send',
+        '{"personalizations":[{"to":[{"email":"' || admin_email || '"}]}],"from":{"email":"notifications@dreampathsolutions.com","name":"DreamPath Chat"},"subject":"New Chat Message from ' || visitor_name || '","content":[{"type":"text/plain","value":"You have received a new chat message from ' || visitor_name || ' (' || visitor_email || '):\n\n' || NEW.message || '\n\nPlease log in to the admin dashboard to respond."}]}',
+        '{"Content-Type":"application/json","Authorization":"Bearer ' || current_setting('app.sendgrid_key', true) || '"}'
+      );
+    END IF;
+    
+    -- If message is from admin and should trigger a notification, update the session
+    IF NEW.sender_type = 'admin' AND NEW.should_notify = true THEN
+      -- Update the session to indicate a notification should be sent
+      UPDATE chat_sessions 
+      SET has_new_message = true,
+          unread_visitor = COALESCE(unread_visitor, 0) + 1,
+          updated_at = NOW()
+      WHERE id = NEW.session_id;
+    END IF;
   END IF;
   
   RETURN NEW;
 END;
 $$ LANGUAGE plpgsql;
 
--- Create trigger for new chat messages
+-- Trigger to handle new chat messages
+DROP TRIGGER IF EXISTS on_new_chat_message ON chat_messages;
 CREATE TRIGGER on_new_chat_message
-AFTER INSERT ON chat_messages
-FOR EACH ROW
-EXECUTE FUNCTION handle_new_chat_message();
+  AFTER INSERT ON chat_messages
+  FOR EACH ROW
+  EXECUTE FUNCTION handle_new_chat_message();
+
+-- Function to keep sessions active
+CREATE OR REPLACE FUNCTION update_session_activity()
+RETURNS TRIGGER AS $$
+BEGIN
+  -- Update the session's last_activity_time
+  NEW.last_activity_time := NOW();
+  RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+-- Trigger to update session activity
+DROP TRIGGER IF EXISTS on_session_activity ON chat_sessions;
+CREATE TRIGGER on_session_activity
+  BEFORE UPDATE ON chat_sessions
+  FOR EACH ROW
+  EXECUTE FUNCTION update_session_activity();

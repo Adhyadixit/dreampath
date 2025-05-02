@@ -28,14 +28,18 @@ interface ChatSession {
 
 const ChatWidget = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const [isInitializing, setIsInitializing] = useState(true);
-  const [showInitialForm, setShowInitialForm] = useState(true);
+  const [showForm, setShowForm] = useState(true);
   const [visitorName, setVisitorName] = useState('');
   const [visitorEmail, setVisitorEmail] = useState('');
   const [message, setMessage] = useState('');
   const [messages, setMessages] = useState<Message[]>([]);
-  const [chatSession, setChatSession] = useState<ChatSession | null>(null);
-  const [visitorId, setVisitorId] = useState('');
+  const [sessionId, setSessionId] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const [visitorId, setVisitorId] = useState<string>('');
+  const [isOffline, setIsOffline] = useState(false);
+  const [tabActive, setTabActive] = useState(true);
+  const [unreadCount, setUnreadCount] = useState(0);
+  const [notificationPermission, setNotificationPermission] = useState<NotificationPermission | null>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const { toast } = useToast();
 
@@ -66,7 +70,7 @@ const ChatWidget = () => {
     const checkExistingSession = async () => {
       try {
         console.log('Checking for existing chat sessions...');
-        setIsInitializing(true);
+        setIsLoading(true);
         
         const { data, error } = await supabase
           .from('chat_sessions')
@@ -79,7 +83,7 @@ const ChatWidget = () => {
         if (error) {
           console.error('Error checking existing session:', error);
           // Continue with new session form even if there's an error
-          setIsInitializing(false);
+          setIsLoading(false);
           return;
         }
         
@@ -87,8 +91,8 @@ const ChatWidget = () => {
         
         if (data && data.length > 0) {
           console.log('Found existing session:', data[0]);
-          setChatSession(data[0]);
-          setShowInitialForm(false);
+          setSessionId(data[0].id);
+          setShowForm(false);
           loadMessages(data[0].id);
         } else {
           console.log('No existing session found, showing initial form');
@@ -102,7 +106,7 @@ const ChatWidget = () => {
       } catch (error) {
         console.error('Error checking existing session:', error);
       } finally {
-        setIsInitializing(false);
+        setIsLoading(false);
       }
     };
     
@@ -111,14 +115,14 @@ const ChatWidget = () => {
 
   useEffect(() => {
     // Set up real-time subscription for new messages
-    if (chatSession?.id) {
+    if (sessionId) {
       const subscription = supabase
-        .channel(`chat:${chatSession.id}`)
+        .channel(`chat:${sessionId}`)
         .on('postgres_changes', { 
           event: 'INSERT', 
           schema: 'public', 
           table: 'chat_messages',
-          filter: `session_id=eq.${chatSession.id}`
+          filter: `session_id=eq.${sessionId}`
         }, (payload) => {
           const newMessage = payload.new as Message;
           setMessages(prev => [...prev, newMessage]);
@@ -127,6 +131,15 @@ const ChatWidget = () => {
           if (newMessage.sender_type === 'admin') {
             markMessageAsRead(newMessage.id);
           }
+          
+          // If tab is not active, increment unread count
+          if (!tabActive) {
+            setUnreadCount(prev => prev + 1);
+            // Update document title to show unread count
+            document.title = `(${unreadCount + 1}) DreamPath Solutions - Custom Software Development`;
+            // Send notification if permission is granted
+            sendNotification('New message', 'You have a new message from our team.');
+          }
         })
         .subscribe();
         
@@ -134,7 +147,7 @@ const ChatWidget = () => {
         supabase.removeChannel(subscription);
       };
     }
-  }, [chatSession]);
+  }, [sessionId, tabActive]);
 
   useEffect(() => {
     // Scroll to bottom when messages change
@@ -264,7 +277,7 @@ const ChatWidget = () => {
       console.log('Session created successfully:', sessionData[0]);
       
       // Set the session in state
-      setChatSession(sessionData[0]);
+      setSessionId(sessionData[0].id);
       
       // Now send the first message
       const { error: messageError } = await supabase
@@ -289,7 +302,7 @@ const ChatWidget = () => {
       console.log('First message sent successfully');
       
       // Show the chat interface
-      setShowInitialForm(false);
+      setShowForm(false);
       setMessage('');
       
       // Load messages to display the first message
@@ -309,7 +322,7 @@ const ChatWidget = () => {
   const handleSendMessage = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    if (!message.trim() || !chatSession) return;
+    if (!message.trim() || !sessionId) return;
     
     try {
       // Store the message content before clearing the input
@@ -333,13 +346,13 @@ const ChatWidget = () => {
       // Scroll to the bottom
       scrollToBottom();
       
-      console.log('Sending message to Supabase for session:', chatSession.id);
+      console.log('Sending message to Supabase for session:', sessionId);
       
       // Send to Supabase - let Supabase handle UUID generation
       const { data, error } = await supabase
         .from('chat_messages')
         .insert({
-          session_id: chatSession.id,
+          session_id: sessionId,
           sender_type: 'visitor',
           message: messageContent,
           is_read: false
@@ -380,7 +393,68 @@ const ChatWidget = () => {
     return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
   };
 
-  if (isInitializing) {
+  // Handle tab visibility changes
+  useEffect(() => {
+    const handleVisibilityChange = () => {
+      const isVisible = document.visibilityState === 'visible';
+      setTabActive(isVisible);
+      
+      // If tab becomes visible again and there are unread messages, reset the count
+      if (isVisible && unreadCount > 0) {
+        setUnreadCount(0);
+        // Update document title back to normal
+        document.title = 'DreamPath Solutions - Custom Software Development';
+      }
+    };
+
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+    
+    return () => {
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
+    };
+  }, [unreadCount]);
+
+  // Request notification permission
+  useEffect(() => {
+    const requestNotificationPermission = async () => {
+      if (!("Notification" in window)) {
+        console.log("This browser does not support notifications");
+        return;
+      }
+      
+      try {
+        const permission = await Notification.requestPermission();
+        setNotificationPermission(permission);
+        console.log("Notification permission:", permission);
+      } catch (error) {
+        console.error("Error requesting notification permission:", error);
+      }
+    };
+    
+    requestNotificationPermission();
+  }, []);
+
+  // Function to send notification
+  const sendNotification = (title: string, body: string) => {
+    if (notificationPermission !== 'granted') return;
+    
+    try {
+      const notification = new Notification(title, {
+        body: body,
+        icon: '/dexter-favicon.svg'
+      });
+      
+      notification.onclick = () => {
+        window.focus();
+        notification.close();
+        setIsOpen(true);
+      };
+    } catch (error) {
+      console.error("Error sending notification:", error);
+    }
+  };
+
+  if (isLoading) {
     return (
       <div className="fixed bottom-6 right-6 z-50">
         <Button 
@@ -416,7 +490,7 @@ const ChatWidget = () => {
             </Button>
           </div>
           
-          {showInitialForm ? (
+          {showForm ? (
             <div className="flex-1 p-4 overflow-y-auto">
               <div className="mb-4">
                 <p className="text-gray-700">Please fill in the form below to start chatting with our team.</p>
