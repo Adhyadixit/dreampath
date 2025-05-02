@@ -483,7 +483,7 @@ const ChatWidget = () => {
   }
 
   return (
-    <div className="fixed bottom-6 right-6 z-50">
+    <div className="fixed bottom-20 right-4 z-50">
       {/* Chat button */}
       {!isOpen && (
         <Button 
@@ -496,143 +496,133 @@ const ChatWidget = () => {
       
       {/* Chat window */}
       {isOpen && (
-        <div className="bg-white rounded-lg shadow-xl flex flex-col w-80 sm:w-96 h-[500px] border border-gray-200">
+        <div className="fixed bottom-20 right-4 w-80 md:w-96 bg-white rounded-lg shadow-xl flex flex-col overflow-hidden h-[500px] border border-gray-200">
           {/* Chat header */}
-          <div className="flex justify-between items-center p-4 border-b">
-            <h3 className="font-semibold text-gray-800">DreamPath Chat</h3>
-            <div className="flex space-x-2">
-              {!showForm && !waitingForAgent && (
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={() => setUseChatbot(!useChatbot)}
-                  className="text-xs px-2 py-1 h-auto"
-                >
-                  {useChatbot ? "Talk to Human" : "Use Chatbot"}
-                </Button>
-              )}
-              <Button 
-                variant="ghost" 
-                size="icon"
-                onClick={() => setIsOpen(false)}
-              >
-                <X className="h-4 w-4" />
-              </Button>
-            </div>
+          <div className="bg-dreampath-primary text-white p-3 flex justify-between items-center">
+            <h3 className="font-medium">Chat with DreamPath</h3>
+            <button 
+              onClick={() => setIsOpen(false)}
+              className="text-white hover:text-gray-200"
+            >
+              <X className="h-5 w-5" />
+            </button>
           </div>
           
-          {waitingForAgent ? (
-            <div className="flex-1 flex items-center justify-center p-6">
-              <div className="text-center">
-                <Loader2 className="h-8 w-8 animate-spin mx-auto mb-4 text-dreampath-accent" />
-                <p className="text-gray-600">Connecting you to an agent...</p>
-                <p className="text-sm text-gray-500 mt-2">Please wait a moment</p>
+          {/* Chat content */}
+          <div className="flex-1 overflow-hidden">
+            {waitingForAgent ? (
+              <div className="flex-1 flex items-center justify-center p-6">
+                <div className="text-center">
+                  <Loader2 className="h-8 w-8 animate-spin mx-auto mb-4 text-dreampath-accent" />
+                  <p className="text-gray-600">Connecting you to an agent...</p>
+                  <p className="text-sm text-gray-500 mt-2">Please wait a moment</p>
+                </div>
               </div>
-            </div>
-          ) : showForm ? (
-            <div className="flex-1 p-4 overflow-y-auto">
-              <div className="mb-4">
-                <p className="text-gray-700">Please fill in the form below to start chatting with our team.</p>
-              </div>
-              <form onSubmit={handleStartChat} className="space-y-4">
-                <div>
-                  <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">Name</label>
-                  <Input
-                    id="name"
-                    value={visitorName}
-                    onChange={(e) => setVisitorName(e.target.value)}
-                    placeholder="Your name"
-                    required
-                  />
+            ) : showForm ? (
+              <div className="p-4 h-full overflow-y-auto">
+                <div className="mb-4">
+                  <p className="text-gray-700">Please fill in the form below to start chatting with our team.</p>
                 </div>
-                <div>
-                  <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">Email</label>
-                  <Input
-                    id="email"
-                    type="email"
-                    value={visitorEmail}
-                    onChange={(e) => setVisitorEmail(e.target.value)}
-                    placeholder="Your email"
-                    required
-                  />
-                </div>
-                <div>
-                  <label htmlFor="message" className="block text-sm font-medium text-gray-700 mb-1">Message</label>
-                  <Input
-                    id="message"
-                    value={message}
-                    onChange={(e) => setMessage(e.target.value)}
-                    placeholder="How can we help you?"
-                    required
-                  />
-                </div>
-                <Button 
-                  type="submit" 
-                  className="w-full"
-                  disabled={isLoading}
-                >
-                  {isLoading ? (
-                    <>
-                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                      Starting chat...
-                    </>
-                  ) : 'Start Chat'}
-                </Button>
-              </form>
-            </div>
-          ) : useChatbot ? (
-            <Chatbot onConnectToAgent={handleConnectToAgent} />
-          ) : (
-            <>
-              {/* Chat messages */}
-              <div className="flex-1 p-4 overflow-y-auto space-y-4">
-                {messages.map(message => (
-                  <div 
-                    key={message.id} 
-                    className={`flex ${message.sender_type === 'visitor' ? 'justify-end' : 'justify-start'}`}
-                  >
-                    <div 
-                      className={`max-w-[80%] rounded-lg p-3 ${
-                        message.sender_type === 'visitor' 
-                          ? 'bg-dreampath-accent text-white' 
-                          : 'bg-gray-100 text-gray-800'
-                      }`}
-                    >
-                      <div className="text-sm">{message.message}</div>
-                      <div className="text-xs mt-1 opacity-70 text-right">
-                        {formatTime(new Date(message.created_at))}
-                      </div>
-                    </div>
+                <form onSubmit={handleStartChat} className="space-y-4">
+                  <div>
+                    <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">Name</label>
+                    <Input
+                      id="name"
+                      value={visitorName}
+                      onChange={(e) => setVisitorName(e.target.value)}
+                      placeholder="Your name"
+                      required
+                    />
                   </div>
-                ))}
-                <div ref={messagesEndRef} />
-              </div>
-              
-              {/* Chat input */}
-              <form onSubmit={handleSendMessage} className="border-t p-4">
-                <div className="flex space-x-2">
-                  <Input
-                    value={message}
-                    onChange={(e) => setMessage(e.target.value)}
-                    placeholder="Type your message..."
-                    className="flex-1"
-                  />
+                  <div>
+                    <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">Email</label>
+                    <Input
+                      id="email"
+                      type="email"
+                      value={visitorEmail}
+                      onChange={(e) => setVisitorEmail(e.target.value)}
+                      placeholder="Your email"
+                      required
+                    />
+                  </div>
+                  <div>
+                    <label htmlFor="message" className="block text-sm font-medium text-gray-700 mb-1">Message</label>
+                    <Input
+                      id="message"
+                      value={message}
+                      onChange={(e) => setMessage(e.target.value)}
+                      placeholder="How can we help you?"
+                      required
+                    />
+                  </div>
                   <Button 
                     type="submit" 
-                    size="icon"
-                    disabled={!message.trim() || isOffline}
+                    className="w-full"
+                    disabled={isLoading}
                   >
-                    <Send className="h-4 w-4" />
+                    {isLoading ? (
+                      <>
+                        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                        Starting chat...
+                      </>
+                    ) : 'Start Chat'}
                   </Button>
+                </form>
+              </div>
+            ) : useChatbot ? (
+              <Chatbot onConnectToAgent={handleConnectToAgent} />
+            ) : (
+              <>
+                {/* Chat messages */}
+                <div className="flex-1 p-4 overflow-y-auto space-y-4">
+                  {messages.map(message => (
+                    <div 
+                      key={message.id} 
+                      className={`flex ${message.sender_type === 'visitor' ? 'justify-end' : 'justify-start'}`}
+                    >
+                      <div 
+                        className={`max-w-[80%] rounded-lg p-3 ${
+                          message.sender_type === 'visitor' 
+                            ? 'bg-dreampath-accent text-white' 
+                            : 'bg-gray-100 text-gray-800'
+                        }`}
+                      >
+                        <div className="text-sm">{message.message}</div>
+                        <div className="text-xs mt-1 opacity-70 text-right">
+                          {formatTime(new Date(message.created_at))}
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                  <div ref={messagesEndRef} />
                 </div>
-                {isOffline && (
-                  <p className="text-xs text-red-500 mt-2">
-                    You appear to be offline. Messages will be sent when you're back online.
-                  </p>
-                )}
-              </form>
-            </>
-          )}
+                
+                {/* Chat input */}
+                <form onSubmit={handleSendMessage} className="border-t p-4">
+                  <div className="flex space-x-2">
+                    <Input
+                      value={message}
+                      onChange={(e) => setMessage(e.target.value)}
+                      placeholder="Type your message..."
+                      className="flex-1"
+                    />
+                    <Button 
+                      type="submit" 
+                      size="icon"
+                      disabled={!message.trim() || isOffline}
+                    >
+                      <Send className="h-4 w-4" />
+                    </Button>
+                  </div>
+                  {isOffline && (
+                    <p className="text-xs text-red-500 mt-2">
+                      You appear to be offline. Messages will be sent when you're back online.
+                    </p>
+                  )}
+                </form>
+              </>
+            )}
+          </div>
         </div>
       )}
     </div>

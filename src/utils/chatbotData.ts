@@ -85,7 +85,7 @@ export const connectToAgentResponses: string[] = [
 export const whatsappFallback: string = 
   "It seems our team members are currently unavailable. For immediate assistance, please reach out via WhatsApp at +1 (806) 240-7920 or click this link: https://wa.me/18062407920";
 
-export const whatsappDirectLink: string = "https://wa.me/18062407920";
+export const whatsappDirectLink: string = "https://wa.me/+18062407920";
 
 export const greetings: string[] = [
   "Hello! How can I help you today?",

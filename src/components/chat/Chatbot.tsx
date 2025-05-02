@@ -112,9 +112,9 @@ const Chatbot: React.FC<ChatbotProps> = ({ onConnectToAgent }) => {
   };
 
   return (
-    <div className="flex flex-col h-full">
+    <div className="flex flex-col h-[500px]">
       {/* Chat messages */}
-      <div className="flex-1 overflow-y-auto p-4 space-y-4">
+      <div className="flex-1 overflow-y-auto p-4 space-y-4 h-[400px]">
         {messages.map(message => (
           <div 
             key={message.id} 
@@ -142,6 +142,10 @@ const Chatbot: React.FC<ChatbotProps> = ({ onConnectToAgent }) => {
               href={whatsappDirectLink}
               target="_blank" 
               rel="noopener noreferrer"
+              onClick={(e) => {
+                e.preventDefault();
+                window.open(whatsappDirectLink, '_blank', 'noopener,noreferrer');
+              }}
               className="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-full flex items-center text-sm"
             >
               <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" viewBox="0 0 24 24" fill="currentColor">
@@ -156,7 +160,7 @@ const Chatbot: React.FC<ChatbotProps> = ({ onConnectToAgent }) => {
       </div>
       
       {/* Input area */}
-      <form onSubmit={handleSendMessage} className="border-t p-4">
+      <form onSubmit={handleSendMessage} className="border-t p-4 mt-auto">
         <div className="flex space-x-2">
           <Input
             value={inputValue}
