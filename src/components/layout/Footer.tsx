@@ -127,6 +127,10 @@ const Footer = () => {
                 <span className="text-gray-300">+1 (806) 240-7920 (WhatsApp)</span>
               </li>
               <li className="flex items-center">
+                <Phone className="h-6 w-6 mr-3 text-dreampath-accent" />
+                <span className="text-gray-300">+91 6354346228 (India)</span>
+              </li>
+              <li className="flex items-center">
                 <Mail className="h-6 w-6 mr-3 text-dreampath-accent" />
                 <span className="text-gray-300">info@dreampathsolutions.in</span>
               </li>

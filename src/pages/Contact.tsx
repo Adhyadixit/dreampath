@@ -292,9 +292,19 @@ const Contact = () => {
                 <div className="flex items-start">
                   <Phone className="h-6 w-6 text-dreampath-secondary mr-4 flex-shrink-0 mt-1" />
                   <div>
-                    <h3 className="font-bold">Call Us</h3>
+                    <h3 className="font-bold">Call Us (US)</h3>
                     <p className="text-gray-700">
                       <a href="tel:+18312955365" className="hover:text-dreampath-primary">+1 (831) 295-5365</a>
+                    </p>
+                  </div>
+                </div>
+                
+                <div className="flex items-start">
+                  <Phone className="h-6 w-6 text-dreampath-secondary mr-4 flex-shrink-0 mt-1" />
+                  <div>
+                    <h3 className="font-bold">Call Us (India)</h3>
+                    <p className="text-gray-700">
+                      <a href="tel:+916354346228" className="hover:text-dreampath-primary">+91 6354346228</a>
                     </p>
                   </div>
                 </div>
