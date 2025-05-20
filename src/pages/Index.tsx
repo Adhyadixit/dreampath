@@ -16,6 +16,7 @@ import NotFound from "./NotFound";
 import ScrollToTop from "@/components/common/ScrollToTop";
 import ServiceKeywords from "./ServiceKeywords";
 import SupabaseTest from "./SupabaseTest";
+import ReputationManagement from "./services/ReputationManagement";
 
 const Index = () => {
   return (
@@ -35,6 +36,7 @@ const Index = () => {
       <Route path="/admin-dashboard" element={<AdminDashboard />} />
       <Route path="/account" element={<UserAccount />} />
       <Route path="/service-keywords" element={<ServiceKeywords />} />
+      <Route path="/services/reputation-management" element={<ReputationManagement />} />
       <Route path="/supabase-test" element={<SupabaseTest />} />
       <Route path="*" element={<NotFound />} />
     </Routes>
