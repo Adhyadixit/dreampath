@@ -44,6 +44,21 @@
 
   body {
     @apply bg-background text-foreground font-sans overflow-x-hidden;
+    max-width: 100%;
+    width: 100%;
+    position: relative;
+  }
+
+  /* Prevent horizontal scroll on all elements */
+  * {
+    max-width: 100%;
+    box-sizing: border-box;
+  }
+
+  /* Ensure images and media don't cause overflow */
+  img, video, iframe, canvas, svg {
+    max-width: 100%;
+    height: auto;
   }
 
   h1, h2, h3, h4, h5, h6 {
