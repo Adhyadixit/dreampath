@@ -16,7 +16,7 @@ const PrivacyPolicy = () => {
 
             <h2 className="text-2xl font-bold text-dreampath-primary mb-4">1. Introduction</h2>
             <p className="mb-4">
-              DreamPath Solutions ("we," "our," or "us") is committed to protecting your privacy. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you visit our website or use our services.
+              DreamPath Solutions ("we," "our," or "us") is committed to protecting your privacy. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you visit our website or use our services. Dreampath is a sub branch of Shipio Logistics Private Limited.
             </p>
             <p className="mb-6">
               Please read this privacy policy carefully. If you do not agree with the terms of this privacy policy, please do not access the site.
@@ -93,7 +93,7 @@ const PrivacyPolicy = () => {
               <li>By email: info@dreampathsolutions.in</li>
               <li>By phone: +1 (831) 295-5365</li>
               <li>By WhatsApp: +1 (806) 240-7920</li>
-              <li>By mail: 10214 Maremont Cir, Richmond VA, 23238-3604, United States</li>
+
             </ul>
           </div>
         </div>

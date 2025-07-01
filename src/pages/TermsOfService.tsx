@@ -16,7 +16,7 @@ const TermsOfService = () => {
 
             <h2 className="text-2xl font-bold text-dreampath-primary mb-4">1. Acceptance of Terms</h2>
             <p className="mb-6">
-              By accessing and using the services provided by DreamPath Solutions ("Company", "we", "our", "us"), you acknowledge that you have read, understood, and agree to be bound by these Terms of Service ("Terms"). These Terms apply to all visitors, users, and others who access or use our website, products, or services. If you do not agree with any part of these terms, you may not use our services.
+              By accessing and using the services provided by DreamPath Solutions ("Company", "we", "our", "us"), you acknowledge that you have read, understood, and agree to be bound by these Terms of Service ("Terms"). Dreampath is a sub branch of Shipio Logistics Private Limited. These Terms apply to all visitors, users, and others who access or use our website, products, or services. If you do not agree with any part of these terms, you may not use our services.
             </p>
 
             <h2 className="text-2xl font-bold text-dreampath-primary mb-4">2. Description of Services</h2>
@@ -83,7 +83,7 @@ const TermsOfService = () => {
 
             <h2 className="text-2xl font-bold text-dreampath-primary mb-4">11. Governing Law</h2>
             <p className="mb-6">
-              These Terms shall be governed and construed in accordance with the laws of the State of California, United States, without regard to its conflict of law provisions. Our failure to enforce any right or provision of these Terms will not be considered a waiver of those rights.
+              These Terms shall be governed and construed in accordance with the laws of India, without regard to its conflict of law provisions. Any disputes relating to these terms and conditions will be subject to the exclusive jurisdiction of the courts of Jaipur, Rajasthan. Our failure to enforce any right or provision of these Terms will not be considered a waiver of those rights.
             </p>
 
             <h2 className="text-2xl font-bold text-dreampath-primary mb-4">12. Contact Us</h2>
@@ -94,7 +94,7 @@ const TermsOfService = () => {
               <li>By email: info@dreampathsolutions.in</li>
               <li>By phone: +1 (831) 295-5365</li>
               <li>By WhatsApp: +1 (806) 240-7920</li>
-              <li>By mail: 10214 Maremont Cir, Richmond VA, 23238-3604, United States</li>
+
             </ul>
           </div>
         </div>

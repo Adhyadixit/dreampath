@@ -158,6 +158,16 @@ const About = () => {
           </div>
         </div>
       </section>
+
+      <section className="section-padding bg-white">
+        <div className="container-wide">
+          <div className="text-center max-w-3xl mx-auto">
+            <p className="text-lg">
+              Dreampath is a sub branch of Shipio Logistics Private Limited.
+            </p>
+          </div>
+        </div>
+      </section>
     </div>
   );
 };

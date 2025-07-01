@@ -289,7 +289,8 @@ const ChatWidget = () => {
           session_id: sessionData[0].id,
           sender_type: 'visitor',
           message: message.trim(),
-          is_read: false
+          is_read: false,
+          created_at: timestamp
         });
       
       if (messageError) {
@@ -334,52 +335,31 @@ const ChatWidget = () => {
       // Clear the input field immediately for better UX
       setMessage('');
       
-      // Create a temporary message to show immediately
-      const tempMessage = {
-        id: `temp-${Date.now()}`,
-        sender_type: 'visitor' as 'visitor',
-        message: messageContent,
-        is_read: false,
-        created_at: new Date().toISOString()
-      };
-      
-      // Add the temporary message to the local state
-      setMessages(prev => [...prev, tempMessage]);
-      
-      // Scroll to the bottom
-      scrollToBottom();
-      
       console.log('Sending message to Supabase for session:', sessionId);
       
-      // Send to Supabase - let Supabase handle UUID generation
-      const { data, error } = await supabase
+      // Send to Supabase. The real-time subscription will handle updating the UI.
+      const { error } = await supabase
         .from('chat_messages')
         .insert({
           session_id: sessionId,
           sender_type: 'visitor',
           message: messageContent,
-          is_read: false
-        })
-        .select();
+          is_read: false,
+          created_at: new Date().toISOString()
+        });
       
       if (error) {
         console.error('Error sending message:', error);
+        // If there's an error, add the message back to the input so the user doesn't lose it
+        setMessage(messageContent);
         toast({
           title: "Error",
           description: "Failed to send message. Please try again.",
           variant: "destructive",
         });
       } else {
-        console.log('Message sent successfully to Supabase:', data);
-        
-        // Replace the temporary message with the real one from the database
-        if (data && data.length > 0) {
-          setMessages(prev => 
-            prev.map(msg => 
-              msg.id === tempMessage.id ? data[0] : msg
-            )
-          );
-        }
+        console.log('Message sent successfully to Supabase');
+        // The real-time subscription will update the UI
       }
     } catch (error) {
       console.error('Error sending message:', error);

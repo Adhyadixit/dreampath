@@ -113,12 +113,6 @@ const Footer = () => {
               <li className="flex items-start">
                 <MapPin className="h-6 w-6 mr-3 text-dreampath-accent" />
                 <span className="text-gray-300">
-                  10214 Maremont Cir, Richmond VA, 23238-3604, United States
-                </span>
-              </li>
-              <li className="flex items-start">
-                <MapPin className="h-6 w-6 mr-3 text-dreampath-accent" />
-                <span className="text-gray-300">
                   <a href="https://g.co/kgs/en3KiM1" target="_blank" rel="noopener noreferrer" className="hover:text-dreampath-accent underline">
                     Near Airport Terminal 2, Roopvihar Colony, Block D, Siddharth Nagar, Malviya Nagar, Jaipur, Rajasthan 302017
                   </a>
@@ -151,6 +145,7 @@ const Footer = () => {
         
         <div className="border-t border-gray-700 mt-10 pt-6 text-center text-gray-400">
           <p>© {new Date().getFullYear()} DreamPath Solutions. All rights reserved.</p>
+          <p>Dreampath is a sub branch of Shipio Logistics Private Limited.</p>
         </div>
       </div>
     </footer>

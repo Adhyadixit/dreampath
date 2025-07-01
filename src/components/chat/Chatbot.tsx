@@ -73,45 +73,49 @@ const Chatbot: React.FC<ChatbotProps> = ({ onConnectToAgent }) => {
 
   const handleSendMessage = (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (!inputValue.trim()) return;
-    
-    // Add user message
+
     const userMessage: ChatbotMessage = {
       id: Date.now().toString(),
       content: inputValue.trim(),
       sender: 'user',
-      timestamp: new Date()
+      timestamp: new Date(),
     };
-    
+
     setMessages(prev => [...prev, userMessage]);
-    
-    // Store user input before clearing
-    const userInput = inputValue.toLowerCase();
+
+    const userInput = inputValue.toLowerCase().trim();
     setInputValue('');
-    
-    // Check for connect to agent request
-    if (
-      userInput.includes('agent') || 
-      userInput.includes('human') || 
-      userInput.includes('person') || 
-      userInput.includes('representative') ||
-      userInput.includes('real person') ||
-      userInput.includes('talk to someone') ||
-      userInput.includes('whatsapp') ||
-      (userInput.includes('yes') && messages.some(msg => {
-        return msg.sender === 'bot' && (
-          msg.content.includes('Would you like to speak with') || 
-          msg.content.includes('Would you like me to connect you') ||
-          msg.content.includes('Would you like to chat with a human') ||
-          msg.content.includes('Would you like to connect with an agent')
-        );
-      }))
-    ) {
-      // User wants to connect to an agent - show WhatsApp link directly
+
+    // Define keywords for intent detection
+    const affirmativeResponses = ['yes', 'sure', 'yep', 'yeah', 'ok', 'okay', 'yup', 'alright', 'definitely', 'absolutely', 'yas', 'yess', 'yessir', 'y'];
+    const negativeResponses = ['no', 'nope', 'nah', 'not really', 'no thanks', 'negative', 'n'];
+    const agentRequestKeywords = ['agent', 'human', 'person', 'representative', 'real person', 'talk to someone', 'whatsapp'];
+
+    // Check user's intent
+    const isAffirmative = affirmativeResponses.some(word => userInput.includes(word));
+    const isNegative = negativeResponses.some(word => userInput.includes(word));
+    const isAgentRequest = agentRequestKeywords.some(keyword => userInput.includes(keyword));
+
+    // Check if the last bot message was a prompt to connect to an agent
+    const lastBotMessage = messages.slice().reverse().find(m => m.sender === 'bot');
+    const wasAgentPrompt = lastBotMessage && (
+        lastBotMessage.content.includes('Would you like to speak with') ||
+        lastBotMessage.content.includes('Would you like me to connect you') ||
+        lastBotMessage.content.includes('Would you like to chat with a human') ||
+        lastBotMessage.content.includes('Would you like to connect with an agent')
+    );
+
+    // Decide on the bot's response
+    if (isAgentRequest || (isAffirmative && wasAgentPrompt)) {
+      // User wants to connect to an agent
       const response = connectToAgentResponses[Math.floor(Math.random() * connectToAgentResponses.length)];
       addBotResponse(response);
       setShowWhatsappLink(true);
+    } else if (isNegative && wasAgentPrompt) {
+      // User declined to connect
+      addBotResponse("Okay, no problem. Is there anything else I can help you with?");
     } else {
       // Regular response
       const response = findBestResponse(userInput);
