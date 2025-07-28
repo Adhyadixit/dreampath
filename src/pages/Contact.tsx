@@ -336,9 +336,9 @@ const Contact = () => {
                   <div>
                     <h3 className="font-bold">Office</h3>
                     <p className="text-gray-700">
-                      10214 Maremont Cir<br />
-                      Richmond VA, 23238-3604<br />
-                      United States
+                      Near Airport Terminal 2, Roopvihar Colony,<br />
+                      Block D, Siddharth Nagar, Malviya Nagar,<br />
+                      Jaipur, Rajasthan 302017, India
                     </p>
                   </div>
                 </div>

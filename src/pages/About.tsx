@@ -35,7 +35,7 @@ const About = () => {
     <div>
       <PageHeader 
         title="About Us" 
-        description="Learn more about DreamPath Solutions and our mission to transform businesses through innovative software."
+        description="Learn more about DreamPath Solutions and our journey in creating impactful digital experiences."
       />
 
       {/* Company Story */}
@@ -45,19 +45,19 @@ const About = () => {
             <div>
               <h2 className="text-3xl font-bold mb-6 text-dreampath-primary">Our Story</h2>
               <p className="mb-4 text-lg">
-                Founded in 2012, DreamPath Solutions began with a simple mission: to create software that makes a difference. Our founder, Alex Johnson, saw that many businesses were struggling with inefficient processes and outdated technology that couldn't keep up with their growth.
+                Founded in 2021, Dreampath Solutions is a forward-thinking digital agency dedicated to building impactful, user-centric web and mobile experiences. What began as a small team of passionate developers and designers has grown into a trusted tech partner for startups, SMEs, and global brands alike.
               </p>
               <p className="mb-4">
-                What started as a small team of passionate developers has grown into a full-service software development company with over 60 team members across three continents. Despite our growth, we've maintained our core values and commitment to quality.
+                We specialize in delivering end-to-end digital solutions, including custom websites, web applications, mobile apps, UI/UX design, and performance-driven marketing assets. With over 20+ completed projects across various industries, we take pride in blending creativity with technical excellence to turn bold ideas into scalable digital products.
               </p>
               <p>
-                Today, we're proud to partner with businesses ranging from innovative startups to Fortune 500 companies, helping them leverage technology to achieve their goals and stay ahead in an increasingly digital world.
+                At Dreampath Solutions, we don't just build websites—we craft digital pathways for businesses to grow, engage, and succeed.
               </p>
             </div>
             <div className="rounded-lg overflow-hidden shadow-xl">
               <img 
                 src="https://images.unsplash.com/photo-1496171367470-9ed9a91ea931" 
-                alt="DreamPath Solutions Office" 
+                alt="Dreampath Solutions Office" 
                 className="w-full h-auto"
               />
             </div>
@@ -69,9 +69,9 @@ const About = () => {
       <section className="section-padding bg-gray-50">
         <div className="container-wide">
           <div className="text-center max-w-3xl mx-auto mb-12">
-            <h2 className="text-3xl font-bold mb-6 text-dreampath-primary">Our Mission and Values</h2>
+            <h2 className="text-3xl font-bold mb-6 text-dreampath-primary">Our Mission</h2>
             <p className="text-lg">
-              At DreamPath Solutions, our mission is to empower businesses through innovative and practical technology solutions that drive growth, efficiency, and competitive advantage.
+              Our mission is to simplify technology and make great design accessible to every visionary.
             </p>
           </div>
 
@@ -102,35 +102,6 @@ const About = () => {
                 </p>
               </CardContent>
             </Card>
-          </div>
-        </div>
-      </section>
-
-      {/* Team */}
-      <section className="section-padding bg-white">
-        <div className="container-wide">
-          <div className="text-center max-w-3xl mx-auto mb-12">
-            <h2 className="text-3xl font-bold mb-6 text-dreampath-primary">Our Leadership Team</h2>
-            <p className="text-lg">
-              Meet the experienced professionals who guide our company and ensure we deliver exceptional results for our clients.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {team.map((member, index) => (
-              <div key={index} className="bg-white rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-shadow">
-                <img 
-                  src={member.image} 
-                  alt={member.name} 
-                  className="w-full h-64 object-cover object-center"
-                />
-                <div className="p-6">
-                  <h3 className="font-bold text-xl mb-1">{member.name}</h3>
-                  <p className="text-dreampath-secondary mb-3">{member.role}</p>
-                  <p className="text-gray-600">{member.bio}</p>
-                </div>
-              </div>
-            ))}
           </div>
         </div>
       </section>

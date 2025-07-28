@@ -100,15 +100,15 @@ const ServiceKeywords: React.FC<ServiceKeywordsProps> = ({
     
     return (
       <div className="w-full">
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
           {allKeywords.map((keyword) => (
             <Button
               key={keyword.id}
               variant="outline"
-              className="h-auto py-4 px-5 text-base justify-start hover:bg-dreampath-primary hover:text-white transition-colors border-2 border-dreampath-primary/20 shadow-sm"
+              className="h-auto min-h-[60px] py-2 px-3 text-sm md:text-base justify-center text-center hover:bg-dreampath-primary hover:text-white transition-colors border-2 border-dreampath-primary/20 shadow-sm break-words whitespace-normal"
               onClick={() => handleServiceClick(keyword.value)}
             >
-              {keyword.label}
+              <span className="w-full">{keyword.label}</span>
             </Button>
           ))}
         </div>
@@ -136,15 +136,15 @@ const ServiceKeywords: React.FC<ServiceKeywordsProps> = ({
             </div>
           )}
           
-          <div className="flex flex-wrap gap-4">
+          <div className="flex flex-wrap gap-3">
             {category.keywords.map((keyword) => (
               <Button
                 key={keyword.id}
                 variant="outline"
-                className="h-auto py-3 px-5 text-base hover:bg-dreampath-primary hover:text-white transition-colors border-2 border-dreampath-primary/20 shadow-sm"
+                className="h-auto min-h-[50px] py-2 px-3 text-sm md:text-base hover:bg-dreampath-primary hover:text-white transition-colors border-2 border-dreampath-primary/20 shadow-sm break-words whitespace-normal"
                 onClick={() => handleServiceClick(keyword.value)}
               >
-                {keyword.label}
+                <span className="w-full">{keyword.label}</span>
               </Button>
             ))}
           </div>
