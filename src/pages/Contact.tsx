@@ -334,11 +334,16 @@ const Contact = () => {
                 <div className="flex items-start">
                   <MapPin className="h-6 w-6 text-dreampath-secondary mr-4 flex-shrink-0 mt-1" />
                   <div>
-                    <h3 className="font-bold">Office</h3>
-                    <p className="text-gray-700">
+                    <h3 className="font-bold">DreamPath Solutions Office</h3>
+                    <p className="text-gray-700 mb-4">
                       Near Airport Terminal 2, Roopvihar Colony,<br />
                       Block D, Siddharth Nagar, Malviya Nagar,<br />
                       Jaipur, Rajasthan 302017, India
+                    </p>
+                    <h3 className="font-bold">Shipio Logistics Office</h3>
+                    <p className="text-gray-700">
+                      Shop No. 4, Vake Chandravardai Nagar,<br />
+                      Ajmer, Rajasthan 305001, India
                     </p>
                   </div>
                 </div>
@@ -357,13 +362,14 @@ const Contact = () => {
               
               <div className="rounded-lg overflow-hidden h-64">
                 <iframe 
-                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d100940.14245968247!2d-122.43759999999999!3d37.75769999999999!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x80859a6d00690021%3A0x4a501367f076adff!2sSan%20Francisco%2C%20CA!5e0!3m2!1sen!2sus!4v1649556078576!5m2!1sen!2sus" 
+                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3558.383199820755!2d75.8025!3d26.8777!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x396db6a3c2e4c8a5%3A0x8e3b9f3d9c0c3b1a!2sRoop%20Vihar%20Colony%2C%20Siddharth%20Nagar%2C%20Malviya%20Nagar%2C%20Jaipur%2C%20Rajasthan%20302017!5e0!3m2!1sen!2sin!4v1620000000000!5m2!1sen!2sin" 
                   width="100%" 
                   height="100%" 
                   style={{ border: 0 }} 
                   allowFullScreen 
                   loading="lazy" 
                   referrerPolicy="no-referrer-when-downgrade"
+                  title="DreamPath Solutions Office Location"
                 />
               </div>
             </div>

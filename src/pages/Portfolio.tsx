@@ -113,9 +113,25 @@ const Portfolio = () => {
     }
     
     return (
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mt-8">
-        {filteredProjects.map(renderProject)}
-      </div>
+      <>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mt-8">
+          {filteredProjects.map(renderProject)}
+        </div>
+        
+        {/* See More Button */}
+        <div className="mt-12 text-center">
+          <p className="text-gray-600 mb-4">Want to see more of our work?</p>
+          <a 
+            href="https://www.fiverr.com/users/ojasvydixit/portfolio/" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            className="inline-flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-white bg-dreampath-primary hover:bg-dreampath-secondary transition-colors shadow-sm"
+          >
+            View Full Portfolio on Fiverr
+            <ExternalLink className="ml-2 h-4 w-4" />
+          </a>
+        </div>
+      </>
     );
   };
 
@@ -226,7 +242,7 @@ const Portfolio = () => {
               </Button>
             </Link>
             <Link to="/services">
-              <Button variant="outline" className="border-white text-white hover:bg-white/10 w-full sm:w-auto">
+              <Button variant="outline" className="border-white text-black hover:bg-white/10 w-full sm:w-auto">
                 Explore Our Services
               </Button>
             </Link>

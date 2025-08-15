@@ -130,11 +130,18 @@ const About = () => {
         </div>
       </section>
 
-      <section className="section-padding bg-white">
+      <section className="py-16 bg-gray-50">
         <div className="container-wide">
-          <div className="text-center max-w-3xl mx-auto">
-            <p className="text-lg">
-              Dreampath is a sub branch of Shipio Logistics Private Limited.
+          <div className="text-center max-w-4xl mx-auto">
+            <h3 className="text-2xl font-semibold text-dreampath-primary mb-4">Our Parent Company</h3>
+            <p className="text-xl font-medium text-gray-800">
+              DreamPath Solutions is a proud subsidiary of
+            </p>
+            <div className="mt-3">
+              <span className="text-2xl font-bold text-dreampath-secondary">Shipio Logistics Private Limited</span>
+            </div>
+            <p className="mt-4 text-gray-600">
+              A trusted name in logistics and business solutions since 2021
             </p>
           </div>
         </div>
