@@ -17,6 +17,9 @@ import ScrollToTop from "@/components/common/ScrollToTop";
 import ServiceKeywords from "./ServiceKeywords";
 import SupabaseTest from "./SupabaseTest";
 import ReputationManagement from "./services/ReputationManagement";
+import DatingApp from "./services/DatingApp";
+import FoodDeliveryApp from "./services/FoodDeliveryApp";
+import HealthApps from "./services/HealthApps";
 
 const Index = () => {
   return (
@@ -37,6 +40,9 @@ const Index = () => {
       <Route path="/account" element={<UserAccount />} />
       <Route path="/service-keywords" element={<ServiceKeywords />} />
       <Route path="/services/reputation-management" element={<ReputationManagement />} />
+      <Route path="/datingapp" element={<DatingApp />} />
+      <Route path="/fooddeliveryapp" element={<FoodDeliveryApp />} />
+      <Route path="/healthapps" element={<HealthApps />} />
       <Route path="/supabase-test" element={<SupabaseTest />} />
       <Route path="*" element={<NotFound />} />
     </Routes>
