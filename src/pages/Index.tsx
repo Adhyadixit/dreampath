@@ -28,6 +28,8 @@ import FintechWalletApps from "./services/FintechWalletApps";
 import RideHailingApps from "./services/RideHailingApps";
 import HomeServicesApps from "./services/HomeServicesApps";
 import EdTechApps from "./services/EdTechApps";
+import Blogs from "./Blogs";
+import SubmitBlog from "./SubmitBlog";
 
 const Index = () => {
   return (
@@ -60,6 +62,8 @@ const Index = () => {
       <Route path="/homeservicesapps" element={<HomeServicesApps />} />
       <Route path="/edtechapps" element={<EdTechApps />} />
       <Route path="/supabase-test" element={<SupabaseTest />} />
+      <Route path="/blogs" element={<Blogs />} />
+      <Route path="/submit-blog" element={<SubmitBlog />} />
       <Route path="*" element={<NotFound />} />
     </Routes>
     </>

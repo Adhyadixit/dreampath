@@ -60,6 +60,12 @@ const Navbar = () => {
             Portfolio
           </Link>
           <Link
+            to="/blogs"
+            className="text-foreground hover:text-dreampath-secondary transition-colors"
+          >
+            Blogs
+          </Link>
+          <Link
             to="/contact"
             className="text-foreground hover:text-dreampath-secondary transition-colors"
           >
@@ -104,6 +110,13 @@ const Navbar = () => {
               onClick={toggleMenu}
             >
               Portfolio
+            </Link>
+            <Link
+              to="/blogs"
+              className="px-4 py-3 text-foreground hover:bg-muted rounded-md"
+              onClick={toggleMenu}
+            >
+              Blogs
             </Link>
             <Link
               to="/contact"

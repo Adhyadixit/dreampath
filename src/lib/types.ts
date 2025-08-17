@@ -65,3 +65,19 @@ export interface UserProfile {
   company?: string;
   created_at: string;
 }
+
+// Blog type
+export interface Blog {
+  id: string;
+  title: string;
+  slug: string;
+  content: string;
+  cover_image?: string | null;
+  tags: string[];
+  author_name: string;
+  author_email: string;
+  status: 'pending' | 'approved' | 'rejected';
+  published_at?: string | null;
+  created_at: string;
+  updated_at: string;
+}

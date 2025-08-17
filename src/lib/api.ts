@@ -1,5 +1,5 @@
 import { supabase } from './supabase';
-import type { Project, HeroContent, ContactInfo, SocialLink } from './types';
+import type { Project, HeroContent, ContactInfo, SocialLink, Blog } from './types';
 
 // ================= Projects API =================
 export const projectsApi = {
@@ -216,3 +216,72 @@ export async function getHeroContent(): Promise<HeroContent> {
 export async function updateHeroContent(content: HeroContent): Promise<HeroContent> {
   return heroContentApi.update(content.id, content);
 }
+
+// ================= Blogs API =================
+export const blogsApi = {
+  // Public: get approved blogs
+  getApproved: async (): Promise<Blog[]> => {
+    const { data, error } = await supabase
+      .from('blogs')
+      .select('*')
+      .eq('status', 'approved')
+      .order('published_at', { ascending: false })
+      .order('created_at', { ascending: false });
+    if (error) throw error;
+    return (data as Blog[]) || [];
+  },
+
+  // Public: submit blog (status defaults to pending)
+  submit: async (payload: Pick<Blog,'title'|'content'|'cover_image'|'author_name'|'author_email'> & { tags?: string[] }): Promise<Blog> => {
+    const insert = {
+      title: payload.title,
+      content: payload.content,
+      cover_image: payload.cover_image ?? null,
+      tags: payload.tags ?? [],
+      author_name: payload.author_name,
+      author_email: payload.author_email,
+      // status defaults to pending via DB
+    } as any;
+    const { data, error } = await supabase
+      .from('blogs')
+      .insert([insert])
+      .select()
+      .single();
+    if (error) throw error;
+    return data as Blog;
+  },
+
+  // Admin: list all blogs (requires authenticated policies)
+  listAll: async (): Promise<Blog[]> => {
+    const { data, error } = await supabase
+      .from('blogs')
+      .select('*')
+      .order('created_at', { ascending: false });
+    if (error) throw error;
+    return (data as Blog[]) || [];
+  },
+
+  // Admin: approve blog
+  approve: async (id: string): Promise<Blog> => {
+    const { data, error } = await supabase
+      .from('blogs')
+      .update({ status: 'approved', published_at: new Date().toISOString() })
+      .eq('id', id)
+      .select()
+      .single();
+    if (error) throw error;
+    return data as Blog;
+  },
+
+  // Admin: reject blog
+  reject: async (id: string): Promise<Blog> => {
+    const { data, error } = await supabase
+      .from('blogs')
+      .update({ status: 'rejected' })
+      .eq('id', id)
+      .select()
+      .single();
+    if (error) throw error;
+    return data as Blog;
+  }
+};

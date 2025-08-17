@@ -235,6 +235,54 @@ BEFORE UPDATE ON chat_sessions
 FOR EACH ROW
 EXECUTE FUNCTION update_updated_at_column();
 
+-- Blogs Table
+CREATE TABLE IF NOT EXISTS blogs (
+  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  title TEXT NOT NULL,
+  slug TEXT GENERATED ALWAYS AS (
+    regexp_replace(lower(trim(title)), '[^a-z0-9]+', '-', 'g')
+  ) STORED,
+  content TEXT NOT NULL,
+  cover_image TEXT,
+  tags TEXT[] DEFAULT '{}',
+  author_name TEXT NOT NULL,
+  author_email TEXT NOT NULL CHECK (author_email ~* '^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$'),
+  status TEXT NOT NULL DEFAULT 'pending' CHECK (status IN ('pending','approved','rejected')),
+  published_at TIMESTAMPTZ,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+-- Enable RLS
+ALTER TABLE blogs ENABLE ROW LEVEL SECURITY;
+
+-- Policies
+-- Anyone can insert a blog (submission)
+CREATE POLICY "Blogs can be submitted by anyone"
+  ON blogs FOR INSERT WITH CHECK (true);
+
+-- Public can read only approved blogs
+CREATE POLICY "Public can read approved blogs"
+  ON blogs FOR SELECT USING (status = 'approved');
+
+-- Admin (authenticated) can read all blogs
+CREATE POLICY "Admins can read all blogs"
+  ON blogs FOR SELECT USING (auth.role() = 'authenticated');
+
+-- Admin (authenticated) can update status and other fields
+CREATE POLICY "Admins can update blogs"
+  ON blogs FOR UPDATE USING (auth.role() = 'authenticated');
+
+-- Admin (authenticated) can delete blogs
+CREATE POLICY "Admins can delete blogs"
+  ON blogs FOR DELETE USING (auth.role() = 'authenticated');
+
+-- Trigger for updated_at on blogs
+CREATE TRIGGER update_blogs_updated_at
+BEFORE UPDATE ON blogs
+FOR EACH ROW
+EXECUTE FUNCTION update_updated_at_column();
+
 -- Function to handle new chat messages and send notifications
 CREATE OR REPLACE FUNCTION handle_new_chat_message()
 RETURNS TRIGGER AS $$

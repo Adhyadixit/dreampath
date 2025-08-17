@@ -8,6 +8,7 @@ import { PortfolioManager } from "@/components/admin/PortfolioManager";
 import { HeroManager } from "@/components/admin/HeroManager";
 import { ContactManager } from "@/components/admin/ContactManager";
 import ChatManager from "@/components/admin/ChatManager";
+import BlogManager from "@/components/admin/BlogManager";
 
 const AdminDashboard = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -69,6 +70,7 @@ const AdminDashboard = () => {
               <TabsTrigger value="portfolio">Portfolio</TabsTrigger>
               <TabsTrigger value="contact">Contact Details</TabsTrigger>
               <TabsTrigger value="chat">Live Chat</TabsTrigger>
+              <TabsTrigger value="blogs">Blogs</TabsTrigger>
             </TabsList>
           </div>
 
@@ -86,6 +88,10 @@ const AdminDashboard = () => {
           
           <TabsContent value="chat">
             <ChatManager />
+          </TabsContent>
+
+          <TabsContent value="blogs">
+            <BlogManager />
           </TabsContent>
         </Tabs>
       </div>
