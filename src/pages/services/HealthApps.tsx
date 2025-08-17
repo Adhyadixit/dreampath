@@ -6,20 +6,12 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Activity, Apple, Dumbbell, HeartPulse, Salad, Check } from "lucide-react";
 import ContactFormPopup from "@/components/common/ContactFormPopup";
-
-const gallery = [
-  // Local images from public/images/healthapp
-  "/images/healthapp/69ec6c4f-f248-46b4-9485-91d4a0be80a4.jpeg",
-  "/images/healthapp/A modern, clean, and fully customizable Health….jpeg",
-  "/images/healthapp/Healthcare app design by Anastasia Golovko for….jpeg",
-  "/images/healthapp/Make sports smarter and life more convenient.jpeg",
-  "/images/healthapp/We are pleased to share our UI_UX design team's….jpeg",
-  "/images/healthapp/Weight loss and Wellness App _ Healthiapp_com.jpeg",
-];
+import { useGallery } from "@/hooks/use-gallery";
 
 const HealthApps: React.FC = () => {
   const [open, setOpen] = React.useState(false);
   const [selectedService, setSelectedService] = React.useState("health-fitness-calorie-apps");
+  const { images: gallery } = useGallery("healthapp");
 
   return (
     <div>
@@ -73,6 +65,9 @@ const HealthApps: React.FC = () => {
                   {gallery.map((src, i) => (
                     <img key={i} src={src} alt={`health-app-${i}`} className="w-full h-28 md:h-36 object-cover rounded" loading="lazy" />
                   ))}
+                  {gallery.length === 0 && (
+                    <div className="col-span-2 md:col-span-4 text-sm text-gray-500">Add images under public/images/healthapp/ to populate this gallery.</div>
+                  )}
                 </div>
               </CardContent>
             </Card>

@@ -6,23 +6,12 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Check, Shield, Smartphone, Video, Users, Heart, MessageSquare } from "lucide-react";
 import ContactFormPopup from "@/components/common/ContactFormPopup";
-
-const gallery = [
-  // Using the exact uploaded filenames under public/images/dating/
-  "/images/dating/Purple Pink Gradient Mobile Application Presentation (2).png",
-  "/images/dating/Purple Pink Gradient Mobile Application Presentation (3).png",
-  "/images/dating/IMG_9152.PNG",
-  "/images/dating/IMG_9153.PNG",
-  "/images/dating/IMG_9154.PNG",
-  "/images/dating/IMG_9155.PNG",
-  "/images/dating/IMG_9156.PNG",
-  "/images/dating/2.png",
-  "/images/dating/3.png",
-];
+import { useGallery } from "@/hooks/use-gallery";
 
 const DatingApp: React.FC = () => {
   const [open, setOpen] = React.useState(false);
   const [selectedService, setSelectedService] = React.useState("dating-video-chat-apps");
+  const { images: gallery } = useGallery("dating");
 
   return (
     <div>
@@ -79,6 +68,9 @@ const DatingApp: React.FC = () => {
                   {gallery.map((src, i) => (
                     <img key={i} src={src} alt={`dating-app-${i}`} className="w-full h-28 md:h-36 object-cover rounded" loading="lazy" />
                   ))}
+                  {gallery.length === 0 && (
+                    <div className="col-span-2 md:col-span-4 text-sm text-gray-500">Add images under public/images/dating/ to populate this gallery.</div>
+                  )}
                 </div>
               </CardContent>
             </Card>

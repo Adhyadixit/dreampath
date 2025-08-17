@@ -20,6 +20,14 @@ import ReputationManagement from "./services/ReputationManagement";
 import DatingApp from "./services/DatingApp";
 import FoodDeliveryApp from "./services/FoodDeliveryApp";
 import HealthApps from "./services/HealthApps";
+import TravelApps from "./services/TravelApps";
+import RealEstateApps from "./services/RealEstateApps";
+import AstrologyApps from "./services/AstrologyApps";
+import EcommerceApps from "./services/EcommerceApps";
+import FintechWalletApps from "./services/FintechWalletApps";
+import RideHailingApps from "./services/RideHailingApps";
+import HomeServicesApps from "./services/HomeServicesApps";
+import EdTechApps from "./services/EdTechApps";
 
 const Index = () => {
   return (
@@ -43,6 +51,14 @@ const Index = () => {
       <Route path="/datingapp" element={<DatingApp />} />
       <Route path="/fooddeliveryapp" element={<FoodDeliveryApp />} />
       <Route path="/healthapps" element={<HealthApps />} />
+      <Route path="/travelapps" element={<TravelApps />} />
+      <Route path="/realestateapps" element={<RealEstateApps />} />
+      <Route path="/astrologyapps" element={<AstrologyApps />} />
+      <Route path="/ecommerceapps" element={<EcommerceApps />} />
+      <Route path="/fintechapps" element={<FintechWalletApps />} />
+      <Route path="/ridehailingapps" element={<RideHailingApps />} />
+      <Route path="/homeservicesapps" element={<HomeServicesApps />} />
+      <Route path="/edtechapps" element={<EdTechApps />} />
       <Route path="/supabase-test" element={<SupabaseTest />} />
       <Route path="*" element={<NotFound />} />
     </Routes>

@@ -6,20 +6,12 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Check, ShoppingBag, MapPin, Bike, Smartphone, Globe } from "lucide-react";
 import ContactFormPopup from "@/components/common/ContactFormPopup";
-
-const gallery = [
-  // Local images from public/images/food delivery app
-  "/images/food delivery app/1c3beb2c-a8a6-48e0-8a8b-d2ee53374cc0.jpeg",
-  "/images/food delivery app/Best Food Delivery App UI Design by Excellent….jpeg",
-  "/images/food delivery app/Food App _ Food Delivery by Rakib Kowshar for….jpeg",
-  "/images/food delivery app/Food Delivery App by Nayeem Azraf.jpeg",
-  "/images/food delivery app/Food Store app design for home page and product….jpeg",
-  "/images/food delivery app/Restaurant App by Sergey Eletskiy.jpeg",
-];
+import { useGallery } from "@/hooks/use-gallery";
 
 const FoodDeliveryApp: React.FC = () => {
   const [open, setOpen] = React.useState(false);
   const [selectedService, setSelectedService] = React.useState("food-delivery-app-website");
+  const { images: gallery } = useGallery("food delivery app");
 
   return (
     <div>
@@ -74,6 +66,9 @@ const FoodDeliveryApp: React.FC = () => {
                   {gallery.map((src, i) => (
                     <img key={i} src={src} alt={`food-app-${i}`} className="w-full h-28 md:h-36 object-cover rounded" loading="lazy" />
                   ))}
+                  {gallery.length === 0 && (
+                    <div className="col-span-2 md:col-span-4 text-sm text-gray-500">Add images under public/images/food delivery app/ to populate this gallery.</div>
+                  )}
                 </div>
               </CardContent>
             </Card>

@@ -4,7 +4,10 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
+    "images:manifest": "node scripts/generate-images-manifest.mjs",
+    "predev": "npm run images:manifest",
     "dev": "vite",
+    "prebuild": "npm run images:manifest",
     "build": "vite build",
     "build:dev": "vite build --mode development",
     "lint": "eslint .",
