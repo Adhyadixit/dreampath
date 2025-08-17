@@ -1,141 +1,183 @@
 
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { Link, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Menu, X } from "lucide-react";
+import { Menu, X, Leaf } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
+
+const navItems = [
+  { name: "Home", path: "/" },
+  { name: "About", path: "/about" },
+  { name: "Services", path: "/services" },
+  { name: "Portfolio", path: "/portfolio" },
+  { name: "Testimonials", path: "#reviews" },
+  { name: "Contact", path: "/contact" }
+];
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
+  const location = useLocation();
 
-  const toggleMenu = () => {
-    setIsMenuOpen(!isMenuOpen);
+  const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
+  
+  const handleNavigation = (path: string, e: React.MouseEvent) => {
+    e.preventDefault();
+    closeMenu();
+    
+    if (path.startsWith('#')) {
+      // Handle section scrolling
+      const element = document.querySelector(path);
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth' });
+      }
+    } else {
+      // Handle page navigation
+      window.location.href = path;
+    }
   };
+  
+  const closeMenu = () => setIsMenuOpen(false);
+
+  // Handle scroll for navbar background and text color
+  useEffect(() => {
+    const handleScroll = () => {
+      const heroSection = document.getElementById('hero');
+      const heroHeight = heroSection ? heroSection.offsetHeight : 0;
+      const scrollPosition = window.scrollY;
+      
+      // Change text color based on scroll position relative to hero section
+      setIsScrolled(scrollPosition > heroHeight * 0.8);
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   return (
-    <header className="sticky top-0 z-50 w-full bg-white/90 backdrop-blur-sm border-b border-border">
-      <div className="container-wide flex items-center justify-between py-4">
-        <Link to="/" className="flex items-center">
-          <span className="text-2xl font-bold text-dreampath-primary">
-            DreamPath<span className="text-dreampath-secondary">Solutions</span>
-          </span>
-        </Link>
-
-        {/* Mobile menu button */}
-        <button
-          onClick={toggleMenu}
-          className="p-2 rounded-md lg:hidden"
-          aria-label="Toggle Menu"
-        >
-          {isMenuOpen ? (
-            <X className="h-6 w-6 text-dreampath-primary" />
-          ) : (
-            <Menu className="h-6 w-6 text-dreampath-primary" />
-          )}
-        </button>
-
-        {/* Desktop Navigation */}
-        <nav className="hidden lg:flex items-center gap-8">
-          <Link
-            to="/"
-            className="text-foreground hover:text-dreampath-secondary transition-colors"
+    <motion.header
+      initial={{ y: -100, opacity: 0 }}
+      animate={{ y: 0, opacity: 1 }}
+      transition={{ duration: 0.8 }}
+      className={`fixed top-4 left-4 right-4 z-50 rounded-xl transition-all duration-300 ${
+        isScrolled 
+          ? 'bg-white/90 backdrop-blur-lg border border-white/20 shadow-lg text-foreground' 
+          : 'bg-transparent backdrop-blur-md border border-transparent text-white'
+      }`}
+    >
+      <div className="container mx-auto px-6 py-3">
+        <div className="flex items-center justify-between w-full">
+          <motion.div 
+            className="flex items-center space-x-2"
+            whileHover={{ scale: 1.03 }}
           >
-            Home
-          </Link>
-          <Link
-            to="/about"
-            className="text-foreground hover:text-dreampath-secondary transition-colors"
-          >
-            About Us
-          </Link>
-          <Link
-            to="/services"
-            className="text-foreground hover:text-dreampath-secondary transition-colors"
-          >
-            Services
-          </Link>
-          <Link
-            to="/portfolio"
-            className="text-foreground hover:text-dreampath-secondary transition-colors"
-          >
-            Portfolio
-          </Link>
-          <Link
-            to="/blogs"
-            className="text-foreground hover:text-dreampath-secondary transition-colors"
-          >
-            Blogs
-          </Link>
-          <Link
-            to="/contact"
-            className="text-foreground hover:text-dreampath-secondary transition-colors"
-          >
-            Contact
-          </Link>
-          <Link to="/signup">
-            <Button className="bg-dreampath-primary hover:bg-dreampath-dark">
-              Sign Up
+            <motion.div
+              animate={{ rotate: 360 }}
+              transition={{ duration: 8, repeat: Infinity, ease: "linear" }}
+            >
+              <Leaf className="h-8 w-8 text-dreampath-secondary" />
+            </motion.div>
+            <Link to="/" className="text-2xl font-bold">
+              <span className="bg-gradient-to-r from-blue-500 to-indigo-600 bg-clip-text text-transparent">
+                DreamPath
+              </span>
+              <span className="text-dreampath-secondary">Solutions</span>
+            </Link>
+          </motion.div>
+          
+          {/* Desktop Navigation */}
+          <nav className="hidden lg:flex items-center space-x-8">
+            {navItems.map((item) => (
+              <motion.div
+                key={item.path}
+                whileHover={{ y: -2 }}
+                whileTap={{ y: 0 }}
+              >
+                <a
+                  href={item.path}
+                  className={`${
+                    location.pathname === item.path.split('#')[0]
+                      ? isScrolled 
+                        ? 'text-dreampath-secondary font-medium' 
+                        : 'text-white font-medium'
+                      : isScrolled 
+                        ? 'text-foreground hover:text-dreampath-secondary/80' 
+                        : 'text-white/90 hover:text-white'
+                  } transition-colors cursor-pointer`}
+                  onClick={(e) => handleNavigation(item.path, e)}
+                >
+                  {item.name}
+                </a>
+              </motion.div>
+            ))}
+            <Button
+              asChild
+              className="ml-4 bg-dreampath-secondary hover:bg-dreampath-accent"
+            >
+              <Link to="/contact">Get Started</Link>
             </Button>
-          </Link>
-        </nav>
-      </div>
-
-      {/* Mobile Navigation */}
-      {isMenuOpen && (
-        <div className="lg:hidden absolute w-full bg-white border-b border-border">
-          <nav className="container-wide flex flex-col py-4">
-            <Link
-              to="/"
-              className="px-4 py-3 text-foreground hover:bg-muted rounded-md"
-              onClick={toggleMenu}
-            >
-              Home
-            </Link>
-            <Link
-              to="/about"
-              className="px-4 py-3 text-foreground hover:bg-muted rounded-md"
-              onClick={toggleMenu}
-            >
-              About Us
-            </Link>
-            <Link
-              to="/services"
-              className="px-4 py-3 text-foreground hover:bg-muted rounded-md"
-              onClick={toggleMenu}
-            >
-              Services
-            </Link>
-            <Link
-              to="/portfolio"
-              className="px-4 py-3 text-foreground hover:bg-muted rounded-md"
-              onClick={toggleMenu}
-            >
-              Portfolio
-            </Link>
-            <Link
-              to="/blogs"
-              className="px-4 py-3 text-foreground hover:bg-muted rounded-md"
-              onClick={toggleMenu}
-            >
-              Blogs
-            </Link>
-            <Link
-              to="/contact"
-              className="px-4 py-3 text-foreground hover:bg-muted rounded-md"
-              onClick={toggleMenu}
-            >
-              Contact
-            </Link>
-            <Link
-              to="/signup"
-              className="mt-3 px-4 py-3 bg-dreampath-primary text-white text-center rounded-md"
-              onClick={toggleMenu}
-            >
-              Sign Up
-            </Link>
           </nav>
+
+          {/* Mobile menu button */}
+          <div className="lg:hidden z-50">
+            <motion.button
+              onClick={toggleMenu}
+              className="inline-flex items-center justify-center p-2 rounded-md focus:outline-none"
+              aria-expanded="false"
+              whileTap={{ scale: 0.95 }}
+            >
+              <span className="sr-only">Open main menu</span>
+              {isMenuOpen ? (
+                <X className="block h-6 w-6" />
+              ) : (
+                <Menu className="block h-6 w-6" />
+              )}
+            </motion.button>
+          </div>
         </div>
-      )}
-    </header>
+
+        {/* Mobile menu */}
+        <AnimatePresence>
+          {isMenuOpen && (
+            <motion.div
+              initial={{ opacity: 0, y: -20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20, transition: { duration: 0.15 } }}
+              transition={{ duration: 0.2, ease: "easeOut" }}
+              className="lg:hidden absolute top-full left-4 right-4 mt-1 bg-white/95 backdrop-blur-md shadow-xl rounded-xl overflow-hidden z-40"
+            >
+              <div className="flex flex-col space-y-1 p-2">
+                {navItems.map((item) => (
+                  <motion.div
+                    key={item.path}
+                    whileTap={{ scale: 0.98 }}
+                  >
+                    <a
+                      href={item.path}
+                      className={`block px-6 py-4 text-base font-medium border-b border-gray-100 ${
+                        location.pathname === item.path.split('#')[0]
+                          ? 'bg-blue-50 text-dreampath-secondary'
+                          : 'text-gray-700 hover:bg-gray-50 hover:text-dreampath-secondary'
+                      } transition-colors duration-200 cursor-pointer`}
+                      onClick={(e) => handleNavigation(item.path, e)}
+                    >
+                      {item.name}
+                    </a>
+                  </motion.div>
+                ))}
+                <Button
+                  asChild
+                  className="mt-2 bg-dreampath-secondary hover:bg-dreampath-accent"
+                  onClick={closeMenu}
+                >
+                  <Link to="/contact" className="w-full justify-center">Get Started</Link>
+                </Button>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </div>
+    </motion.header>
   );
 };
 

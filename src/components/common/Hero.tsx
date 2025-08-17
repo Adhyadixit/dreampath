@@ -49,7 +49,7 @@ const Hero = ({
                 <p className="text-lg md:text-xl mb-8 text-gray-100">{subtitle}</p>
                 {showCta && (
                   <Link to={ctaLink}>
-                    <Button className="bg-white text-dreampath-primary hover:bg-gray-100 text-lg px-8 py-6">
+                    <Button className="bg-white text-black hover:bg-gray-100 text-lg px-8 py-6">
                       {ctaText}
                     </Button>
                   </Link>
@@ -84,7 +84,7 @@ const Hero = ({
                 <p className="text-lg md:text-xl mb-8 text-gray-100">{subtitle}</p>
                 {showCta && (
                   <Link to={ctaLink}>
-                    <Button className="bg-white text-dreampath-primary hover:bg-gray-100 text-lg px-8 py-6">
+                    <Button className="bg-white text-black hover:bg-gray-100 text-lg px-8 py-6">
                       {ctaText}
                     </Button>
                   </Link>
@@ -119,7 +119,7 @@ const Hero = ({
                 <p className="text-lg md:text-xl mb-8 text-gray-100">{subtitle}</p>
                 {showCta && (
                   <Link to={ctaLink}>
-                    <Button className="bg-white text-dreampath-primary hover:bg-gray-100 text-lg px-8 py-6">
+                    <Button className="bg-white text-black hover:bg-gray-100 text-lg px-8 py-6">
                       {ctaText}
                     </Button>
                   </Link>
@@ -137,7 +137,7 @@ const Hero = ({
               <p className="text-lg md:text-xl mb-8 text-gray-100">{subtitle}</p>
               {showCta && (
                 <Link to={ctaLink}>
-                  <Button className="bg-white text-dreampath-primary hover:bg-gray-100 text-lg px-8 py-6">
+                  <Button className="bg-white text-black hover:bg-gray-100 text-lg px-8 py-6">
                     {ctaText}
                   </Button>
                 </Link>

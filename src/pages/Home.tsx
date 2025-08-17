@@ -1,15 +1,14 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import Hero from "@/components/common/Hero";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Check, ArrowRight, Code, Layout, Globe, Smartphone, Shield, Settings, Users, Zap, Award } from "lucide-react";
 import { motion } from "framer-motion";
 import CountUp from "react-countup";
 import ServiceKeywords from "@/components/services/ServiceKeywords";
 
-// Default hero image URL - this would come from admin panel in production
-const heroImageUrl = "https://images.unsplash.com/photo-1519389950473-47ba0277781c?q=80&w=1920&auto=format&fit=crop";
+// Default hero image URL - Futuristic tech/AI theme
+const heroImageUrl = "https://images.unsplash.com/photo-1635070041078-e363dbe005cb?q=80&w=2070&auto=format&fit=crop&w=1920";
 
 // Function to get reliable tech logo URLs
 const getTechLogoUrl = (tech: string): string => {
@@ -17,7 +16,7 @@ const getTechLogoUrl = (tech: string): string => {
     'React': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg',
     'Node.js': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nodejs/nodejs-original.svg',
     'Python': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg',
-    'AWS': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/amazonwebservices/amazonwebservices-original.svg',
+    'AWS': 'https://uxwing.com/wp-content/themes/uxwing/download/brands-and-social-media/aws-icon.png',
     'Flutter': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/flutter/flutter-original.svg',
     'MongoDB': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mongodb/mongodb-original.svg',
     'Angular': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/angularjs/angularjs-original.svg',
@@ -97,28 +96,574 @@ const Home = () => {
     { value: 24, label: "Team Members", icon: <Users className="h-8 w-8" /> }
   ];
 
+  // Reviews list for marquee (50 items). Includes Indian and international names.
+  const reviews = [
+    // Indian (moved to the beginning as requested)
+    { name: "Aarav Sharma", role: "Founder, Fintech Startup", quote: "DreamPath delivered our MVP 3 weeks ahead of schedule with top-notch quality." },
+    { name: "Ishita Gupta", role: "Head of Marketing, D2C Brand", quote: "Site speed jumped 40% and our conversions improved dramatically." },
+    { name: "Rahul Verma", role: "Product Manager, HealthTech", quote: "Clean architecture and reliable releases from a proactive team." },
+    { name: "Priya Patel", role: "CEO, MedTech Solutions", quote: "Their attention to detail and proactive approach is remarkable." },
+    { name: "Arjun Kapoor", role: "CTO, EduTech Innovations", quote: "Our platform's performance improved by 200% after their optimizations." },
+    { name: "Ananya Iyer", role: "Founder, StyleBazaar", quote: "E-commerce revenue doubled within 3 months of their redesign." },
+    { name: "Vikram Singh", role: "CEO, AgriTech Solutions", quote: "Transformed our agricultural platform with cutting-edge technology." },
+    { name: "Meera Nair", role: "Head of Product, FinServe", quote: "Exceptional fintech solutions with a deep understanding of Indian markets." },
+    { name: "Rohan Mehta", role: "Founder, TravelMint", quote: "Built our travel platform from scratch with amazing attention to detail." },
+    { name: "Neha Reddy", role: "CTO, HealthFirst", quote: "Reliable healthcare solutions that scale with our growing user base." },
+    { name: "Karthik Nair", role: "CEO, EduFutura", quote: "Our learning platform's engagement tripled after their optimizations." },
+    { name: "Divya Menon", role: "Product Lead, ShopEase", quote: "Seamless e-commerce integration with multiple payment gateways." },
+    { name: "Sanjay Deshmukh", role: "CTO, AgroNext", quote: "IoT integrations were smooth and scalable." },
+    { name: "Pooja Kulkarni", role: "COO, FreshKart", quote: "Checkout experience improved and cart drops reduced 35%." },
+    { name: "Nikhil Bansal", role: "VP Engineering, LendFast", quote: "Robust architecture with clean DevOps pipelines." },
+    { name: "Aisha Khan", role: "Founder, HealWell", quote: "HIPAA-ready workflows implemented flawlessly." },
+    { name: "Ritika Agarwal", role: "Head of Product, EduSpark", quote: "Gamification boosted retention across cohorts." },
+    { name: "Manish Soni", role: "CTO, FleetGo", quote: "Real-time tracking with impressive reliability." },
+    { name: "Neeraj Malhotra", role: "CEO, InsureNow", quote: "Underwriting automation cut processing time by 60%." },
+    { name: "Kavya Rao", role: "Product Lead, PayWave", quote: "UPI-first flows integrated with stellar UX." },
+    { name: "Harsh Vardhan", role: "Founder, BuildMate", quote: "B2B marketplace scaled to 100k SKUs seamlessly." },
+    { name: "Sneha Pillai", role: "Growth Lead, LearnUp", quote: "Onboarding completion increased by 47%." },
+    { name: "Rohit Kulkarni", role: "CTO, SportsHub", quote: "Live scoring and streaming handled flawlessly." },
+    { name: "Shreya Banerjee", role: "CEO, CraftCart", quote: "SEO clicks up 120% with lightning-fast pages." },
+    { name: "Tarun Kapoor", role: "Head of Engineering, SafeBank", quote: "Top-tier security and compliance from day one." },
+    { name: "Ankit Jain", role: "Founder, Tutorly", quote: "Launched our mobile app in 6 weeks. Smooth process." },
+    { name: "Bhavya Shah", role: "COO, MedLink", quote: "Interoperability with existing systems was seamless." },
+    { name: "Gaurav Mishra", role: "VP Product, GameOn", quote: "Scalable realtime infra for tournaments worked great." },
+    { name: "Tanya Chopra", role: "CMO, BeautyBay", quote: "Personalization increased AOV significantly." },
+    { name: "Yash Patel", role: "Head of Product, QuickServe", quote: "Service uptime at 99.99% since launch." },
+    { name: "Aman Arora", role: "CEO, RealtyPro", quote: "Listings load instantly with great map UX." },
+    { name: "Kritika Sinha", role: "Product Manager, FitLife", quote: "Habit streaks and push flows boosted engagement." },
+
+    // International (follow after Indian)
+    { name: "Emily Johnson", role: "CEO, TechStart Inc.", quote: "DreamPath transformed our platform completely. 150% ROI in 6 months!" },
+    { name: "Michael Chen", role: "CTO, HealthPlus", quote: "Their team's expertise in healthcare tech is unmatched. Delivered ahead of schedule." },
+    { name: "Sarah Williams", role: "Founder, EduTech Pro", quote: "Our user engagement tripled after their redesign. Exceptional work!" },
+    { name: "David Kim", role: "Product Lead, Finova", quote: "Reliable, professional, and incredibly skilled. A true partner in every sense." },
+    { name: "Olivia Martinez", role: "CMO, StyleHub", quote: "Our e-commerce revenue grew by 180% post their optimizations." },
+    { name: "James Wilson", role: "Director, CloudNova", quote: "Best decision we made was choosing DreamPath for our cloud migration." },
+    { name: "Robert Taylor", role: "Head of Product, EduFuture", quote: "We've worked with many firms, but DreamPath stands out." },
+    { name: "Jennifer Lee", role: "Founder, GreenTech", quote: "Sustainable solutions that actually work. Highly recommended!" },
+    { name: "Thomas Brown", role: "CTO, SecureNet", quote: "Security-first approach gave us the confidence we needed." },
+    { name: "Liam Thompson", role: "COO, RetailWorks", quote: "Inventory accuracy and speed improved dramatically." },
+    { name: "Emma Davis", role: "VP Growth, MediaMax", quote: "Analytics we can trust, finally. Great team to work with." },
+    { name: "Noah Anderson", role: "Founder, SaaSly", quote: "From idea to launch in record time with zero compromises." },
+    { name: "Sophia Garcia", role: "Head of Design, PixelPro", quote: "World-class UX delivered on time and on budget." },
+    { name: "Mason White", role: "CTO, FinEdge", quote: "Secure, compliant, and fast. Exactly what we needed." },
+    { name: "Isabella Moore", role: "CMO, FoodJoy", quote: "Conversion rates up 2.4x after their CRO work." },
+    { name: "Jack Miller", role: "CPO, FinCore", quote: "APIs are clean, well-documented, and reliable." },
+    { name: "Ava Robinson", role: "CEO, TravelMore", quote: "Search speed and relevancy are on another level." },
+    { name: "Ethan Walker", role: "CTO, HealthSync", quote: "Data pipelines with zero data loss. Impressive." },
+    { name: "Mia Young", role: "Head of Marketing, ShopVerse", quote: "Attribution is finally accurate. ROAS up 1.8x." },
+    { name: "Lucas Hall", role: "Founder, CloudEdge", quote: "Infra costs reduced 30% without performance loss." },
+    { name: "Amelia Allen", role: "Product Lead, EduFlow", quote: "Students love the new experience. NPS +22." },
+    { name: "Benjamin Scott", role: "CTO, AutoSense", quote: "ML models deployed with solid MLOps discipline." },
+    { name: "Charlotte King", role: "Founder, EduPilot", quote: "Cohort analytics gave us actionable insights quickly." },
+    { name: "Henry Adams", role: "Head of Ops, ShipFast", quote: "Order throughput doubled after workflow revamp." },
+    { name: "Victoria Brooks", role: "CIO, SecurePay", quote: "Audit-ready logs and excellent alerting." },
+    { name: "Daniel Perez", role: "CEO, GreenLeaf", quote: "Sustainability features that actually drive savings." },
+  ];
+
   const cardVariants = {
     hidden: { opacity: 0, y: 50 },
-    visible: (i: number) => ({
+    visible: {
       opacity: 1,
       y: 0,
       transition: {
-        delay: i * 0.1,
         duration: 0.5,
-        ease: "easeOut"
+        ease: [0.22, 1, 0.36, 1],
+      },
+    },
+  };
+  
+  // Duplicate reviews once to enable seamless marquee and allow accessibility hints
+  const allReviews = [...reviews, ...reviews];
+  
+  // Marquee refs/state for JS-driven smooth loop
+  const trackRef = useRef<HTMLDivElement | null>(null);
+  const [halfWidth, setHalfWidth] = useState(0);
+  const offsetRef = useRef(0);
+  const rafRef = useRef<number | null>(null);
+  const speedPxPerSec = 60; // tune for desired speed (faster so all reviews surface sooner)
+  const lastTsRef = useRef<number | null>(null);
+  const [reducedMotion, setReducedMotion] = useState(false);
+  const [activeDot, setActiveDot] = useState(0);
+  
+  // Measure half width after layout
+  useEffect(() => {
+    const mq = window.matchMedia('(prefers-reduced-motion: reduce)');
+    setReducedMotion(mq.matches);
+    const handleChange = () => setReducedMotion(mq.matches);
+    mq.addEventListener('change', handleChange);
+
+    const measure = () => {
+      const el = trackRef.current;
+      if (!el) return;
+      // Because content is duplicated once, half of scrollWidth equals one full set width
+      const newHalf = el.scrollWidth / 2;
+      setHalfWidth(newHalf);
+    };
+    measure();
+    const ro = new ResizeObserver(measure);
+    if (trackRef.current) ro.observe(trackRef.current);
+    window.addEventListener('resize', measure);
+    return () => {
+      mq.removeEventListener('change', handleChange);
+      ro.disconnect();
+      window.removeEventListener('resize', measure);
+    };
+  }, []);
+
+  // RAF loop for smooth, seamless translateX
+  useEffect(() => {
+    if (reducedMotion || halfWidth <= 0) return;
+    const step = (ts: number) => {
+      if (lastTsRef.current == null) lastTsRef.current = ts;
+      const dt = (ts - lastTsRef.current) / 1000; // seconds
+      lastTsRef.current = ts;
+      // advance offset
+      offsetRef.current += speedPxPerSec * dt;
+      // wrap seamlessly when passing one copy width
+      if (offsetRef.current >= halfWidth) {
+        offsetRef.current -= halfWidth;
       }
-    })
+      const el = trackRef.current;
+      if (el) {
+        el.style.transform = `translate3d(${-offsetRef.current}px, 0, 0)`;
+      }
+      // update active dot when crossing boundaries (5 segments)
+      const fraction = offsetRef.current / halfWidth; // 0..1
+      const dot = Math.floor((fraction * 5) % 5);
+      if (dot !== activeDot) setActiveDot(dot);
+      rafRef.current = requestAnimationFrame(step);
+    };
+    rafRef.current = requestAnimationFrame(step);
+    return () => {
+      if (rafRef.current) cancelAnimationFrame(rafRef.current);
+      rafRef.current = null;
+      lastTsRef.current = null;
+    };
+  }, [halfWidth, reducedMotion, activeDot]);
+
+  const jumpToFraction = (fraction: number) => {
+    if (halfWidth <= 0) return;
+    offsetRef.current = (halfWidth * fraction) % halfWidth;
+    const el = trackRef.current;
+    if (el) {
+      el.style.transform = `translate3d(${-offsetRef.current}px, 0, 0)`;
+    }
+    // set dot immediately
+    setActiveDot(Math.floor((fraction * 5) % 5));
   };
 
   return (
     <div>
-      <Hero 
-        title="Transform Your Business with Custom Software Solutions" 
-        subtitle="We build innovative, scalable, and high-performance software to help businesses thrive in the digital world."
-        ctaText="Start Your Project"
-        ctaLink="/contact"
-        imageUrl={heroImageUrl}
-      />
+      {/* Parallax Hero Section */}
+      <section
+        id="hero"
+        className="relative h-screen min-h-[700px] overflow-hidden flex items-center pt-24"
+      >
+        <div
+          className="absolute inset-0"
+          style={{
+            backgroundImage: `url(${heroImageUrl})`,
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+            backgroundAttachment: "fixed",
+          }}
+        />
+        {/* Enhanced gradient overlay */}
+        <div className="absolute inset-0 bg-gradient-to-br from-indigo-900/95 via-purple-900/85 to-blue-900/90" />
+        
+        {/* Animated grid overlay */}
+        <div className="absolute inset-0 opacity-20" style={{
+          backgroundImage: 'linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px)',
+          backgroundSize: '40px 40px',
+        }} />
+        
+        <div className="container-wide relative z-10 text-white pt-16">
+          <div className="max-w-4xl text-left px-6 md:px-8">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6 }}
+              className="inline-block px-4 py-2 mb-6 text-sm font-medium text-blue-100 bg-blue-500/20 backdrop-blur-sm rounded-full border border-blue-400/20"
+            >
+              Welcome to the Future of Technology
+            </motion.div>
+            
+            <motion.h1 
+              className="text-5xl md:text-7xl lg:text-8xl font-bold leading-tight bg-clip-text text-transparent bg-gradient-to-r from-white to-blue-100 pb-4"
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.2 }}
+            >
+              AI-Powered Digital Transformation
+            </motion.h1>
+            
+            <motion.p 
+              className="mt-6 text-xl md:text-2xl text-blue-100 max-w-3xl mx-auto leading-relaxed"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.4 }}
+            >
+              We build intelligent, scalable solutions that drive business growth through cutting-edge AI, cloud, and web3 technologies.
+            </motion.p>
+            
+            <motion.div 
+              className="mt-10 flex flex-wrap justify-center gap-4"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.6 }}
+            >
+              <Button 
+                asChild
+                size="lg"
+                className="bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 text-lg px-8 py-6 rounded-xl transition-all duration-300 transform hover:scale-105 shadow-lg"
+              >
+                <Link to="/services">
+                  Discover Our Solutions
+                  <ArrowRight className="ml-2 h-5 w-5" />
+                </Link>
+              </Button>
+              
+              <Button 
+                variant="outline"
+                size="lg"
+                className="text-lg px-8 py-6 rounded-xl border-2 border-white/20 bg-white/5 backdrop-blur-sm hover:bg-white/10 hover:border-white/30 transition-all duration-300 transform hover:scale-105"
+                onClick={() => {
+                  const element = document.getElementById('reviews');
+                  if (element) {
+                    element.scrollIntoView({ behavior: 'smooth' });
+                  }
+                }}
+              >
+                See Client Success
+              </Button>
+            </motion.div>
+            
+            {/* Tech stack pills */}
+            <motion.div 
+              className="mt-8 w-full overflow-x-auto pb-4 px-4"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.8, delay: 0.8 }}
+            >
+              <div className="flex flex-nowrap gap-3 w-max max-w-full mx-auto">
+                {['AI/ML', 'Blockchain', 'Cloud Native', 'IoT', 'AR/VR', 'Web3'].map((tech) => (
+                  <span 
+                    key={tech} 
+                    className="flex-shrink-0 px-4 py-2 bg-white/5 backdrop-blur-sm rounded-full text-sm font-medium text-blue-100 border border-white/10 whitespace-nowrap"
+                  >
+                    {tech}
+                  </span>
+                ))}
+              </div>
+            </motion.div>
+          </div>
+        </div>
+        {/* floating accents */}
+        <div className="pointer-events-none absolute -right-24 -top-24 w-96 h-96 bg-dreampath-secondary/30 rounded-full blur-3xl animate-float" />
+        <div className="pointer-events-none absolute -left-24 -bottom-24 w-96 h-96 bg-dreampath-primary/30 rounded-full blur-3xl animate-float-delayed" />
+      </section>
+
+      {/* Why Choose Us Section */}
+      <section id="why-choose-us" className="py-16 bg-gray-50">
+        <div className="container-wide">
+          <div className="text-center max-w-3xl mx-auto mb-12">
+            <h2 className="text-3xl md:text-4xl font-bold text-dreampath-primary mb-4">Why Choose DreamPath Solutions</h2>
+            <p className="text-lg text-gray-600">We combine technical expertise with a passion for delivering exceptional results</p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
+            {/* Work Ethics */}
+            <div className="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow">
+              <div className="w-12 h-12 bg-dreampath-primary/10 rounded-full flex items-center justify-center mb-4">
+                <Shield className="h-6 w-6 text-dreampath-primary" />
+              </div>
+              <h3 className="text-xl font-semibold mb-3">Our Work Ethics</h3>
+              <ul className="space-y-2 text-gray-600">
+                <li className="flex items-start">
+                  <Check className="h-5 w-5 text-green-500 mt-0.5 mr-2 flex-shrink-0" />
+                  <span>100% Transparency in Communication</span>
+                </li>
+                <li className="flex items-start">
+                  <Check className="h-5 w-5 text-green-500 mt-0.5 mr-2 flex-shrink-0" />
+                  <span>Strict Deadlines Adherence</span>
+                </li>
+                <li className="flex items-start">
+                  <Check className="h-5 w-5 text-green-500 mt-0.5 mr-2 flex-shrink-0" />
+                  <span>Code Quality & Best Practices</span>
+                </li>
+                <li className="flex items-start">
+                  <Check className="h-5 w-5 text-green-500 mt-0.5 mr-2 flex-shrink-0" />
+                  <span>Data Security & Confidentiality</span>
+                </li>
+              </ul>
+            </div>
+
+            {/* Customer Stories */}
+            <div className="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow">
+              <div className="w-12 h-12 bg-dreampath-secondary/10 rounded-full flex items-center justify-center mb-4">
+                <Users className="h-6 w-6 text-dreampath-secondary" />
+              </div>
+              <h3 className="text-xl font-semibold mb-3">Customer Success Stories</h3>
+              <div className="space-y-4">
+                <div className="bg-gray-50 p-4 rounded">
+                  <p className="text-sm italic">"DreamPath transformed our e-commerce platform, resulting in a 120% increase in sales."</p>
+                  <p className="text-sm font-medium mt-2">- Priya M., E-commerce Director</p>
+                </div>
+                <div className="bg-gray-50 p-4 rounded">
+                  <p className="text-sm italic">"Their mobile app development expertise helped us reach 50K+ downloads in 3 months."</p>
+                  <p className="text-sm font-medium mt-2">- Rohan K., Startup Founder</p>
+                </div>
+              </div>
+            </div>
+
+            {/* Development Process */}
+            <div className="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow">
+              <div className="w-12 h-12 bg-dreampath-accent/10 rounded-full flex items-center justify-center mb-4">
+                <Settings className="h-6 w-6 text-dreampath-accent" />
+              </div>
+              <h3 className="text-xl font-semibold mb-3">Our Process</h3>
+              <div className="space-y-4">
+                <div className="flex items-start">
+                  <div className="bg-dreampath-accent/10 text-dreampath-accent rounded-full w-6 h-6 flex items-center justify-center text-sm font-bold mr-3 mt-0.5 flex-shrink-0">1</div>
+                  <div>
+                    <h4 className="font-medium">Discovery</h4>
+                    <p className="text-sm text-gray-600">Understanding your vision and requirements</p>
+                  </div>
+                </div>
+                <div className="flex items-start">
+                  <div className="bg-dreampath-accent/10 text-dreampath-accent rounded-full w-6 h-6 flex items-center justify-center text-sm font-bold mr-3 mt-0.5 flex-shrink-0">2</div>
+                  <div>
+                    <h4 className="font-medium">Design</h4>
+                    <p className="text-sm text-gray-600">Creating intuitive and beautiful interfaces</p>
+                  </div>
+                </div>
+                <div className="flex items-start">
+                  <div className="bg-dreampath-accent/10 text-dreampath-accent rounded-full w-6 h-6 flex items-center justify-center text-sm font-bold mr-3 mt-0.5 flex-shrink-0">3</div>
+                  <div>
+                    <h4 className="font-medium">Development</h4>
+                    <p className="text-sm text-gray-600">Building robust and scalable solutions</p>
+                  </div>
+                </div>
+                <div className="flex items-start">
+                  <div className="bg-dreampath-accent/10 text-dreampath-accent rounded-full w-6 h-6 flex items-center justify-center text-sm font-bold mr-3 mt-0.5 flex-shrink-0">4</div>
+                  <div>
+                    <h4 className="font-medium">Deployment</h4>
+                    <p className="text-sm text-gray-600">Seamless launch and support</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Stats */}
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
+            {[
+              { number: '98%', label: 'Client Satisfaction' },
+              { number: '200+', label: 'Projects Completed' },
+              { number: '15+', label: 'Years Experience' },
+              { number: '24/7', label: 'Support' }
+            ].map((stat, index) => (
+              <div key={index} className="bg-white p-6 rounded-lg shadow-sm hover:shadow-md transition-shadow">
+                <div className="text-3xl font-bold text-dreampath-primary mb-2">{stat.number}</div>
+                <p className="text-gray-600">{stat.label}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Trust badges / social proof */}
+      <section id="trust" className="bg-white py-12 border-b">
+        <div className="container-wide">
+          <div className="text-center mb-8">
+            <p className="uppercase tracking-widest text-xs text-gray-500">Trusted by builders and marketers</p>
+            <h2 className="text-2xl md:text-3xl font-semibold mt-2">Trusted by creators of the modern web</h2>
+          </div>
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 text-sm text-gray-700">
+            {[
+              "Liked by Three.js community",
+              "Loved by Framer designers",
+              "Google SEO Partners",
+              "Meta Ads Experts",
+              "Cloud & DevOps Ready",
+              "Secure by Design",
+            ].map((label, i) => (
+              <div key={i} className="glassmorphism rounded-lg py-3 px-4 text-center">
+                {label}
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Reviews / Testimonials */}
+      <section id="reviews" className="py-16 bg-white overflow-hidden">
+        <div className="container-wide">
+          <div className="text-center max-w-3xl mx-auto mb-12">
+            <h2 className="text-4xl font-bold mb-4 text-dreampath-primary">What Our Clients Say</h2>
+            <p className="text-lg text-gray-600">Hear from 50+ founders, product leaders, and marketers who trusted us.</p>
+          </div>
+          
+          <div className="relative">
+            {/* Animated Reviews Carousel */}
+            <div className="relative h-64 overflow-hidden">
+              <div className="absolute top-0 left-0 w-full h-full flex items-center">
+                <div ref={trackRef} data-marquee-track className="w-max flex flex-nowrap whitespace-nowrap will-change-transform">
+                  {allReviews.map((review, idx) => (
+                    <div
+                      key={`rev-${idx}`}
+                      aria-hidden={idx >= reviews.length}
+                      className="w-56 sm:w-60 mx-1 sm:mx-2 p-4 bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow whitespace-normal break-words overflow-hidden align-top shrink-0"
+                    >
+                      <div className="flex items-center mb-4">
+                        <div className="h-12 w-12 rounded-full bg-dreampath-primary/10 flex items-center justify-center text-dreampath-primary font-bold text-xl">
+                          {review.name.split(' ').map(n => n[0]).join('')}
+                        </div>
+                        <div className="ml-4">
+                          <h4 className="font-semibold">{review.name}</h4>
+                          <p className="text-sm text-gray-500">{review.role}</p>
+                        </div>
+                      </div>
+                      <p className="text-gray-700 italic break-words leading-relaxed">"{review.quote}"</p>
+                      <div className="mt-3 flex text-yellow-400">
+                        {[...Array(5)].map((_, i) => (
+                          <svg key={i} className="w-4 h-4 fill-current" viewBox="0 0 20 20">
+                            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                          </svg>
+                        ))}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+            
+            {/* Gradient Fade Effect */}
+            <div className="absolute top-0 right-0 w-24 h-full bg-gradient-to-l from-white to-transparent z-10"></div>
+            <div className="absolute top-0 left-0 w-24 h-full bg-gradient-to-r from-white to-transparent z-10"></div>
+          </div>
+          
+          {/* Navigation Dots */}
+          <div className="flex justify-center mt-8 space-x-2">
+            {[0, 1, 2, 3, 4].map((i) => (
+              <button
+                key={i}
+                onClick={() => jumpToFraction(i / 5)}
+                className={`w-2 h-2 rounded-full ${i === activeDot ? 'bg-dreampath-primary' : 'bg-gray-300'} hover:bg-dreampath-primary/80`}
+                aria-label={`Jump to position ${i + 1}`}
+              />
+            ))}
+          </div>
+        </div>
+        
+        {/* Keep reduced-motion behavior for JS-driven marquee */}
+        <style>{`
+          @media (prefers-reduced-motion: reduce) {
+            [data-marquee-track] { transform: none !important; }
+          }
+        `}</style>
+      </section>
+
+      {/* Available On (five) */}
+      <section id="available" className="section-padding bg-gray-50">
+        <div className="container-wide">
+          <div className="text-center max-w-3xl mx-auto mb-10">
+            <h2 className="text-3xl font-bold text-dreampath-primary">Available On</h2>
+            <p className="text-gray-600 mt-2">We work across your preferred platforms and ecosystems.</p>
+          </div>
+          <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
+            {[
+              "AWS Marketplace",
+              "Vercel",
+              "Netlify",
+              "Google Cloud",
+              "GitHub",
+            ].map((p, i) => (
+              <div key={i} className="glassmorphism rounded-lg py-6 text-center font-medium text-gray-800">
+                {p}
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Our Team (no images) */}
+      <section id="team" className="section-padding bg-white">
+        <div className="container-wide">
+          <div className="text-center max-w-3xl mx-auto mb-12">
+            <h2 className="text-4xl font-bold mb-4 text-dreampath-primary">Our Team</h2>
+            <p className="text-lg text-gray-600">Experienced specialists building products end‑to‑end.</p>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {[
+              { name: "Rohan Mehta", role: "Full‑Stack Engineer", exp: "7+ yrs" },
+              { name: "Neha Iyer", role: "UI/UX Designer", exp: "6+ yrs" },
+              { name: "Vikram Singh", role: "DevOps Engineer", exp: "8+ yrs" },
+              { name: "Priya Nair", role: "Product Manager", exp: "9+ yrs" },
+              { name: "Ankit Jain", role: "Mobile Engineer", exp: "6+ yrs" },
+              { name: "Suhani Desai", role: "SEO Specialist", exp: "5+ yrs" },
+              { name: "Aditya Kulkarni", role: "Backend Engineer", exp: "7+ yrs" },
+              { name: "Ishita Bose", role: "Frontend Engineer", exp: "6+ yrs" },
+              { name: "Karan Malhotra", role: "Data Engineer", exp: "7+ yrs" },
+              { name: "Meera Krishnan", role: "QA Lead", exp: "8+ yrs" },
+              { name: "Harsh Patel", role: "SRE", exp: "6+ yrs" },
+              { name: "Ananya Rao", role: "Content Strategist", exp: "5+ yrs" },
+              { name: "Arjun Kapoor", role: "Cloud Architect", exp: "10+ yrs" },
+              { name: "Tanvi Shah", role: "Growth Marketer", exp: "6+ yrs" },
+              { name: "Rahul Verma", role: "Solution Architect", exp: "11+ yrs" },
+              { name: "Kriti Agarwal", role: "Business Analyst", exp: "7+ yrs" },
+              { name: "Siddharth Menon", role: "Data Scientist", exp: "6+ yrs" },
+              { name: "Pooja Chawla", role: "ML Engineer", exp: "5+ yrs" },
+              { name: "Nikhil Sinha", role: "Performance Engineer", exp: "7+ yrs" },
+              { name: "Shreya Pillai", role: "Security Engineer", exp: "6+ yrs" },
+              { name: "Devika Reddy", role: "Project Manager", exp: "9+ yrs" },
+              { name: "Aman Gupta", role: "Customer Success Lead", exp: "6+ yrs" },
+              { name: "Ritika Bansal", role: "Copywriter", exp: "5+ yrs" },
+            ].map((m, i) => (
+              <Card key={i} className="h-full">
+                <CardHeader>
+                  <CardTitle className="text-xl">{m.name}</CardTitle>
+                  <CardDescription>{m.role} • {m.exp} experience</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <ul className="list-disc list-inside text-gray-700 text-sm space-y-1">
+                    <li>Shipped production apps at scale</li>
+                    <li>Strong ownership and communication</li>
+                    <li>Focus on performance and DX</li>
+                  </ul>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Roadmap / Process */}
+      <section id="roadmap" className="section-padding bg-gray-50">
+        <div className="container-wide">
+          <div className="text-center max-w-3xl mx-auto mb-12">
+            <h2 className="text-4xl font-bold mb-4 text-dreampath-primary">Business Development Roadmap</h2>
+            <p className="text-lg text-gray-600">A clear, outcome‑driven path from idea to growth.</p>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+            {[
+              { title: "Discovery", desc: "Workshops, goals, and success metrics" },
+              { title: "MVP", desc: "Rapid iterations with user feedback" },
+              { title: "Scale", desc: "Architecture, observability, automation" },
+              { title: "Growth", desc: "SEO, ads, CRO, and product analytics" },
+            ].map((s, i) => (
+              <div key={i} className="relative">
+                <div className="glassmorphism rounded-lg p-5 h-full">
+                  <div className="text-sm text-gray-500 mb-1">Step {i + 1}</div>
+                  <h3 className="text-xl font-semibold text-dreampath-primary">{s.title}</h3>
+                  <p className="text-gray-700 mt-2">{s.desc}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
 
       {/* 3D Feature Section */}
       <section className="relative bg-gradient-to-b from-white to-blue-50 py-24 overflow-hidden">
