@@ -1,72 +1,86 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://YOUR_DOMAIN_HERE/</loc>
+    <loc>https://dreampathsolutions.in/</loc>
+    <lastmod>2025-08-17</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://YOUR_DOMAIN_HERE/about</loc>
+    <loc>https://dreampathsolutions.in/about</loc>
+    <lastmod>2025-08-17</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://YOUR_DOMAIN_HERE/services</loc>
+    <loc>https://dreampathsolutions.in/services</loc>
+    <lastmod>2025-08-17</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://YOUR_DOMAIN_HERE/portfolio</loc>
+    <loc>https://dreampathsolutions.in/portfolio</loc>
+    <lastmod>2025-08-17</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://YOUR_DOMAIN_HERE/contact</loc>
+    <loc>https://dreampathsolutions.in/contact</loc>
+    <lastmod>2025-08-17</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://YOUR_DOMAIN_HERE/signup</loc>
+    <loc>https://dreampathsolutions.in/signup</loc>
+    <lastmod>2025-08-17</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
   </url>
   <url>
-    <loc>https://YOUR_DOMAIN_HERE/login</loc>
+    <loc>https://dreampathsolutions.in/login</loc>
+    <lastmod>2025-08-17</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
   </url>
   <url>
-    <loc>https://YOUR_DOMAIN_HERE/privacy</loc>
+    <loc>https://dreampathsolutions.in/privacy</loc>
+    <lastmod>2025-08-17</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.2</priority>
   </url>
   <url>
-    <loc>https://YOUR_DOMAIN_HERE/terms</loc>
+    <loc>https://dreampathsolutions.in/terms</loc>
+    <lastmod>2025-08-17</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.2</priority>
   </url>
   <url>
-    <loc>https://YOUR_DOMAIN_HERE/service-keywords</loc>
+    <loc>https://dreampathsolutions.in/service-keywords</loc>
+    <lastmod>2025-08-17</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>https://YOUR_DOMAIN_HERE/services/reputation-management</loc>
+    <loc>https://dreampathsolutions.in/services/reputation-management</loc>
+    <lastmod>2025-08-17</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://YOUR_DOMAIN_HERE/datingapp</loc>
+    <loc>https://dreampathsolutions.in/datingapp</loc>
+    <lastmod>2025-08-17</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://YOUR_DOMAIN_HERE/fooddeliveryapp</loc>
+    <loc>https://dreampathsolutions.in/fooddeliveryapp</loc>
+    <lastmod>2025-08-17</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://YOUR_DOMAIN_HERE/healthapps</loc>
+    <loc>https://dreampathsolutions.in/healthapps</loc>
+    <lastmod>2025-08-17</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>

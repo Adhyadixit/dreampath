@@ -1,4 +1,5 @@
 import React from "react";
+import SEO from "@/components/common/SEO";
 import PageHeader from "@/components/common/PageHeader";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -24,6 +25,21 @@ const HealthApps: React.FC = () => {
 
   return (
     <div>
+      <SEO
+        title="Health, Fitness & Calorie Counting App Development | DreamPath Solutions"
+        description="We build secure, user-loved health & fitness apps with calorie tracking, wearable sync, workouts, habits, and analytics. HIPAA/GDPR-ready architecture."
+        keywords={[
+          "health app development",
+          "fitness app development",
+          "calorie counting app",
+          "google fit integration",
+          "apple health integration",
+          "wearable app development",
+          "react native health app",
+          "india app development company"
+        ]}
+        canonical="https://dreampathsolutions.in/healthapps"
+      />
       <PageHeader
         title="Health, Fitness & Calorie Counting Apps"
         description="From step tracking to nutrition logging and wearable integrations — we build compliant, user-loved health apps."

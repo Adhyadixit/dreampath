@@ -1,4 +1,5 @@
 import React from "react";
+import SEO from "@/components/common/SEO";
 import PageHeader from "@/components/common/PageHeader";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -24,6 +25,22 @@ const FoodDeliveryApp: React.FC = () => {
 
   return (
     <div>
+      <SEO
+        title="Food Delivery App & Website Development | DreamPath Solutions"
+        description="Launch your Swiggy/Zomato-style platform: customer app, rider app, restaurant portal and admin. Secure payments, live tracking, coupons, GST invoices."
+        keywords={[
+          "food delivery app development",
+          "zomato like app",
+          "swiggy like app",
+          "restaurant portal development",
+          "delivery partner app",
+          "order tracking app",
+          "maps integration",
+          "react native food app",
+          "india app development company"
+        ]}
+        canonical="https://dreampathsolutions.in/fooddeliveryapp"
+      />
       <PageHeader
         title="Food Delivery – Website + App"
         description="Build your Swiggy/Zomato-like platform: customer apps, restaurant dashboard, delivery partner app, and powerful admin portal."

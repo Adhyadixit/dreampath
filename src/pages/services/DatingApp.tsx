@@ -1,4 +1,5 @@
 import React from "react";
+import SEO from "@/components/common/SEO";
 import PageHeader from "@/components/common/PageHeader";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -24,6 +25,22 @@ const DatingApp: React.FC = () => {
 
   return (
     <div>
+      <SEO
+        title="Dating & Video Chat App Development | DreamPath Solutions"
+        description="We build Tinder/Bumble-like dating apps with secure chat, live video, AI moderation, subscriptions and scalable backends. Get a quote today."
+        keywords={[
+          "dating app development",
+          "video chat app development",
+          "live video chat app",
+          "tinder like app",
+          "bumble like app",
+          "react native dating app",
+          "webrtc video app",
+          "india app development company",
+          "custom mobile app development"
+        ]}
+        canonical="https://dreampathsolutions.in/datingapp"
+      />
       <PageHeader
         title="Dating & Video Chat Apps"
         description="We design and develop high-converting dating and live video chat apps with secure, scalable backends and delightful UX."
