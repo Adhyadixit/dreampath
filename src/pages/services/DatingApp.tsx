@@ -8,15 +8,16 @@ import { Check, Shield, Smartphone, Video, Users, Heart, MessageSquare } from "l
 import ContactFormPopup from "@/components/common/ContactFormPopup";
 
 const gallery = [
-  // Sample UI screens (replace with your app screenshots as needed)
-  "https://images.unsplash.com/photo-1551650975-87deedd944c3?q=80&w=1200&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1555421689-491a97ff2040?q=80&w=1200&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1556157382-97eda2d62296?q=80&w=1200&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1551281044-8b4e0b8a0e52?q=80&w=1200&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1523275335684-37898b6baf30?q=80&w=1200&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1517817748496-62a0f24c3f56?q=80&w=1200&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1518770660439-4636190af475?q=80&w=1200&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1510519122035-7989e0bc29cf?q=80&w=1200&auto=format&fit=crop"
+  // Using the exact uploaded filenames under public/images/dating/
+  "/images/dating/Purple Pink Gradient Mobile Application Presentation (2).png",
+  "/images/dating/Purple Pink Gradient Mobile Application Presentation (3).png",
+  "/images/dating/IMG_9152.PNG",
+  "/images/dating/IMG_9153.PNG",
+  "/images/dating/IMG_9154.PNG",
+  "/images/dating/IMG_9155.PNG",
+  "/images/dating/IMG_9156.PNG",
+  "/images/dating/2.png",
+  "/images/dating/3.png",
 ];
 
 const DatingApp: React.FC = () => {

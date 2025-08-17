@@ -8,15 +8,13 @@ import { Check, ShoppingBag, MapPin, Bike, Smartphone, Globe } from "lucide-reac
 import ContactFormPopup from "@/components/common/ContactFormPopup";
 
 const gallery = [
-  // Replace with your actual app screenshots when available
-  "https://images.unsplash.com/photo-1598514982926-916a67939b6b?q=80&w=1200&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1515777315835-281b94c9589f?q=80&w=1200&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1556909212-d5b604d0c90f?q=80&w=1200&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1467003909585-2f8a72700288?q=80&w=1200&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1565895405138-6c3a10f4b4d4?q=80&w=1200&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1556741533-411cf82e4e2d?q=80&w=1200&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1542744094-24638eff58bb?q=80&w=1200&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1512295767273-ac109ac3acfa?q=80&w=1200&auto=format&fit=crop"
+  // Local images from public/images/food delivery app
+  "/images/food delivery app/1c3beb2c-a8a6-48e0-8a8b-d2ee53374cc0.jpeg",
+  "/images/food delivery app/Best Food Delivery App UI Design by Excellent….jpeg",
+  "/images/food delivery app/Food App _ Food Delivery by Rakib Kowshar for….jpeg",
+  "/images/food delivery app/Food Delivery App by Nayeem Azraf.jpeg",
+  "/images/food delivery app/Food Store app design for home page and product….jpeg",
+  "/images/food delivery app/Restaurant App by Sergey Eletskiy.jpeg",
 ];
 
 const FoodDeliveryApp: React.FC = () => {

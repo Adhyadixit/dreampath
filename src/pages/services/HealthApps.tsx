@@ -8,15 +8,13 @@ import { Activity, Apple, Dumbbell, HeartPulse, Salad, Check } from "lucide-reac
 import ContactFormPopup from "@/components/common/ContactFormPopup";
 
 const gallery = [
-  // Replace with your actual app UI screenshots
-  "https://images.unsplash.com/photo-1551590192-8070a16d9f66?q=80&w=1200&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1505751172876-fa1923c5c528?q=80&w=1200&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?q=80&w=1200&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1518770660439-4636190af475?q=80&w=1200&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1519681393784-d120267933ba?q=80&w=1200&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1532074205216-d0e1f4b87368?q=80&w=1200&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1560264357-8d9202250f21?q=80&w=1200&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1549068106-b024baf5062d?q=80&w=1200&auto=format&fit=crop"
+  // Local images from public/images/healthapp
+  "/images/healthapp/69ec6c4f-f248-46b4-9485-91d4a0be80a4.jpeg",
+  "/images/healthapp/A modern, clean, and fully customizable Health….jpeg",
+  "/images/healthapp/Healthcare app design by Anastasia Golovko for….jpeg",
+  "/images/healthapp/Make sports smarter and life more convenient.jpeg",
+  "/images/healthapp/We are pleased to share our UI_UX design team's….jpeg",
+  "/images/healthapp/Weight loss and Wellness App _ Healthiapp_com.jpeg",
 ];
 
 const HealthApps: React.FC = () => {
