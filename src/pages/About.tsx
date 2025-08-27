@@ -45,7 +45,7 @@ const About = () => {
             <div>
               <h2 className="text-3xl font-bold mb-6 text-dreampath-primary">Our Story</h2>
               <p className="mb-4 text-lg">
-                Founded in 2021, Dreampath Solutions is a forward-thinking digital agency dedicated to building impactful, user-centric web and mobile experiences. What began as a small team of passionate developers and designers has grown into a trusted tech partner for startups, SMEs, and global brands alike.
+                Founded in 2011, Dreampath Solutions is a forward-thinking digital agency dedicated to building impactful, user-centric web and mobile experiences. What began as a small team of passionate developers and designers has grown into a trusted tech partner for startups, SMEs, and global brands alike.
               </p>
               <p className="mb-4">
                 We specialize in delivering end-to-end digital solutions, including custom websites, web applications, mobile apps, UI/UX design, and performance-driven marketing assets. With over 20+ completed projects across various industries, we take pride in blending creativity with technical excellence to turn bold ideas into scalable digital products.

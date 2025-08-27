@@ -25,7 +25,7 @@ const AdminLogin = () => {
     
     // Demo admin credentials check
     setTimeout(() => {
-      if (email === "admin@dreampathsolutions.in" && password === "password") {
+      if (email === "admin@dreampathsolutions.in" && password === "Assasin@123") {
         // Store admin status in localStorage (for demo purposes only)
         localStorage.setItem("isAdmin", "true");
         localStorage.setItem("userEmail", email);
