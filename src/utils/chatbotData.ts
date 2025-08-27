@@ -68,7 +68,7 @@ export const pricing: ChatbotResponse = {
 
 export const contactInfo: ChatbotResponse = {
   keywords: ['contact', 'email', 'phone', 'reach', 'get in touch', 'talk to', 'call', 'number', 'address', 'location', 'office'],
-  response: 'You can reach us via email at info@dreampathsolutions.com, by phone at +1 (831) 295-5365, or through WhatsApp at +1 (806) 240-7920. Our main office is located in Silicon Valley, California, with a development center in Bangalore, India. Would you like to speak with a team member now?'
+  response: 'You can reach us via email at info@dreampathsolutions.com, by phone at +1 (831) 295-5365, or through WhatsApp at +91 8005652230. Our main office is located in Silicon Valley, California, with a development center in Bangalore, India. Would you like to speak with a team member now?'
 };
 
 export const timeline: ChatbotResponse = {
@@ -115,16 +115,16 @@ export const fallbackResponses: string[] = [
 ];
 
 export const connectToAgentResponses: string[] = [
-  "For immediate assistance, please reach out via WhatsApp at +1 (806) 240-7920 or click this link: https://wa.me/18062407920",
-  "Our team is available on WhatsApp to help with your specific needs. Contact us at +1 (806) 240-7920 or click: https://wa.me/18062407920",
-  "For personalized assistance, please contact our team on WhatsApp at +1 (806) 240-7920 or click: https://wa.me/18062407920",
-  "Our experts are ready to assist you on WhatsApp. Reach us at +1 (806) 240-7920 or click: https://wa.me/18062407920"
+  "For immediate assistance, please reach out via WhatsApp at +91 8005652230 or click this link: https://wa.me/918005652230",
+  "Our team is available on WhatsApp to help with your specific needs. Contact us at +91 8005652230 or click: https://wa.me/918005652230",
+  "For personalized assistance, please contact our team on WhatsApp at +91 8005652230 or click: https://wa.me/918005652230",
+  "Our experts are ready to assist you on WhatsApp. Reach us at +91 8005652230 or click: https://wa.me/918005652230"
 ];
 
 export const whatsappFallback: string = 
-  "It seems our team members are currently unavailable. For immediate assistance, please reach out via WhatsApp at +1 (806) 240-7920 or click this link: https://wa.me/18062407920";
+  "It seems our team members are currently unavailable. For immediate assistance, please reach out via WhatsApp at +91 8005652230 or click this link: https://wa.me/918005652230";
 
-export const whatsappDirectLink: string = "https://wa.me/+18062407920";
+export const whatsappDirectLink: string = "https://wa.me/918005652230";
 
 export const greetings: string[] = [
   "Hello! How can I help you today?",

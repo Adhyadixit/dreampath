@@ -316,7 +316,7 @@ const Contact = () => {
                   <div>
                     <h3 className="font-bold">WhatsApp</h3>
                     <p className="text-gray-700">
-                      <a href="https://wa.me/18062407920" target="_blank" rel="noopener noreferrer" className="hover:text-dreampath-primary">+1 (806) 240-7920</a>
+                      <a href="https://wa.me/918005652230" target="_blank" rel="noopener noreferrer" className="hover:text-dreampath-primary">+91 8005652230</a>
                     </p>
                   </div>
                 </div>
