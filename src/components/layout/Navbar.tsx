@@ -75,13 +75,12 @@ const Navbar = () => {
               animate={{ rotate: 360 }}
               transition={{ duration: 8, repeat: Infinity, ease: "linear" }}
             >
-              <Leaf className="h-8 w-8 text-dreampath-secondary" />
+              <Leaf className="h-8 w-8 text-lime-400" />
             </motion.div>
             <Link to="/" className="text-2xl font-bold">
-              <span className="bg-gradient-to-r from-blue-500 to-indigo-600 bg-clip-text text-transparent">
+              <span className="bg-gradient-to-r from-cyan-300 to-cyan-500 bg-clip-text text-transparent font-semibold drop-shadow-[0_0_8px_rgba(34,211,238,0.6)]">
                 DreamPath
               </span>
-              <span className="text-dreampath-secondary">Solutions</span>
             </Link>
           </motion.div>
           
@@ -156,7 +155,7 @@ const Navbar = () => {
                       href={item.path}
                       className={`block px-6 py-4 text-base font-medium border-b border-gray-100 ${
                         location.pathname === item.path.split('#')[0]
-                          ? 'bg-blue-50 text-dreampath-secondary'
+                          ? 'bg-brand-50 text-dreampath-secondary'
                           : 'text-gray-700 hover:bg-gray-50 hover:text-dreampath-secondary'
                       } transition-colors duration-200 cursor-pointer`}
                       onClick={(e) => handleNavigation(item.path, e)}

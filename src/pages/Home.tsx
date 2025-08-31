@@ -259,17 +259,19 @@ const Home = () => {
         id="hero"
         className="relative h-screen min-h-[700px] overflow-hidden flex items-center pt-24 md:pt-24 pb-12 md:pb-24"
       >
-        <div
+        {/* Background image with mobile optimization */}
+        <div 
           className="absolute inset-0"
           style={{
             backgroundImage: `url(${heroImageUrl})`,
             backgroundSize: "cover",
             backgroundPosition: "center",
-            backgroundAttachment: "fixed",
+            // Remove fixed attachment on mobile to fix iOS issues
+            backgroundAttachment: window.innerWidth >= 768 ? "fixed" : "scroll"
           }}
         />
         {/* Enhanced gradient overlay */}
-        <div className="absolute inset-0 bg-gradient-to-br from-indigo-900/95 via-purple-900/85 to-blue-900/90" />
+        <div className="absolute inset-0 bg-gradient-to-br from-indigo-950/95 via-purple-900/85 to-violet-800/90" />
         
         {/* Animated grid overlay */}
         <div className="absolute inset-0 opacity-20" style={{
@@ -277,19 +279,19 @@ const Home = () => {
           backgroundSize: '40px 40px',
         }} />
         
-        <div className="container-wide relative z-10 text-white pt-16 md:pt-16 pb-10 md:pb-16">
-          <div className="max-w-4xl text-left px-6 md:px-8">
+        <div className="container-wide relative z-10 text-white pt-16 md:pt-16 pb-10 md:pb-16 h-full flex items-center">
+          <div className="max-w-4xl text-left px-4 sm:px-6 md:px-8 w-full">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6 }}
-              className="inline-block px-3 md:px-4 py-1.5 md:py-2 mb-4 md:mb-6 text-sm md:text-sm font-medium text-blue-100 bg-blue-500/20 backdrop-blur-sm rounded-full border border-blue-400/20"
+              className="inline-block px-3 md:px-4 py-1.5 md:py-2 mb-4 md:mb-6 text-sm md:text-sm font-medium text-brand-100 bg-brand-500/20 backdrop-blur-sm rounded-full border border-brand-400/20"
             >
               Welcome to the Future of Technology
             </motion.div>
             
             <motion.h1 
-              className="text-[3rem] md:text-7xl lg:text-8xl font-bold leading-tight bg-clip-text text-transparent bg-gradient-to-r from-white to-blue-100 pb-4"
+              className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-bold leading-tight bg-clip-text text-transparent bg-gradient-to-r from-white to-brand-100 pb-3 md:pb-4"
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.2 }}
@@ -298,7 +300,7 @@ const Home = () => {
             </motion.h1>
             
             <motion.p 
-              className="mt-3 md:mt-6 text-[1.1rem] md:text-2xl text-blue-100 max-w-3xl mx-auto leading-relaxed"
+              className="mt-3 md:mt-6 text-base sm:text-lg md:text-xl lg:text-2xl text-brand-100 max-w-3xl mx-auto leading-relaxed"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.4 }}
@@ -315,7 +317,7 @@ const Home = () => {
               <Button 
                 asChild
                 size="lg"
-                className="bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 text-base md:text-lg px-6 md:px-8 py-5 md:py-6 rounded-xl transition-all duration-300 transform hover:scale-105 shadow-lg"
+                className="bg-gradient-to-r from-violet-600 to-indigo-700 hover:from-violet-700 hover:to-indigo-800 text-base md:text-lg px-6 md:px-8 py-5 md:py-6 rounded-xl transition-all duration-300 transform hover:scale-105 shadow-lg"
               >
                 <Link to="/services">
                   Discover Our Solutions
@@ -349,7 +351,7 @@ const Home = () => {
                 {['AI/ML', 'Blockchain', 'Cloud Native', 'IoT', 'AR/VR', 'Web3'].map((tech) => (
                   <span 
                     key={tech} 
-                    className="flex-shrink-0 px-3 md:px-4 py-1.5 md:py-2 bg-white/5 backdrop-blur-sm rounded-full text-xs md:text-sm font-medium text-blue-100 border border-white/10 whitespace-nowrap"
+                    className="flex-shrink-0 px-3 md:px-4 py-1.5 md:py-2 bg-white/5 backdrop-blur-sm rounded-full text-xs md:text-sm font-medium text-brand-100 border border-white/10 whitespace-nowrap"
                   >
                     {tech}
                   </span>
@@ -665,7 +667,7 @@ const Home = () => {
       </section>
 
       {/* 3D Feature Section */}
-      <section className="relative bg-gradient-to-b from-white to-blue-50 py-24 overflow-hidden">
+      <section className="relative bg-gradient-to-b from-white to-brand-50 py-24 overflow-hidden">
         <div className="absolute top-0 left-0 w-full h-20 bg-gradient-to-b from-white to-transparent"></div>
         <div className="absolute -top-24 -right-24 w-96 h-96 bg-dreampath-secondary opacity-10 rounded-full blur-3xl"></div>
         <div className="absolute -bottom-24 -left-24 w-96 h-96 bg-dreampath-primary opacity-10 rounded-full blur-3xl"></div>
@@ -795,7 +797,7 @@ const Home = () => {
         
         {/* Animated background elements */}
         <div className="absolute inset-0 overflow-hidden">
-          <div className="absolute top-1/4 left-1/4 w-64 h-64 bg-blue-100 rounded-full mix-blend-multiply filter blur-3xl opacity-70 animate-float"></div>
+          <div className="absolute top-1/4 left-1/4 w-64 h-64 bg-brand-100 rounded-full mix-blend-multiply filter blur-3xl opacity-70 animate-float"></div>
           <div className="absolute bottom-1/4 right-1/3 w-80 h-80 bg-teal-100 rounded-full mix-blend-multiply filter blur-3xl opacity-70 animate-float-delayed"></div>
         </div>
         
@@ -861,8 +863,8 @@ const Home = () => {
       {/* Technology Section */}
       <section className="bg-gray-50 py-20 overflow-hidden relative">
         <div className="absolute inset-0">
-          <div className="absolute top-0 right-0 w-1/2 h-full bg-gradient-to-l from-blue-50 to-transparent"></div>
-          <div className="absolute bottom-0 left-0 w-1/2 h-1/2 bg-gradient-to-t from-blue-50 to-transparent"></div>
+          <div className="absolute top-0 right-0 w-1/2 h-full bg-gradient-to-l from-brand-50 to-transparent"></div>
+          <div className="absolute bottom-0 left-0 w-1/2 h-1/2 bg-gradient-to-t from-brand-50 to-transparent"></div>
         </div>
         
         <div className="container-wide relative z-10">
@@ -907,7 +909,7 @@ const Home = () => {
       {/* Service Keywords Section */}
       <section className="section-padding bg-white relative overflow-hidden">
         <div className="absolute inset-0 overflow-hidden">
-          <div className="absolute top-1/3 right-1/4 w-64 h-64 bg-blue-100 rounded-full mix-blend-multiply filter blur-3xl opacity-70 animate-float"></div>
+          <div className="absolute top-1/3 right-1/4 w-64 h-64 bg-brand-100 rounded-full mix-blend-multiply filter blur-3xl opacity-70 animate-float"></div>
           <div className="absolute bottom-1/3 left-1/3 w-80 h-80 bg-teal-100 rounded-full mix-blend-multiply filter blur-3xl opacity-70 animate-float-delayed"></div>
         </div>
         

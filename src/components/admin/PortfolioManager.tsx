@@ -407,7 +407,7 @@ export const PortfolioManager = () => {
                   <p className="text-sm text-gray-700 mb-2">{project.description}</p>
                   <div className="mb-2">
                     <span className="text-sm font-medium">Project Link: </span>
-                    <a href={project.link} className="text-blue-600 hover:underline">{project.link}</a>
+                    <a href={project.link} className="text-brand-600 hover:underline">{project.link}</a>
                   </div>
                   <div className="flex flex-wrap gap-1 mb-4">
                     {project.technologies.map((tech, index) => (

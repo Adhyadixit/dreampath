@@ -147,7 +147,7 @@ const FAQ = () => {
           ))}
         </div>
 
-        <div className="mt-12 bg-blue-50 rounded-lg p-6 text-center">
+        <div className="mt-12 bg-brand-50 rounded-lg p-6 text-center">
           <h3 className="text-xl font-semibold text-gray-900 mb-3">
             Still have questions?
           </h3>

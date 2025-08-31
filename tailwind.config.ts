@@ -54,23 +54,23 @@ export default {
 					foreground: 'hsl(var(--card-foreground))'
 				},
 				brand: {
-					50: '#f0f9ff',
-					100: '#e0f2fe',
-					200: '#bae6fd',
-					300: '#7dd3fc',
-					400: '#38bdf8',
-					500: '#0ea5e9',
-					600: '#0284c7',
-					700: '#0369a1',
-					800: '#075985',
-					900: '#0c4a6e',
+					50: '#faf5ff',  // violet-50
+					100: '#f3e8ff', // violet-100
+					200: '#e9d5ff', // violet-200
+					300: '#d8b4fe', // violet-300
+					400: '#c084fc', // violet-400
+					500: '#a78bfa', // violet-500
+					600: '#8b5cf6', // violet-600
+					700: '#7c3aed', // violet-700
+					800: '#6d28d9', // violet-800
+					900: '#581c87', // purple-900
 				},
 				dreampath: {
-					primary: '#0c4a6e',
-					secondary: '#0ea5e9',
-					accent: '#38bdf8',
-					light: '#f0f9ff',
-					dark: '#075985'
+					primary: '#4c1d95',   // indigo/purple deep for gradient start
+					secondary: '#7c3aed', // violet-700
+					accent: '#a78bfa',    // violet-500
+					light: '#f5f3ff',     // violet-50
+					dark: '#1e1b4b'        // indigo-950
 				}
 			},
 			borderRadius: {
