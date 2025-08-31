@@ -207,7 +207,9 @@ const ChatWidget = () => {
   };
 
   const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    setTimeout(() => {
+      messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    }, 100);
   };
 
   const handleStartChat = async (e: React.FormEvent) => {
@@ -476,46 +478,47 @@ const ChatWidget = () => {
       
       {/* Chat window */}
       {isOpen && (
-        <div className="fixed bottom-20 right-4 w-80 md:w-96 bg-white rounded-lg shadow-xl flex flex-col overflow-hidden h-[500px] border border-gray-200">
+        <div className="fixed bottom-20 right-4 w-80 md:w-96 bg-gray-900 rounded-lg shadow-xl flex flex-col overflow-hidden h-[550px] border border-gray-700 transition-all duration-300 ease-in-out transform scale-100 opacity-100">
           {/* Chat header */}
-          <div className="bg-dreampath-primary text-white p-3 flex justify-between items-center">
-            <h3 className="font-medium">Chat with DreamPath</h3>
+          <div className="bg-gradient-to-r from-purple-600 to-indigo-600 text-white p-3 flex justify-between items-center">
+            <h3 className="font-bold text-lg">Chat with DreamPath</h3>
             <button 
               onClick={() => setIsOpen(false)}
-              className="text-white hover:text-gray-200"
+              className="text-white hover:text-gray-300 transition-colors"
             >
-              <X className="h-5 w-5" />
+              <X className="h-6 w-6" />
             </button>
           </div>
           
           {/* Chat content */}
-          <div className="flex-1 overflow-hidden">
+          <div className="flex-1 overflow-hidden bg-gray-900 text-white">
             {waitingForAgent ? (
               <div className="flex-1 flex items-center justify-center p-6">
                 <div className="text-center">
-                  <Loader2 className="h-8 w-8 animate-spin mx-auto mb-4 text-dreampath-accent" />
-                  <p className="text-gray-600">Connecting you to an agent...</p>
+                  <Loader2 className="h-8 w-8 animate-spin mx-auto mb-4 text-indigo-400" />
+                  <p className="text-gray-300">Connecting you to an agent...</p>
                   <p className="text-sm text-gray-500 mt-2">Please wait a moment</p>
                 </div>
               </div>
             ) : showForm ? (
-              <div className="p-4 h-full overflow-y-auto">
-                <div className="mb-4">
-                  <p className="text-gray-700">Please fill in the form below to start chatting with our team.</p>
+              <div className="p-6 h-full overflow-y-auto bg-gray-800">
+                <div className="mb-6 text-center">
+                  <p className="text-gray-300">Please fill in the form below to start chatting with our team.</p>
                 </div>
                 <form onSubmit={handleStartChat} className="space-y-4">
                   <div>
-                    <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">Name</label>
+                    <label htmlFor="name" className="block text-sm font-medium text-gray-400 mb-1">Name</label>
                     <Input
                       id="name"
                       value={visitorName}
                       onChange={(e) => setVisitorName(e.target.value)}
                       placeholder="Your name"
                       required
+                      className="bg-white border-gray-300 text-black placeholder-gray-500 focus:ring-indigo-500 focus:border-indigo-500"
                     />
                   </div>
                   <div>
-                    <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">Email</label>
+                    <label htmlFor="email" className="block text-sm font-medium text-gray-400 mb-1">Email</label>
                     <Input
                       id="email"
                       type="email"
@@ -523,27 +526,29 @@ const ChatWidget = () => {
                       onChange={(e) => setVisitorEmail(e.target.value)}
                       placeholder="Your email"
                       required
+                      className="bg-white border-gray-300 text-black placeholder-gray-500 focus:ring-indigo-500 focus:border-indigo-500"
                     />
                   </div>
                   <div>
-                    <label htmlFor="message" className="block text-sm font-medium text-gray-700 mb-1">Message</label>
+                    <label htmlFor="message" className="block text-sm font-medium text-gray-400 mb-1">Message</label>
                     <Input
                       id="message"
                       value={message}
                       onChange={(e) => setMessage(e.target.value)}
                       placeholder="How can we help you?"
                       required
+                      className="bg-white border-gray-300 text-black placeholder-gray-500 focus:ring-indigo-500 focus:border-indigo-500"
                     />
                   </div>
                   <Button 
                     type="submit" 
-                    className="w-full"
+                    className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded-lg transition-all"
                     disabled={isLoading}
                   >
                     {isLoading ? (
                       <>
                         <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                        Starting chat...
+                        Connecting...
                       </>
                     ) : 'Start Chat'}
                   </Button>
@@ -554,20 +559,21 @@ const ChatWidget = () => {
             ) : (
               <>
                 {/* Chat messages */}
-                <div className="flex-1 p-4 overflow-y-auto space-y-4">
+                <div className="flex-1 px-4 pt-8 pb-6 overflow-y-auto space-y-4 bg-gray-800" style={{ scrollBehavior: 'smooth' }}>
+                  <div className="h-2"></div> {/* Additional spacing before first message */}
                   {messages.map(message => (
                     <div 
                       key={message.id} 
                       className={`flex ${message.sender_type === 'visitor' ? 'justify-end' : 'justify-start'}`}
                     >
                       <div 
-                        className={`max-w-[80%] rounded-lg p-3 ${
+                        className={`max-w-[80%] rounded-xl p-3 shadow-md ${
                           message.sender_type === 'visitor' 
-                            ? 'bg-dreampath-accent text-white' 
-                            : 'bg-gray-100 text-gray-800'
+                            ? 'bg-indigo-500 text-white' 
+                            : 'bg-gray-700 text-gray-200'
                         }`}
                       >
-                        <div className="text-sm">{message.message}</div>
+                        <div className="text-sm break-words">{message.message}</div>
                         <div className="text-xs mt-1 opacity-70 text-right">
                           {formatTime(new Date(message.created_at))}
                         </div>
@@ -578,24 +584,26 @@ const ChatWidget = () => {
                 </div>
                 
                 {/* Chat input */}
-                <form onSubmit={handleSendMessage} className="border-t p-4">
-                  <div className="flex space-x-2">
+                <form onSubmit={handleSendMessage} className="border-t border-gray-700 p-4 bg-gray-900">
+                  <div className="flex space-x-3 items-center">
                     <Input
                       value={message}
                       onChange={(e) => setMessage(e.target.value)}
                       placeholder="Type your message..."
-                      className="flex-1"
+                      className="flex-1 force-text-black border-gray-300 placeholder:!text-gray-600 focus:ring-indigo-500 focus:border-indigo-500 rounded-full px-4 py-2"
+                      style={{ backgroundColor: '#e5e7eb' }}
                     />
                     <Button 
                       type="submit" 
                       size="icon"
+                      className="bg-indigo-600 hover:bg-indigo-700 rounded-full w-10 h-10 flex-shrink-0"
                       disabled={!message.trim() || isOffline}
                     >
-                      <Send className="h-4 w-4" />
+                      <Send className="h-5 w-5 text-white" />
                     </Button>
                   </div>
                   {isOffline && (
-                    <p className="text-xs text-red-500 mt-2">
+                    <p className="text-xs text-red-400 mt-2 text-center">
                       You appear to be offline. Messages will be sent when you're back online.
                     </p>
                   )}

@@ -196,7 +196,8 @@ const Chatbot: React.FC<ChatbotProps> = ({ onConnectToAgent }) => {
             value={inputValue}
             onChange={(e) => setInputValue(e.target.value)}
             placeholder="Type your message..."
-            className="flex-1"
+            className="flex-1 force-text-black placeholder:!text-gray-600"
+            style={{ backgroundColor: '#e5e7eb' }}
             disabled={isTyping}
           />
           <Button 

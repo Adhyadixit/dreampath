@@ -168,7 +168,6 @@ const Home = () => {
       y: 0,
       transition: {
         duration: 0.5,
-        ease: [0.22, 1, 0.36, 1],
       },
     },
   };
@@ -258,7 +257,7 @@ const Home = () => {
       {/* Parallax Hero Section */}
       <section
         id="hero"
-        className="relative h-screen min-h-[700px] overflow-hidden flex items-center pt-24"
+        className="relative h-screen min-h-[700px] overflow-hidden flex items-center pt-32 md:pt-24 pb-16 md:pb-24"
       >
         <div
           className="absolute inset-0"
@@ -278,28 +277,28 @@ const Home = () => {
           backgroundSize: '40px 40px',
         }} />
         
-        <div className="container-wide relative z-10 text-white pt-16">
+        <div className="container-wide relative z-10 text-white pt-20 md:pt-16 pb-12 md:pb-16">
           <div className="max-w-4xl text-left px-6 md:px-8">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6 }}
-              className="inline-block px-4 py-2 mb-6 text-sm font-medium text-blue-100 bg-blue-500/20 backdrop-blur-sm rounded-full border border-blue-400/20"
+              className="inline-block px-3 md:px-4 py-1.5 md:py-2 mb-4 md:mb-6 text-xs md:text-sm font-medium text-blue-100 bg-blue-500/20 backdrop-blur-sm rounded-full border border-blue-400/20"
             >
               Welcome to the Future of Technology
             </motion.div>
             
             <motion.h1 
-              className="text-5xl md:text-7xl lg:text-8xl font-bold leading-tight bg-clip-text text-transparent bg-gradient-to-r from-white to-blue-100 pb-4"
+              className="text-4xl md:text-7xl lg:text-8xl font-bold leading-tight bg-clip-text text-transparent bg-gradient-to-r from-white to-blue-100 pb-4"
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.2 }}
             >
-              AI-Powered Digital Transformation
+              AI-Powered Digital Solutions
             </motion.h1>
             
             <motion.p 
-              className="mt-6 text-xl md:text-2xl text-blue-100 max-w-3xl mx-auto leading-relaxed"
+              className="mt-4 md:mt-6 text-base md:text-2xl text-blue-100 max-w-3xl mx-auto leading-relaxed"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.4 }}
@@ -308,7 +307,7 @@ const Home = () => {
             </motion.p>
             
             <motion.div 
-              className="mt-10 flex flex-wrap justify-center gap-4"
+              className="mt-6 md:mt-10 flex flex-wrap justify-center gap-2.5 md:gap-4"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.6 }}
@@ -316,7 +315,7 @@ const Home = () => {
               <Button 
                 asChild
                 size="lg"
-                className="bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 text-lg px-8 py-6 rounded-xl transition-all duration-300 transform hover:scale-105 shadow-lg"
+                className="bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 text-base md:text-lg px-6 md:px-8 py-5 md:py-6 rounded-xl transition-all duration-300 transform hover:scale-105 shadow-lg"
               >
                 <Link to="/services">
                   Discover Our Solutions
@@ -327,7 +326,7 @@ const Home = () => {
               <Button 
                 variant="outline"
                 size="lg"
-                className="text-lg px-8 py-6 rounded-xl border-2 border-white/20 bg-white/5 backdrop-blur-sm hover:bg-white/10 hover:border-white/30 transition-all duration-300 transform hover:scale-105"
+                className="text-base md:text-lg px-6 md:px-8 py-5 md:py-6 rounded-xl border-2 border-white/20 bg-white/5 backdrop-blur-sm hover:bg-white/10 hover:border-white/30 transition-all duration-300 transform hover:scale-105"
                 onClick={() => {
                   const element = document.getElementById('reviews');
                   if (element) {
@@ -341,16 +340,16 @@ const Home = () => {
             
             {/* Tech stack pills */}
             <motion.div 
-              className="mt-8 w-full overflow-x-auto pb-4 px-4"
+              className="mt-6 md:mt-8 w-full overflow-x-auto px-4 pb-6 md:pb-8"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 0.8, delay: 0.8 }}
             >
-              <div className="flex flex-nowrap gap-3 w-max max-w-full mx-auto">
+              <div className="flex flex-nowrap gap-2.5 md:gap-3 w-max max-w-full mx-auto">
                 {['AI/ML', 'Blockchain', 'Cloud Native', 'IoT', 'AR/VR', 'Web3'].map((tech) => (
                   <span 
                     key={tech} 
-                    className="flex-shrink-0 px-4 py-2 bg-white/5 backdrop-blur-sm rounded-full text-sm font-medium text-blue-100 border border-white/10 whitespace-nowrap"
+                    className="flex-shrink-0 px-3 md:px-4 py-1.5 md:py-2 bg-white/5 backdrop-blur-sm rounded-full text-xs md:text-sm font-medium text-blue-100 border border-white/10 whitespace-nowrap"
                   >
                     {tech}
                   </span>
