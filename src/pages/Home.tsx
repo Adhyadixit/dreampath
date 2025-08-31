@@ -257,7 +257,7 @@ const Home = () => {
       {/* Parallax Hero Section */}
       <section
         id="hero"
-        className="relative h-screen min-h-[700px] overflow-hidden flex items-center pt-28 md:pt-24 pb-14 md:pb-24"
+        className="relative h-screen min-h-[700px] overflow-hidden flex items-center pt-24 md:pt-24 pb-12 md:pb-24"
       >
         <div
           className="absolute inset-0"
@@ -277,7 +277,7 @@ const Home = () => {
           backgroundSize: '40px 40px',
         }} />
         
-        <div className="container-wide relative z-10 text-white pt-20 md:pt-16 pb-12 md:pb-16">
+        <div className="container-wide relative z-10 text-white pt-16 md:pt-16 pb-10 md:pb-16">
           <div className="max-w-4xl text-left px-6 md:px-8">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -289,7 +289,7 @@ const Home = () => {
             </motion.div>
             
             <motion.h1 
-              className="text-[2.75rem] md:text-7xl lg:text-8xl font-bold leading-tight bg-clip-text text-transparent bg-gradient-to-r from-white to-blue-100 pb-4"
+              className="text-[3rem] md:text-7xl lg:text-8xl font-bold leading-tight bg-clip-text text-transparent bg-gradient-to-r from-white to-blue-100 pb-4"
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.2 }}
@@ -298,7 +298,7 @@ const Home = () => {
             </motion.h1>
             
             <motion.p 
-              className="mt-5 md:mt-6 text-lg md:text-2xl text-blue-100 max-w-3xl mx-auto leading-relaxed"
+              className="mt-3 md:mt-6 text-[1.1rem] md:text-2xl text-blue-100 max-w-3xl mx-auto leading-relaxed"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.4 }}
@@ -307,7 +307,7 @@ const Home = () => {
             </motion.p>
             
             <motion.div 
-              className="mt-6 md:mt-10 flex flex-wrap justify-center gap-2.5 md:gap-4"
+              className="mt-4 md:mt-10 flex flex-wrap justify-center gap-2 md:gap-4"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.6 }}
