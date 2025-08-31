@@ -257,7 +257,7 @@ const Home = () => {
       {/* Parallax Hero Section */}
       <section
         id="hero"
-        className="relative h-screen min-h-[700px] overflow-hidden flex items-center pt-32 md:pt-24 pb-16 md:pb-24"
+        className="relative h-screen min-h-[700px] overflow-hidden flex items-center pt-28 md:pt-24 pb-14 md:pb-24"
       >
         <div
           className="absolute inset-0"
@@ -283,13 +283,13 @@ const Home = () => {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6 }}
-              className="inline-block px-3 md:px-4 py-1.5 md:py-2 mb-4 md:mb-6 text-xs md:text-sm font-medium text-blue-100 bg-blue-500/20 backdrop-blur-sm rounded-full border border-blue-400/20"
+              className="inline-block px-3 md:px-4 py-1.5 md:py-2 mb-4 md:mb-6 text-sm md:text-sm font-medium text-blue-100 bg-blue-500/20 backdrop-blur-sm rounded-full border border-blue-400/20"
             >
               Welcome to the Future of Technology
             </motion.div>
             
             <motion.h1 
-              className="text-4xl md:text-7xl lg:text-8xl font-bold leading-tight bg-clip-text text-transparent bg-gradient-to-r from-white to-blue-100 pb-4"
+              className="text-[2.75rem] md:text-7xl lg:text-8xl font-bold leading-tight bg-clip-text text-transparent bg-gradient-to-r from-white to-blue-100 pb-4"
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.2 }}
@@ -298,7 +298,7 @@ const Home = () => {
             </motion.h1>
             
             <motion.p 
-              className="mt-4 md:mt-6 text-base md:text-2xl text-blue-100 max-w-3xl mx-auto leading-relaxed"
+              className="mt-5 md:mt-6 text-lg md:text-2xl text-blue-100 max-w-3xl mx-auto leading-relaxed"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.4 }}
