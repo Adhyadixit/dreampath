@@ -26,13 +26,18 @@ const Navbar = () => {
     closeMenu();
     
     if (path.startsWith('#')) {
-      // Handle section scrolling
-      const element = document.querySelector(path);
-      if (element) {
-        element.scrollIntoView({ behavior: 'smooth' });
+      // If we're not on the home page, navigate to home with hash
+      if (location.pathname !== '/') {
+        window.location.href = `/${path}`;
+      } else {
+        // If we're already on home, just scroll to the section
+        const element = document.querySelector(path);
+        if (element) {
+          element.scrollIntoView({ behavior: 'smooth' });
+        }
       }
     } else {
-      // Handle page navigation
+      // Handle regular page navigation
       window.location.href = path;
     }
   };
@@ -94,8 +99,10 @@ const Navbar = () => {
               >
                 <a
                   href={item.path}
+                  onClick={(e) => handleNavigation(item.path, e)}
                   className={`${
-                    location.pathname === item.path.split('#')[0]
+                    location.pathname === item.path.split('#')[0] || 
+                    (item.path === '#reviews' && location.hash === '#reviews')
                       ? isScrolled 
                         ? 'text-dreampath-secondary font-medium' 
                         : 'text-white font-medium'

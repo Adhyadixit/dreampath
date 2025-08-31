@@ -7,8 +7,15 @@ import { motion } from "framer-motion";
 import CountUp from "react-countup";
 import ServiceKeywords from "@/components/services/ServiceKeywords";
 
-// Default hero image URL - Futuristic tech/AI theme
-const heroImageUrl = "https://images.unsplash.com/photo-1635070041078-e363dbe005cb?q=80&w=2070&auto=format&fit=crop&w=1920";
+// Default hero image URL - Futuristic tech/AI theme (responsive variants)
+const heroImageBase =
+  "https://images.unsplash.com/photo-1635070041078-e363dbe005cb?auto=format&fit=crop&q=70";
+const heroImageUrl = `${heroImageBase}&w=1280`;
+const heroImageSrcSet = [
+  `${heroImageBase}&w=768 768w`,
+  `${heroImageBase}&w=1280 1280w`,
+  `${heroImageBase}&w=1920 1920w`,
+].join(", ");
 
 // Function to get reliable tech logo URLs
 const getTechLogoUrl = (tech: string): string => {
@@ -172,11 +179,14 @@ const Home = () => {
     },
   };
   
-  // Duplicate reviews once to enable seamless marquee and allow accessibility hints
-  const allReviews = [...reviews, ...reviews];
+  // Limit number of review cards to reduce initial DOM size, then duplicate for seamless marquee
+  const MAX_REVIEWS = 25;
+  const baseReviews = reviews.slice(0, MAX_REVIEWS);
+  const allReviews = [...baseReviews, ...baseReviews];
   
   // Marquee refs/state for JS-driven smooth loop
   const trackRef = useRef<HTMLDivElement | null>(null);
+  const reviewsSectionRef = useRef<HTMLElement | null>(null);
   const [halfWidth, setHalfWidth] = useState(0);
   const offsetRef = useRef(0);
   const rafRef = useRef<number | null>(null);
@@ -184,6 +194,7 @@ const Home = () => {
   const lastTsRef = useRef<number | null>(null);
   const [reducedMotion, setReducedMotion] = useState(false);
   const [activeDot, setActiveDot] = useState(0);
+  const [reviewsInView, setReviewsInView] = useState(false);
   
   // Measure half width after layout
   useEffect(() => {
@@ -212,7 +223,7 @@ const Home = () => {
 
   // RAF loop for smooth, seamless translateX
   useEffect(() => {
-    if (reducedMotion || halfWidth <= 0) return;
+    if (reducedMotion || halfWidth <= 0 || !reviewsInView) return;
     const step = (ts: number) => {
       if (lastTsRef.current == null) lastTsRef.current = ts;
       const dt = (ts - lastTsRef.current) / 1000; // seconds
@@ -239,7 +250,25 @@ const Home = () => {
       rafRef.current = null;
       lastTsRef.current = null;
     };
-  }, [halfWidth, reducedMotion, activeDot]);
+  }, [halfWidth, reducedMotion, activeDot, reviewsInView]);
+
+  // Observe reviews section visibility
+  useEffect(() => {
+    const section = reviewsSectionRef.current;
+    if (!section) return;
+    const io = new IntersectionObserver(
+      (entries) => {
+        for (const e of entries) {
+          if (e.target === section) {
+            setReviewsInView(e.isIntersecting);
+          }
+        }
+      },
+      { root: null, threshold: 0.1 }
+    );
+    io.observe(section);
+    return () => io.disconnect();
+  }, []);
 
   const jumpToFraction = (fraction: number) => {
     if (halfWidth <= 0) return;
@@ -259,16 +288,17 @@ const Home = () => {
         id="hero"
         className="relative min-h-[90vh] md:min-h-screen overflow-hidden flex items-start pt-32 md:pt-40 pb-16"
       >
-        {/* Background image with mobile optimization */}
-        <div 
-          className="absolute inset-0"
-          style={{
-            backgroundImage: `url(${heroImageUrl})`,
-            backgroundSize: "cover",
-            backgroundPosition: "center",
-            // Remove fixed attachment on mobile to fix iOS issues
-            backgroundAttachment: window.innerWidth >= 768 ? "fixed" : "scroll"
-          }}
+        {/* Background image (optimized) */}
+        <img
+          src={heroImageUrl}
+          srcSet={heroImageSrcSet}
+          sizes="100vw"
+          alt="Futuristic AI technology background"
+          className="absolute inset-0 w-full h-full object-cover"
+          width={1920}
+          height={1080}
+          decoding="async"
+          fetchPriority="high"
         />
         {/* Enhanced gradient overlay */}
         <div className="absolute inset-0 bg-gradient-to-br from-indigo-950/95 via-purple-900/85 to-violet-800/90" />
@@ -499,7 +529,7 @@ const Home = () => {
       </section>
 
       {/* Reviews / Testimonials */}
-      <section id="reviews" className="py-16 bg-white overflow-hidden">
+      <section id="reviews" ref={(el) => (reviewsSectionRef.current = el)} className="py-16 bg-white overflow-hidden">
         <div className="container-wide">
           <div className="text-center max-w-3xl mx-auto mb-12">
             <h2 className="text-4xl font-bold mb-4 text-dreampath-primary">What Our Clients Say</h2>
