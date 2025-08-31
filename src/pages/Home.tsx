@@ -257,7 +257,7 @@ const Home = () => {
       {/* Parallax Hero Section */}
       <section
         id="hero"
-        className="relative min-h-[90vh] md:min-h-screen overflow-hidden flex items-center py-16 md:py-24"
+        className="relative min-h-[90vh] md:min-h-screen overflow-hidden flex items-start pt-32 md:pt-40 pb-16"
       >
         {/* Background image with mobile optimization */}
         <div 
