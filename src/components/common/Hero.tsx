@@ -36,9 +36,6 @@ const Hero = ({
               src={imageUrl}
               alt="Hero background"
               className="w-full h-full object-cover"
-              loading="lazy"
-              width={1920}
-              height={1080}
             />
             {/* Overlay to ensure text is readable over image */}
             <div className="absolute inset-0 bg-black opacity-60"></div>

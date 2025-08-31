@@ -51,16 +51,7 @@ const EcommerceApps: React.FC = () => {
               <CardContent>
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
                   {gallery.map((src, i) => (
-                    <img
-                      key={i}
-                      src={src}
-                      alt={`ecommerce-app-${i}`}
-                      className="w-full h-28 md:h-36 object-cover rounded"
-                      loading="lazy"
-                      decoding="async"
-                      width={400}
-                      height={288}
-                    />
+                    <img key={i} src={src} alt={`ecommerce-app-${i}`} className="w-full h-28 md:h-36 object-cover rounded" loading="lazy" />
                   ))}
                   {gallery.length === 0 && (
                     <div className="col-span-2 md:col-span-4 text-sm text-gray-500">Add images under public/images/ecommerceapp/ to populate this gallery.</div>
