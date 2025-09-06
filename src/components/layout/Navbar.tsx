@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Menu, X, Leaf } from "lucide-react";
@@ -97,7 +97,7 @@ const Navbar = () => {
                 whileHover={{ y: -2 }}
                 whileTap={{ y: 0 }}
               >
-                <a
+<a
                   href={item.path}
                   onClick={(e) => handleNavigation(item.path, e)}
                   className={`${
@@ -110,7 +110,6 @@ const Navbar = () => {
                         ? 'text-foreground hover:text-dreampath-secondary/80' 
                         : 'text-white/90 hover:text-white'
                   } transition-colors cursor-pointer`}
-                  onClick={(e) => handleNavigation(item.path, e)}
                 >
                   {item.name}
                 </a>
@@ -126,19 +125,17 @@ const Navbar = () => {
 
           {/* Mobile menu button */}
           <div className="lg:hidden z-50">
-            <motion.button
+            <button
+              className="focus:outline-none p-2 rounded-md bg-black/10 hover:bg-black/20 transition-colors"
               onClick={toggleMenu}
-              className="inline-flex items-center justify-center p-2 rounded-md focus:outline-none"
-              aria-expanded="false"
-              whileTap={{ scale: 0.95 }}
+              aria-label="Toggle menu"
             >
-              <span className="sr-only">Open main menu</span>
               {isMenuOpen ? (
-                <X className="block h-6 w-6" />
+                <X className="h-6 w-6 text-foreground" />
               ) : (
-                <Menu className="block h-6 w-6" />
+                <Menu className="h-6 w-6 text-foreground" />
               )}
-            </motion.button>
+            </button>
           </div>
         </div>
 
