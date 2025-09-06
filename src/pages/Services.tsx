@@ -1,11 +1,14 @@
-import React, { useState } from "react";
+import React, { useState, lazy, Suspense } from "react";
 import PageHeader from "@/components/common/PageHeader";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
 import { ArrowRight, Code, Layout, Globe, Smartphone, Shield, Settings, Database, Cloud, Clock, Sparkle, Star, MapPin, ShieldCheck, TrendingUp } from "lucide-react";
+import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
-import ServiceKeywords from "@/components/services/ServiceKeywords";
 import { Button } from "@/components/ui/button";
 import ContactFormPopup from "@/components/common/ContactFormPopup";
+import LazySection from "@/components/common/LazySection";
+
+const ServiceKeywordsLazy = lazy(() => import("@/components/services/ServiceKeywords"));
 
 const Services = () => {
   const [isPopupOpen, setIsPopupOpen] = useState(false);
@@ -142,8 +145,9 @@ const Services = () => {
       />
 
       {/* Services List */}
-      <section className="section-padding bg-white">
-        <div className="container-wide">
+      <LazySection minHeightClassName="min-h-screen">
+        <section className="section-padding bg-white">
+          <motion.div className="container-wide" initial={{ opacity: 0, filter: "blur(12px)" }} animate={{ opacity: 1, filter: "blur(0px)" }} transition={{ duration: 0.6, ease: "easeOut" }}>
           <div className="text-center max-w-3xl mx-auto mb-12">
             <h2 className="text-3xl font-bold text-dreampath-primary">How We Can Help</h2>
             <p className="mt-4 text-lg text-gray-700">
@@ -200,12 +204,14 @@ const Services = () => {
               </Card>
             ))}
           </div>
-        </div>
+        </motion.div>
       </section>
+      </LazySection>
 
       {/* Process */}
-      <section className="section-padding bg-gray-50">
-        <div className="container-wide">
+      <LazySection minHeightClassName="min-h-[400px]">
+        <section className="section-padding bg-gray-50">
+          <motion.div className="container-wide" initial={{ opacity: 0, filter: "blur(12px)" }} animate={{ opacity: 1, filter: "blur(0px)" }} transition={{ duration: 0.6, ease: "easeOut" }}>
           <div className="text-center max-w-3xl mx-auto mb-12">
             <h2 className="text-3xl font-bold text-dreampath-primary">Our Development Process</h2>
             <p className="mt-4 text-lg text-gray-700">
@@ -255,12 +261,14 @@ const Services = () => {
               </p>
             </div>
           </div>
-        </div>
+        </motion.div>
       </section>
+      </LazySection>
 
       {/* Service Keywords Section */}
-      <section className="section-padding bg-gray-50">
-        <div className="container-wide">
+      <LazySection minHeightClassName="min-h-[500px]">
+        <section className="section-padding bg-gray-50">
+          <motion.div className="container-wide" initial={{ opacity: 0, filter: "blur(12px)" }} animate={{ opacity: 1, filter: "blur(0px)" }} transition={{ duration: 0.6, ease: "easeOut" }}>
           <div className="text-center max-w-3xl mx-auto mb-12">
             <h2 className="text-3xl font-bold text-dreampath-primary">Explore Our Specialized Services</h2>
             <p className="mt-4 text-lg text-gray-700">
@@ -268,15 +276,18 @@ const Services = () => {
             </p>
           </div>
           
-          <ServiceKeywords displayStyle="grid" showTitles={false} />
+                    <Suspense fallback={<div className="h-40 rounded-lg bg-gray-100" />}>
+            <ServiceKeywordsLazy displayStyle="grid" showTitles={false} />
+          </Suspense>
           
           <div className="text-center mt-10">
             <Link to="/service-keywords" className="inline-block bg-dreampath-primary text-white hover:bg-dreampath-dark px-6 py-3 rounded-md font-medium transition-colors">
               View All Services
             </Link>
           </div>
-        </div>
+        </motion.div>
       </section>
+      </LazySection>
 
       <ContactFormPopup 
         isOpen={isPopupOpen} 
@@ -285,8 +296,9 @@ const Services = () => {
       />
 
       {/* CTA */}
-      <section className="section-padding bg-dreampath-primary text-white">
-        <div className="container-wide">
+      <LazySection minHeightClassName="min-h-[350px]">
+        <section className="section-padding bg-dreampath-primary text-white">
+        <motion.div className="container-wide" initial={{ opacity: 0, filter: "blur(12px)" }} animate={{ opacity: 1, filter: "blur(0px)" }} transition={{ duration: 0.6, ease: "easeOut" }}>
           <div className="max-w-3xl mx-auto text-center">
             <Sparkle className="h-12 w-12 mx-auto mb-6 text-dreampath-accent" />
             <h2 className="text-3xl md:text-4xl font-bold mb-6">Ready to Start Your Project?</h2>
@@ -297,8 +309,9 @@ const Services = () => {
               Get in Touch
             </Link>
           </div>
-        </div>
+        </motion.div>
       </section>
+      </LazySection>
     </div>
   );
 };

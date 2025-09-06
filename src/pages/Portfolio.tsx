@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { motion } from "framer-motion";
 import PageHeader from "@/components/common/PageHeader";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Link } from "react-router-dom";
@@ -6,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { ExternalLink } from "lucide-react";
 import { projectsApi } from "@/lib/api";
 import type { Project } from "@/lib/types";
+import LazySection from "@/components/common/LazySection";
 
 const Portfolio = () => {
   const [activeCategory, setActiveCategory] = useState<"all" | "web" | "mobile" | "desktop">("all");
@@ -46,6 +48,8 @@ const Portfolio = () => {
           src={project.image} 
           alt={project.title} 
           className="w-full h-full object-cover transition-transform duration-500 hover:scale-110"
+          loading="lazy"
+          decoding="async"
         />
         <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-4">
           <span className="text-white text-xs font-medium px-2 py-1 rounded-full bg-dreampath-primary/80">
@@ -143,8 +147,9 @@ const Portfolio = () => {
         bgImage="https://images.unsplash.com/photo-1522542550221-31fd19575a2d?q=80&w=1170&auto=format&fit=crop"
       />
 
+      <LazySection minHeightClassName="min-h-[600px]" className="w-full [content-visibility:auto] [contain-intrinsic-size:640px]" threshold={0.35} rootMargin="0px 0px -2% 0px">
       <section className="section-padding">
-        <div className="container-wide">
+        <motion.div className="container-wide" initial={{ opacity: 0, filter: "blur(12px)" }} animate={{ opacity: 1, filter: "blur(0px)" }} transition={{ duration: 0.6, ease: "easeOut" }}>
           <div className="max-w-3xl mx-auto text-center mb-12">
             <h2 className="text-3xl font-bold text-dreampath-primary mb-4">Featured Projects</h2>
             <p className="text-lg text-gray-700">
@@ -172,12 +177,14 @@ const Portfolio = () => {
               {renderContent()}
             </TabsContent>
           </Tabs>
-        </div>
+        </motion.div>
       </section>
+      </LazySection>
 
       {/* Client testimonial section */}
+      <LazySection minHeightClassName="min-h-[520px]" className="w-full [content-visibility:auto] [contain-intrinsic-size:560px]" threshold={0.4} rootMargin="0px 0px -1% 0px">
       <section className="section-padding bg-gray-50">
-        <div className="container-wide">
+        <motion.div className="container-wide" initial={{ opacity: 0, filter: "blur(12px)" }} animate={{ opacity: 1, filter: "blur(0px)" }} transition={{ duration: 0.6, ease: "easeOut" }}>
           <div className="max-w-3xl mx-auto text-center mb-12">
             <h2 className="text-3xl font-bold text-dreampath-primary mb-4">Client Testimonials</h2>
             <p className="text-lg text-gray-700">
@@ -225,12 +232,14 @@ const Portfolio = () => {
               </div>
             </div>
           </div>
-        </div>
+        </motion.div>
       </section>
+      </LazySection>
 
       {/* CTA */}
+      <LazySection minHeightClassName="min-h-[360px]" className="w-full [content-visibility:auto] [contain-intrinsic-size:400px]" threshold={0.45} rootMargin="0px 0px -1% 0px">
       <section className="section-padding bg-dreampath-primary text-white text-center">
-        <div className="container-wide max-w-3xl mx-auto">
+        <motion.div className="container-wide max-w-3xl mx-auto" initial={{ opacity: 0, filter: "blur(10px)" }} animate={{ opacity: 1, filter: "blur(0px)" }} transition={{ duration: 0.6, ease: "easeOut" }}>
           <h2 className="text-3xl font-bold mb-6">Ready to Build Something Amazing?</h2>
           <p className="text-xl mb-8">
             Let's discuss how we can help bring your vision to life with our expert development team.
@@ -247,8 +256,9 @@ const Portfolio = () => {
               </Button>
             </Link>
           </div>
-        </div>
+        </motion.div>
       </section>
+      </LazySection>
     </div>
   );
 };
