@@ -30,6 +30,7 @@ import HomeServicesApps from "./services/HomeServicesApps";
 import EdTechApps from "./services/EdTechApps";
 import Blogs from "./Blogs";
 import SubmitBlog from "./SubmitBlog";
+import CityService from "./CityService";
 
 const Index = () => {
   return (
@@ -45,6 +46,16 @@ const Index = () => {
       <Route path="/login" element={<Login />} />
       <Route path="/privacy" element={<PrivacyPolicy />} />
       <Route path="/terms" element={<TermsOfService />} />
+      {/* City-Service pretty URLs */}
+      <Route path="/:citySlug-mobile-app-development" element={<CityService />} />
+      <Route path="/:citySlug-website-development" element={<CityService />} />
+      <Route path="/:citySlug-web-app-development" element={<CityService />} />
+      <Route path="/:citySlug-seo-services" element={<CityService />} />
+      <Route path="/:citySlug-local-seo" element={<CityService />} />
+      <Route path="/:citySlug-google-ads" element={<CityService />} />
+      <Route path="/:citySlug-meta-ads" element={<CityService />} />
+      <Route path="/:citySlug-review-management" element={<CityService />} />
+      <Route path="/not-found" element={<NotFound />} />
       <Route path="/admin" element={<AdminLogin />} />
       <Route path="/admin-dashboard" element={<AdminDashboard />} />
       <Route path="/account" element={<UserAccount />} />
