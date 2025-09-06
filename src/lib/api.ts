@@ -351,53 +351,28 @@ export const newsApi = {
 
   // New: aggregate from multiple sources and filter
   getAggregatedNews: async (): Promise<UnifiedArticle[]> => {
-    // 1) Try serverless aggregation (avoids CORS/mixed content in production)
-    const candidateUrls: string[] = [];
-    if (NEWS_FUNCTION_URL) candidateUrls.push(NEWS_FUNCTION_URL);
-    // Vercel API route (production) and Vercel dev (localhost:3000)
-    candidateUrls.push('/api/news-aggregate');
-    if (import.meta.env.DEV) candidateUrls.push('http://localhost:3000/api/news-aggregate');
-    // Netlify dev and deployed (fallbacks if project is run via Netlify)
-    if (import.meta.env.DEV) candidateUrls.push('http://localhost:8888/.netlify/functions/news-aggregate');
-    candidateUrls.push('/.netlify/functions/news-aggregate');
-
-    for (const url of candidateUrls) {
-      try {
-        const res = await fetch(url, { headers: { accept: 'application/json' } });
-        if (res.ok) {
-          const json = await res.json();
-          const data = (json?.data ?? []) as UnifiedArticle[];
-          if (Array.isArray(data) && data.length) return data;
+    try {
+      // Always use the Vercel API route
+      const baseUrl = import.meta.env.DEV 
+        ? 'http://localhost:3000' 
+        : window.location.origin;
+      
+      const res = await fetch(`${baseUrl}/api/news-aggregate`, { 
+        headers: { 
+          'Accept': 'application/json',
+          'Cache-Control': 'no-cache'
         }
-      } catch (e) {
-        console.warn(`Serverless news aggregate unreachable at ${url}`);
-      }
+      });
+      
+      if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
+      
+      const json = await res.json();
+      return Array.isArray(json?.data) ? json.data : [];
+      
+    } catch (error) {
+      console.error('Failed to fetch news:', error);
+      return [];
     }
-
-    // 2) Fallback: client-side aggregation (may be blocked by CORS/HTTP in browser)
-    const [a, b, c, d] = await Promise.all([
-      fetchMediaStack(),
-      fetchGNews(),
-      fetchNewsData(),
-      fetchGoogleNewsRSS(),
-    ]);
-
-    const merged = [...a, ...b, ...c, ...d];
-
-    // Deduplicate by URL (or title when URL missing)
-    const seen = new Set<string>();
-    const unique: UnifiedArticle[] = [];
-    for (const item of merged) {
-      const key = item.url || item.title;
-      if (!key || seen.has(key)) continue;
-      seen.add(key);
-      unique.push(item);
-    }
-
-    // Sort by published_at desc
-    unique.sort((x, y) => new Date(y.published_at).getTime() - new Date(x.published_at).getTime());
-
-    return unique;
   },
 };
 
