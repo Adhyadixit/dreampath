@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { blogsApi } from "@/lib/api";
 import { Skeleton } from "@/components/ui/skeleton";
+import TechNewsSection from "@/components/news/TechNewsSection";
 
 const Blogs: React.FC = () => {
   const { data: blogs, isLoading } = useQuery({
@@ -25,6 +26,17 @@ const Blogs: React.FC = () => {
       />
       
       <PageHeader title="Blogs" description="Community submissions. Admin approved." />
+
+      {/* Tech & AI News (MediaStack) */}
+      <section className="py-12 px-4">
+        <div className="max-w-7xl mx-auto">
+          <div className="flex items-center justify-between mb-6">
+            <h2 className="text-2xl font-bold text-gray-900">Latest in Tech & AI</h2>
+            <span className="text-xs text-gray-500">Powered by MediaStack</span>
+          </div>
+          <TechNewsSection />
+        </div>
+      </section>
 
       <section className="py-12 px-4">
         <div className="max-w-7xl mx-auto">
