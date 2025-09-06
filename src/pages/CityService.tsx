@@ -121,6 +121,17 @@ export default function CityService() {
       const possibleCity = path.slice(0, path.length - matchedService.slug.length).replace(/-$/, "");
       if (possibleCity) citySlug = possibleCity;
     }
+    // If not matched at the end, try service-first pattern: '/service/city'
+    if (!serviceSlug || !citySlug) {
+      const segments = path.split('/').filter(Boolean);
+      if (segments.length >= 2) {
+        const [first, second] = segments;
+        if (services.some(s => s.slug === first)) {
+          serviceSlug = first;
+          citySlug = second;
+        }
+      }
+    }
   }
 
   // Normalize for robust matching

@@ -55,6 +55,15 @@ const Index = () => {
       <Route path="/:citySlug-google-ads" element={<CityService />} />
       <Route path="/:citySlug-meta-ads" element={<CityService />} />
       <Route path="/:citySlug-review-management" element={<CityService />} />
+      {/* City-Service two-segment URLs (service/city) */}
+      <Route path="/mobile-app-development/:citySlug" element={<CityService />} />
+      <Route path="/website-development/:citySlug" element={<CityService />} />
+      <Route path="/web-app-development/:citySlug" element={<CityService />} />
+      <Route path="/seo-services/:citySlug" element={<CityService />} />
+      <Route path="/local-seo/:citySlug" element={<CityService />} />
+      <Route path="/google-ads/:citySlug" element={<CityService />} />
+      <Route path="/meta-ads/:citySlug" element={<CityService />} />
+      <Route path="/review-management/:citySlug" element={<CityService />} />
       <Route path="/not-found" element={<NotFound />} />
       <Route path="/admin" element={<AdminLogin />} />
       <Route path="/admin-dashboard" element={<AdminDashboard />} />
