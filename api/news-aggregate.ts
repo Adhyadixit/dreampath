@@ -123,17 +123,35 @@ async function fetchGoogleNewsRSS(): Promise<Article[]> {
   }
 }
 
+// Debug: Log environment variables (safely)
+console.log('Environment keys present:', {
+  GNEWS_KEY: !!GNEWS_KEY,
+  NEWSDATA_KEY: !!NEWSDATA_KEY,
+  MEDIASTACK_KEY: !!MEDIASTACK_KEY
+});
+
 export default async function handler(req: any, res: any) {
   try {
-    const [a, b, c, d] = await Promise.all([
+    console.log('Fetching news from all sources...');
+    const [gnews, newsdata, mediastack, googlerss] = await Promise.all([
       fetchGNews(),
       fetchNewsData(),
       fetchMediaStack(),
       fetchGoogleNewsRSS(),
     ]);
-    const merged = [...a, ...b, ...c, ...d];
+
+    // Debug: Log counts from each source
+    console.log('Fetched counts:', {
+      gnews: gnews.length,
+      newsdata: newsdata.length,
+      mediastack: mediastack.length,
+      googlerss: googlerss.length
+    });
+
+    const merged = [...gnews, ...newsdata, ...mediastack, ...googlerss];
     const seen = new Set<string>();
     const unique: Article[] = [];
+    
     for (const it of merged) {
       const key = it.url || it.title;
       if (key && !seen.has(key)) {
@@ -141,11 +159,25 @@ export default async function handler(req: any, res: any) {
         unique.push(it);
       }
     }
-    unique.sort((x, y) => new Date(y.published_at).getTime() - new Date(x.published_at).getTime());
 
+    unique.sort((x, y) => new Date(y.published_at).getTime() - new Date(x.published_at).getTime());
+    
+    console.log(`Returning ${unique.length} unique articles`);
+    
     res.setHeader('cache-control', 'public, max-age=300');
-    res.status(200).json({ data: unique });
+    res.status(200).json({ 
+      data: unique,
+      _debug: {
+        sources: ['GNews', 'NewsData', 'MediaStack', 'Google RSS'],
+        counts: [gnews.length, newsdata.length, mediastack.length, googlerss.length]
+      }
+    });
+    
   } catch (e: any) {
-    res.status(500).json({ error: e?.message || 'Unexpected error' });
+    console.error('Error in news aggregation:', e);
+    res.status(500).json({ 
+      error: e?.message || 'Unexpected error',
+      stack: process.env.NODE_ENV === 'development' ? e?.stack : undefined
+    });
   }
 }
