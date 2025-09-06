@@ -1,5 +1,5 @@
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Menu, X, Leaf } from "lucide-react";
@@ -18,6 +18,15 @@ const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const location = useLocation();
+
+  // Detect CityService routes to keep burger icon dark from the start on these pages
+  const isCityServicePage = useMemo(() => {
+    const p = location.pathname.toLowerCase();
+    const services = '(mobile-app-development|website-development|web-app-development|seo-services|local-seo|google-ads|meta-ads|review-management)';
+    const serviceFirst = new RegExp(`^/(?:${services})/[a-z-]+/?$`);
+    const cityFirst = new RegExp(`^/[a-z-]+-(?:${services})(?:/)?$`);
+    return serviceFirst.test(p) || cityFirst.test(p);
+  }, [location.pathname]);
 
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
   
@@ -126,14 +135,14 @@ const Navbar = () => {
           {/* Mobile menu button */}
           <div className="lg:hidden z-50">
             <button
-              className="focus:outline-none p-2 rounded-md bg-black/10 hover:bg-black/20 transition-colors"
+              className="focus:outline-none p-2 rounded-md transition-colors"
               onClick={toggleMenu}
               aria-label="Toggle menu"
             >
               {isMenuOpen ? (
-                <X className="h-6 w-6 text-foreground" />
+                <X className={`h-6 w-6 ${(isCityServicePage || isScrolled) ? 'text-foreground' : 'text-white'}`} />
               ) : (
-                <Menu className="h-6 w-6 text-foreground" />
+                <Menu className={`h-6 w-6 ${(isCityServicePage || isScrolled) ? 'text-foreground' : 'text-white'}`} />
               )}
             </button>
           </div>
