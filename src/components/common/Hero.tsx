@@ -1,5 +1,5 @@
 
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 
@@ -26,28 +26,16 @@ const Hero = ({
   youtubeVideoId,
   imageUrl,
 }: HeroProps) => {
-  // Animate only text (no animation on background)
-  const [mounted, setMounted] = useState(false);
-  useEffect(() => {
-    const t = requestAnimationFrame(() => setMounted(true));
-    return () => cancelAnimationFrame(t);
-  }, []);
-
-  const baseTextClass = "transition-all duration-500 will-change-transform will-change-opacity";
-  const appearClass = mounted ? "opacity-100 translate-y-0" : "opacity-0 translate-y-2";
-
   return (
     <div className="relative text-white">
       {imageUrl ? (
         // Image background
         <>
           <div className="absolute inset-0 w-full h-full overflow-hidden">
-            <img
+            <img 
               src={imageUrl}
               alt="Hero background"
               className="w-full h-full object-cover"
-              loading="eager"
-              decoding="sync"
             />
             {/* Overlay to ensure text is readable over image */}
             <div className="absolute inset-0 bg-black opacity-60"></div>
@@ -57,16 +45,14 @@ const Hero = ({
           <div className="relative py-16 md:py-32">
             <div className="container-wide">
               <div className="max-w-3xl mx-auto text-center">
-                <h1 className={`text-3xl md:text-4xl lg:text-5xl font-bold mb-6 ${baseTextClass} ${appearClass}`}>{title}</h1>
-                <p className={`text-lg md:text-xl mb-8 text-gray-100 ${baseTextClass} ${appearClass}`} style={{ transitionDelay: mounted ? "100ms" : undefined }}>{subtitle}</p>
+                <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-6">{title}</h1>
+                <p className="text-lg md:text-xl mb-8 text-gray-100">{subtitle}</p>
                 {showCta && (
-                  <div className={`${baseTextClass} ${appearClass}`} style={{ transitionDelay: mounted ? "200ms" : undefined }}>
-                    <Link to={ctaLink}>
-                      <Button className="bg-white text-black hover:bg-gray-100 text-lg px-8 py-6">
-                        {ctaText}
-                      </Button>
-                    </Link>
-                  </div>
+                  <Link to={ctaLink}>
+                    <Button className="bg-white text-black hover:bg-gray-100 text-lg px-8 py-6">
+                      {ctaText}
+                    </Button>
+                  </Link>
                 )}
               </div>
             </div>
@@ -94,16 +80,14 @@ const Hero = ({
           <div className="relative py-16 md:py-32">
             <div className="container-wide">
               <div className="max-w-3xl mx-auto text-center">
-                <h1 className={`text-3xl md:text-4xl lg:text-5xl font-bold mb-6 ${baseTextClass} ${appearClass}`}>{title}</h1>
-                <p className={`text-lg md:text-xl mb-8 text-gray-100 ${baseTextClass} ${appearClass}`} style={{ transitionDelay: mounted ? "100ms" : undefined }}>{subtitle}</p>
+                <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-6">{title}</h1>
+                <p className="text-lg md:text-xl mb-8 text-gray-100">{subtitle}</p>
                 {showCta && (
-                  <div className={`${baseTextClass} ${appearClass}`} style={{ transitionDelay: mounted ? "200ms" : undefined }}>
-                    <Link to={ctaLink}>
-                      <Button className="bg-white text-black hover:bg-gray-100 text-lg px-8 py-6">
-                        {ctaText}
-                      </Button>
-                    </Link>
-                  </div>
+                  <Link to={ctaLink}>
+                    <Button className="bg-white text-black hover:bg-gray-100 text-lg px-8 py-6">
+                      {ctaText}
+                    </Button>
+                  </Link>
                 )}
               </div>
             </div>
@@ -131,16 +115,14 @@ const Hero = ({
           <div className="relative py-16 md:py-32">
             <div className="container-wide">
               <div className="max-w-3xl mx-auto text-center">
-                <h1 className={`text-3xl md:text-4xl lg:text-5xl font-bold mb-6 ${baseTextClass} ${appearClass}`}>{title}</h1>
-                <p className={`text-lg md:text-xl mb-8 text-gray-100 ${baseTextClass} ${appearClass}`} style={{ transitionDelay: mounted ? "100ms" : undefined }}>{subtitle}</p>
+                <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-6">{title}</h1>
+                <p className="text-lg md:text-xl mb-8 text-gray-100">{subtitle}</p>
                 {showCta && (
-                  <div className={`${baseTextClass} ${appearClass}`} style={{ transitionDelay: mounted ? "200ms" : undefined }}>
-                    <Link to={ctaLink}>
-                      <Button className="bg-white text-black hover:bg-gray-100 text-lg px-8 py-6">
-                        {ctaText}
-                      </Button>
-                    </Link>
-                  </div>
+                  <Link to={ctaLink}>
+                    <Button className="bg-white text-black hover:bg-gray-100 text-lg px-8 py-6">
+                      {ctaText}
+                    </Button>
+                  </Link>
                 )}
               </div>
             </div>
@@ -151,16 +133,14 @@ const Hero = ({
         <div className={`${bgClass} py-16 md:py-24`}>
           <div className="container-wide">
             <div className="max-w-3xl mx-auto text-center">
-              <h1 className={`text-3xl md:text-4xl lg:text-5xl font-bold mb-6 ${baseTextClass} ${appearClass}`}>{title}</h1>
-              <p className={`text-lg md:text-xl mb-8 text-gray-100 ${baseTextClass} ${appearClass}`} style={{ transitionDelay: mounted ? "100ms" : undefined }}>{subtitle}</p>
+              <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-6">{title}</h1>
+              <p className="text-lg md:text-xl mb-8 text-gray-100">{subtitle}</p>
               {showCta && (
-                <div className={`${baseTextClass} ${appearClass}`} style={{ transitionDelay: mounted ? "200ms" : undefined }}>
-                  <Link to={ctaLink}>
-                    <Button className="bg-white text-black hover:bg-gray-100 text-lg px-8 py-6">
-                      {ctaText}
-                    </Button>
-                  </Link>
-                </div>
+                <Link to={ctaLink}>
+                  <Button className="bg-white text-black hover:bg-gray-100 text-lg px-8 py-6">
+                    {ctaText}
+                  </Button>
+                </Link>
               )}
             </div>
           </div>
