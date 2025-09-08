@@ -1,14 +1,27 @@
-import React, { useEffect, useState, lazy, Suspense } from "react";
+import { useEffect, useState, lazy, Suspense, useRef } from "react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { Check, ArrowRight, Code, Layout, Globe, Smartphone, Shield, Settings, Users, Zap, Award } from "lucide-react";
-import { motion } from "framer-motion";
-import CountUp from "react-countup";
-// Code-split heavy sections to defer their bundles until needed
+import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
+import { Check, ArrowRight, Code, Layout, Globe, Smartphone, Shield, Settings, Users, Award, Zap } from "lucide-react";
+import { motion, useInView } from "framer-motion";
+
+// Lazy load heavy components
 const ReviewsMarqueeLazy = lazy(() => import("@/components/home/ReviewsMarquee"));
 const ServiceKeywordsLazy = lazy(() => import("@/components/services/ServiceKeywords"));
-import LazySection from "@/components/common/LazySection";
+const LazySection = lazy(() => import("@/components/common/LazySection"));
+
+// Simple animation utility
+const fadeIn: Record<string, any> = {
+  initial: { opacity: 0, y: 20 },
+  animate: { 
+    opacity: 1, 
+    y: 0,
+    transition: {
+      duration: 0.5,
+      ease: "easeOut"
+    }
+  },
+};
 
 // Default hero image URL - Futuristic tech/AI theme
 const heroImageUrl = "https://images.unsplash.com/photo-1635070041078-e363dbe005cb?q=80&w=2070&auto=format&fit=crop&w=1920";
@@ -34,29 +47,46 @@ const getTechLogoUrl = (tech: string): string => {
 };
 
 const Home = () => {
+  const [mounted, setMounted] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
   
   useEffect(() => {
-    setIsVisible(true);
+    setMounted(true);
     
+    // Simple scroll animation handler
     const handleScroll = () => {
-      const scrollPos = window.scrollY;
-      const scrollElements = document.querySelectorAll('.scroll-animate');
-      
-      scrollElements.forEach((el) => {
+      const elements = document.querySelectorAll('.scroll-animate');
+      elements.forEach((el) => {
         const rect = el.getBoundingClientRect();
-        const offsetTop = rect.top + window.scrollY;
-        const elementHeight = rect.height;
-        const windowHeight = window.innerHeight;
+        const isVisible = (rect.top <= window.innerHeight * 0.9) && 
+                         (rect.bottom >= 0);
         
-        if (scrollPos > offsetTop - windowHeight + elementHeight / 4) {
+        if (isVisible) {
           el.classList.add('animate-in');
         }
       });
     };
     
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+    // Debounce scroll handler
+    let ticking = false;
+    const onScroll = () => {
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          handleScroll();
+          ticking = false;
+        });
+        ticking = true;
+      }
+    };
+    
+    // Initial check
+    handleScroll();
+    
+    window.addEventListener('scroll', onScroll, { passive: true });
+    
+    return () => {
+      window.removeEventListener('scroll', onScroll);
+    };
   }, []);
 
   const services = [
@@ -92,22 +122,80 @@ const Home = () => {
     }
   ];
 
-  const stats = [
-    { value: 120, label: "Clients Worldwide", icon: <Globe className="h-8 w-8" /> },
-    { value: 350, label: "Projects Completed", icon: <Code className="h-8 w-8" /> },
-    { value: 15, label: "Years Experience", icon: <Award className="h-8 w-8" /> },
-    { value: 24, label: "Team Members", icon: <Users className="h-8 w-8" /> }
-  ];
+  const Counter = ({ value, label, icon }: { value: number; label: string; icon: React.ReactNode }) => {
+    const [count, setCount] = useState(0);
+    const ref = useRef<HTMLDivElement>(null);
+    const isInView = useInView(ref, {
+      once: true,
+      amount: 0.5,
+    });
 
-  const cardVariants = {
-    hidden: { opacity: 0, y: 50 },
+    useEffect(() => {
+      if (isInView) {
+        const duration = 2000; // 2 seconds
+        const step = Math.ceil(value / (duration / 16)); // 60fps
+        
+        let current = 0;
+        const counter = setInterval(() => {
+          current += step;
+          if (current >= value) {
+            setCount(value);
+            clearInterval(counter);
+          } else {
+            setCount(current);
+          }
+        }, 16);
+
+        return () => clearInterval(counter);
+      }
+    }, [isInView, value]);
+
+    return (
+      <motion.div
+        ref={ref}
+        initial="hidden"
+        animate={isInView ? "visible" : "hidden"}
+        variants={{
+          hidden: { opacity: 0, y: 20 },
+          visible: { 
+            opacity: 1, 
+            y: 0,
+            transition: {
+              duration: 0.5,
+              ease: "easeOut"
+            }
+          }
+        }}
+        className="text-center p-6 rounded-lg bg-white/10 backdrop-blur-sm border border-white/20"
+      >
+        <div className="flex justify-center mb-4">
+          {icon}
+        </div>
+        <div className="text-3xl md:text-4xl font-bold text-dreampath-primary">
+          {count.toLocaleString()}+
+        </div>
+        <p className="text-sm text-white/80">{label}</p>
+      </motion.div>
+    );
+  };
+
+  const stats = [
+    { value: 120, label: "Clients Worldwide", icon: <Globe className="h-6 w-6" /> },
+    { value: 350, label: "Projects Completed", icon: <Code className="h-6 w-6" /> },
+    { value: 15, label: "Years Experience", icon: <Award className="h-6 w-6" /> },
+    { value: 24, label: "Team Members", icon: <Users className="h-6 w-6" /> }
+  ] as const;
+
+  const cardVariants: Record<string, any> = {
+    hidden: { opacity: 0, y: 20 },
     visible: {
       opacity: 1,
       y: 0,
       transition: {
         duration: 0.5,
-      },
-    },
+        ease: "easeOut"
+      }
+    }
   };
   
   // Reviews marquee moved to a lazy component so it loads and runs only when visible
@@ -190,10 +278,19 @@ const Home = () => {
                 size="lg"
                 className="text-base md:text-lg px-6 md:px-8 py-5 md:py-6 rounded-xl border-2 border-white/20 bg-white/5 backdrop-blur-sm hover:bg-white/10 hover:border-white/30 transition-all duration-300 transform hover:scale-105"
                 onClick={() => {
-                  const element = document.getElementById('reviews');
-                  if (element) {
-                    element.scrollIntoView({ behavior: 'smooth' });
-                  }
+                  // Use requestAnimationFrame to ensure the DOM is ready
+                  requestAnimationFrame(() => {
+                    const element = document.getElementById('reviews');
+                    if (element) {
+                      // Add a small delay to ensure smooth scrolling on mobile
+                      setTimeout(() => {
+                        element.scrollIntoView({ 
+                          behavior: 'smooth',
+                          block: 'start'
+                        });
+                      }, 100);
+                    }
+                  });
                 }}
               >
                 See Client Success
@@ -588,21 +685,12 @@ const Home = () => {
         <motion.div className="container-wide" initial={{ opacity: 0, filter: "blur(12px)" }} animate={{ opacity: 1, filter: "blur(0px)" }} transition={{ duration: 0.6, ease: "easeOut" }}>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
             {stats.map((stat, index) => (
-              <motion.div
+              <Counter
                 key={index}
-                initial={{ opacity: 0, scale: 0.8 }}
-                animate={isVisible ? { opacity: 1, scale: 1 } : {}}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
-                className="text-center p-6 rounded-lg bg-white/10 backdrop-blur-sm border border-white/20"
-              >
-                <div className="flex justify-center mb-4">
-                  {stat.icon}
-                </div>
-                <h3 className="text-4xl font-bold mb-2">
-                  <CountUp end={stat.value} duration={2.5} />+
-                </h3>
-                <p className="text-sm text-white/80">{stat.label}</p>
-              </motion.div>
+                value={stat.value}
+                label={stat.label}
+                icon={stat.icon}
+              />
             ))}
           </div>
         </motion.div>
