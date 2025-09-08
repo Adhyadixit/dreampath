@@ -1,9 +1,11 @@
-import { useEffect, useState, lazy, Suspense, useRef } from "react";
+import { useEffect, useState, lazy, Suspense } from "react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
+import CardLite from "@/components/common/CardLite";
+import LazyImage from "@/components/common/LazyImage";
 import { Check, ArrowRight, Code, Layout, Globe, Smartphone, Shield, Settings, Users, Award, Zap } from "lucide-react";
-import { motion, useInView } from "framer-motion";
+import { motion } from "framer-motion";
 
 // Lazy load heavy components
 const ReviewsMarqueeLazy = lazy(() => import("@/components/home/ReviewsMarquee"));
@@ -122,62 +124,7 @@ const Home = () => {
     }
   ];
 
-  const Counter = ({ value, label, icon }: { value: number; label: string; icon: React.ReactNode }) => {
-    const [count, setCount] = useState(0);
-    const ref = useRef<HTMLDivElement>(null);
-    const isInView = useInView(ref, {
-      once: true,
-      amount: 0.5,
-    });
-
-    useEffect(() => {
-      if (isInView) {
-        const duration = 2000; // 2 seconds
-        const step = Math.ceil(value / (duration / 16)); // 60fps
-        
-        let current = 0;
-        const counter = setInterval(() => {
-          current += step;
-          if (current >= value) {
-            setCount(value);
-            clearInterval(counter);
-          } else {
-            setCount(current);
-          }
-        }, 16);
-
-        return () => clearInterval(counter);
-      }
-    }, [isInView, value]);
-
-    return (
-      <motion.div
-        ref={ref}
-        initial="hidden"
-        animate={isInView ? "visible" : "hidden"}
-        variants={{
-          hidden: { opacity: 0, y: 20 },
-          visible: { 
-            opacity: 1, 
-            y: 0,
-            transition: {
-              duration: 0.5,
-              ease: "easeOut"
-            }
-          }
-        }}
-        className="text-center p-6 rounded-lg bg-white/10 backdrop-blur-sm border border-white/20"
-      >
-        <div className="flex justify-center mb-4">
-          {icon}
-        </div>
-        <div className="text-3xl md:text-4xl font-bold text-dreampath-primary">
-          {count.toLocaleString()}+
-        </div>
-        <p className="text-sm text-white/80">{label}</p>
-      </motion.div>
-    );
-  };
+  
 
   const stats = [
     { value: 120, label: "Clients Worldwide", icon: <Globe className="h-6 w-6" /> },
@@ -185,18 +132,7 @@ const Home = () => {
     { value: 15, label: "Years Experience", icon: <Award className="h-6 w-6" /> },
     { value: 24, label: "Team Members", icon: <Users className="h-6 w-6" /> }
   ] as const;
-
-  const cardVariants: Record<string, any> = {
-    hidden: { opacity: 0, y: 20 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: {
-        duration: 0.5,
-        ease: "easeOut"
-      }
-    }
-  };
+  
   
   // Reviews marquee moved to a lazy component so it loads and runs only when visible
 
@@ -655,12 +591,10 @@ const Home = () => {
                 <div className="absolute -top-10 -right-10 w-32 h-32 bg-dreampath-secondary/30 rounded-full blur-xl"></div>
                 <div className="absolute -bottom-10 -left-10 w-32 h-32 bg-dreampath-primary/30 rounded-full blur-xl"></div>
                 <div className="rounded-2xl overflow-hidden shadow-2xl relative z-10 transform rotate-2 hover:rotate-0 transition-transform duration-500 cursor-pointer">
-                  <img 
-                    src="https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d" 
-                    alt="Team working on software development" 
+                  <LazyImage
+                    src="https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d"
+                    alt="Team working on software development"
                     className="w-full h-auto"
-                    loading="lazy"
-                    decoding="async"
                   />
                   <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-dreampath-primary/90 to-transparent p-6 text-white">
                     <h4 className="text-xl font-bold">Expert Team</h4>
@@ -683,16 +617,25 @@ const Home = () => {
       <LazySection minHeightClassName="min-h-[300px]" className="w-full [content-visibility:auto] [contain-intrinsic-size:340px]" threshold={0.4} rootMargin="0px 0px -1% 0px">
       <section className="bg-gradient-to-r from-dreampath-primary to-dreampath-dark text-white py-20">
         <motion.div className="container-wide" initial={{ opacity: 0, filter: "blur(12px)" }} animate={{ opacity: 1, filter: "blur(0px)" }} transition={{ duration: 0.6, ease: "easeOut" }}>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+          <motion.ul
+            className="grid grid-cols-2 md:grid-cols-4 gap-6"
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.4 }}
+            variants={{ hidden: { opacity: 0 }, visible: { opacity: 1, transition: { staggerChildren: 0.08 } } }}
+          >
             {stats.map((stat, index) => (
-              <Counter
+              <motion.li
                 key={index}
-                value={stat.value}
-                label={stat.label}
-                icon={stat.icon}
-              />
+                variants={{ hidden: { opacity: 0, y: 12 }, visible: { opacity: 1, y: 0, transition: { duration: 0.35 } } }}
+                className="text-center p-6 rounded-lg bg-white/10 backdrop-blur-sm border border-white/20"
+              >
+                <div className="flex justify-center mb-4">{stat.icon}</div>
+                <div className="text-3xl md:text-4xl font-bold text-dreampath-primary">{stat.value}+</div>
+                <p className="text-sm text-white/80">{stat.label}</p>
+              </motion.li>
             ))}
-          </div>
+          </motion.ul>
         </motion.div>
       </section>
       </LazySection>
@@ -725,36 +668,35 @@ const Home = () => {
             </motion.div>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <motion.ul
+            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.35 }}
+            variants={{ hidden: { opacity: 0 }, visible: { opacity: 1, transition: { staggerChildren: 0.08 } } }}
+          >
             {services.map((service, index) => (
-              <motion.div
+              <motion.li
                 key={index}
-                custom={index}
-                variants={cardVariants}
-                initial="hidden"
-                animate={isVisible ? "visible" : "hidden"}
-                className="scroll-animate"
+                variants={{ hidden: { opacity: 0, y: 16 }, visible: { opacity: 1, y: 0, transition: { duration: 0.35 } } }}
+                className="list-none"
               >
-                <Card className="h-full border border-gray-100 hover:border-dreampath-secondary transition-all duration-300 hover:shadow-xl group">
-                  <CardHeader>
-                    <div className="mb-4 rounded-full bg-dreampath-light p-3 w-16 h-16 flex items-center justify-center group-hover:bg-dreampath-secondary/20 transition-colors duration-300">
-                      {service.icon}
-                    </div>
-                    <CardTitle className="text-2xl">{service.title}</CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <p className="text-gray-600">{service.description}</p>
-                  </CardContent>
-                  <CardFooter>
+                <CardLite
+                  className="h-full border border-gray-100 hover:border-dreampath-secondary transition-all duration-300 hover:shadow-xl group"
+                  icon={<div className="mb-4 rounded-full bg-dreampath-light p-3 w-16 h-16 flex items-center justify-center group-hover:bg-dreampath-secondary/20 transition-colors duration-300">{service.icon}</div>}
+                  title={service.title}
+                  description={service.description}
+                >
+                  <div className="mt-4">
                     <Link to="/services" className="text-dreampath-secondary hover:text-dreampath-primary inline-flex items-center group">
-                      Learn More 
+                      Learn More
                       <ArrowRight className="ml-2 h-4 w-4 transform group-hover:translate-x-1 transition-transform" />
                     </Link>
-                  </CardFooter>
-                </Card>
-              </motion.div>
+                  </div>
+                </CardLite>
+              </motion.li>
             ))}
-          </div>
+          </motion.ul>
 
           <div className="text-center mt-12">
             <Link to="/services">

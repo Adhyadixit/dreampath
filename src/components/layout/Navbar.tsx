@@ -3,7 +3,6 @@ import { useState, useEffect, useMemo } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Menu, X, Leaf } from "lucide-react";
-import { motion, AnimatePresence } from "framer-motion";
 
 const navItems = [
   { name: "Home", path: "/" },
@@ -69,60 +68,44 @@ const Navbar = () => {
   }, []);
 
   return (
-    <motion.header
-      initial={{ y: -100, opacity: 0 }}
-      animate={{ y: 0, opacity: 1 }}
-      transition={{ duration: 0.8 }}
+    <header
       className={`fixed top-4 left-4 right-4 z-50 rounded-xl transition-all duration-300 ${
-        isScrolled 
-          ? 'bg-white/90 backdrop-blur-lg border border-white/20 shadow-lg text-foreground' 
+        isScrolled
+          ? 'bg-white/90 backdrop-blur-lg border border-white/20 shadow-lg text-foreground'
           : 'bg-transparent backdrop-blur-md border border-transparent text-white'
       }`}
     >
       <div className="container mx-auto px-6 py-3">
         <div className="flex items-center justify-between w-full">
-          <motion.div 
-            className="flex items-center space-x-2"
-            whileHover={{ scale: 1.03 }}
-          >
-            <motion.div
-              animate={{ rotate: 360 }}
-              transition={{ duration: 8, repeat: Infinity, ease: "linear" }}
-            >
-              <Leaf className="h-8 w-8 text-lime-400" />
-            </motion.div>
+          <div className="flex items-center space-x-2">
+            <Leaf className="h-8 w-8 text-lime-400" />
             <Link to="/" className="text-2xl font-bold">
               <span className="bg-gradient-to-r from-cyan-300 to-cyan-500 bg-clip-text text-transparent font-semibold drop-shadow-[0_0_8px_rgba(34,211,238,0.6)]">
                 DreamPath
               </span>
             </Link>
-          </motion.div>
-          
+          </div>
+
           {/* Desktop Navigation */}
           <nav className="hidden lg:flex items-center space-x-8">
             {navItems.map((item) => (
-              <motion.div
+              <a
                 key={item.path}
-                whileHover={{ y: -2 }}
-                whileTap={{ y: 0 }}
+                href={item.path}
+                onClick={(e) => handleNavigation(item.path, e)}
+                className={`${
+                  location.pathname === item.path.split('#')[0] ||
+                  (item.path === '#reviews' && location.hash === '#reviews')
+                    ? isScrolled
+                      ? 'text-dreampath-secondary font-medium'
+                      : 'text-white font-medium'
+                    : isScrolled
+                      ? 'text-foreground hover:text-dreampath-secondary/80'
+                      : 'text-white/90 hover:text-white'
+                } transition-colors cursor-pointer`}
               >
-<a
-                  href={item.path}
-                  onClick={(e) => handleNavigation(item.path, e)}
-                  className={`${
-                    location.pathname === item.path.split('#')[0] || 
-                    (item.path === '#reviews' && location.hash === '#reviews')
-                      ? isScrolled 
-                        ? 'text-dreampath-secondary font-medium' 
-                        : 'text-white font-medium'
-                      : isScrolled 
-                        ? 'text-foreground hover:text-dreampath-secondary/80' 
-                        : 'text-white/90 hover:text-white'
-                  } transition-colors cursor-pointer`}
-                >
-                  {item.name}
-                </a>
-              </motion.div>
+                {item.name}
+              </a>
             ))}
             <Button
               asChild
@@ -149,47 +132,35 @@ const Navbar = () => {
         </div>
 
         {/* Mobile menu */}
-        <AnimatePresence>
-          {isMenuOpen && (
-            <motion.div
-              initial={{ opacity: 0, y: -20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -20, transition: { duration: 0.15 } }}
-              transition={{ duration: 0.2, ease: "easeOut" }}
-              className="lg:hidden absolute top-full left-4 right-4 mt-1 bg-white/95 backdrop-blur-md shadow-xl rounded-xl overflow-hidden z-40"
-            >
-              <div className="flex flex-col space-y-1 p-2">
-                {navItems.map((item) => (
-                  <motion.div
-                    key={item.path}
-                    whileTap={{ scale: 0.98 }}
-                  >
-                    <a
-                      href={item.path}
-                      className={`block px-6 py-4 text-base font-medium border-b border-gray-100 ${
-                        location.pathname === item.path.split('#')[0]
-                          ? 'bg-brand-50 text-dreampath-secondary'
-                          : 'text-gray-700 hover:bg-gray-50 hover:text-dreampath-secondary'
-                      } transition-colors duration-200 cursor-pointer`}
-                      onClick={(e) => handleNavigation(item.path, e)}
-                    >
-                      {item.name}
-                    </a>
-                  </motion.div>
-                ))}
-                <Button
-                  asChild
-                  className="mt-2 bg-dreampath-secondary hover:bg-dreampath-accent"
-                  onClick={closeMenu}
+        {isMenuOpen && (
+          <div className="lg:hidden absolute top-full left-4 right-4 mt-1 bg-white/95 backdrop-blur-md shadow-xl rounded-xl overflow-hidden z-40">
+            <div className="flex flex-col space-y-1 p-2">
+              {navItems.map((item) => (
+                <a
+                  key={item.path}
+                  href={item.path}
+                  className={`block px-6 py-4 text-base font-medium border-b border-gray-100 ${
+                    location.pathname === item.path.split('#')[0]
+                      ? 'bg-brand-50 text-dreampath-secondary'
+                      : 'text-gray-700 hover:bg-gray-50 hover:text-dreampath-secondary'
+                  } transition-colors duration-200 cursor-pointer`}
+                  onClick={(e) => handleNavigation(item.path, e)}
                 >
-                  <Link to="/contact" className="w-full justify-center">Get Started</Link>
-                </Button>
-              </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
+                  {item.name}
+                </a>
+              ))}
+              <Button
+                asChild
+                className="mt-2 bg-dreampath-secondary hover:bg-dreampath-accent"
+                onClick={closeMenu}
+              >
+                <Link to="/contact" className="w-full justify-center">Get Started</Link>
+              </Button>
+            </div>
+          </div>
+        )}
       </div>
-    </motion.header>
+    </header>
   );
 };
 
