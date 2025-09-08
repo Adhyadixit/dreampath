@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -8,27 +9,38 @@ import Footer from "./components/layout/Footer";
 import Index from "./pages/Index";
 import BackToTopButton from "./components/common/BackToTopButton";
 import ChatWidget from "./components/chat/ChatWidget";
+import { initGTM } from "@/lib/gtm";
+import GTMProvider from "@/components/analytics/GTMProvider";
 
 const queryClient = new QueryClient();
 
-const App = () => (
-  <QueryClientProvider client={queryClient}>
-    <BrowserRouter>
-      <TooltipProvider>
-        <div className="flex flex-col min-h-screen">
-          <Navbar />
-          <main className="flex-grow">
-            <Index />
-          </main>
-          <Footer />
-          <Toaster />
-          <Sonner />
-          <BackToTopButton />
-          <ChatWidget />
-        </div>
-      </TooltipProvider>
-    </BrowserRouter>
-  </QueryClientProvider>
-);
+const App = () => {
+  // Initialize GTM on app load
+  useEffect(() => {
+    initGTM();
+  }, []);
+
+  return (
+    <QueryClientProvider client={queryClient}>
+      <BrowserRouter>
+        <TooltipProvider>
+          <GTMProvider>
+            <div className="flex flex-col min-h-screen">
+              <Navbar />
+              <main className="flex-grow">
+                <Index />
+              </main>
+              <Footer />
+              <Toaster />
+              <Sonner />
+              <BackToTopButton />
+              <ChatWidget />
+            </div>
+          </GTMProvider>
+        </TooltipProvider>
+      </BrowserRouter>
+    </QueryClientProvider>
+  );
+};
 
 export default App;
