@@ -156,7 +156,7 @@ const Home = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.2 }}
             >
-              AI-Powered Digital Solutions
+              <span className="block sm:inline-block w-full text-center sm:text-left">AI</span> Powered Digital Solutions
             </motion.h1>
             
             <motion.p 
