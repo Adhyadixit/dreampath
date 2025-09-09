@@ -130,15 +130,19 @@ const Home = () => {
         id="hero"
         className="relative min-h-[90vh] md:min-h-screen overflow-hidden flex items-start pt-32 md:pt-40 pb-16"
       >
-        {/* Background image with mobile optimization */}
-        <div 
-          className="absolute inset-0"
-          style={{
-            backgroundImage: `url(${heroImageUrl})`,
-            backgroundSize: "cover",
-            backgroundPosition: "center"
-          }}
-        />
+        {/* Optimized LCP image with fetchpriority="high" */}
+        <div className="absolute inset-0">
+          <img
+            src={heroImageUrl}
+            alt="AI and technology solutions"
+            className="w-full h-full object-cover object-center"
+            fetchPriority="high"
+            width="1920"
+            height="1080"
+            decoding="async"
+            loading="eager"
+          />
+        </div>
         {/* Enhanced gradient overlay */}
         <div className="absolute inset-0 bg-gradient-to-br from-indigo-950/95 via-purple-900/85 to-violet-800/90" />
         
@@ -158,6 +162,7 @@ const Home = () => {
 
             <h1 
               className="text-6xl sm:text-7xl md:text-8xl font-bold leading-tight bg-clip-text text-transparent bg-gradient-to-r from-white to-brand-100 pb-4 md:pb-6 animate-fade-up animate-delay-200"
+              style={{ contain: 'paint' }}  // Improves LCP by containing the paint area
             >
               AI Powered Digital Solutions
             </h1>
