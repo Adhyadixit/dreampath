@@ -94,7 +94,7 @@ const Home = () => {
         <div className="flex justify-center mb-4">
           {icon}
         </div>
-        <div className="text-3xl md:text-4xl font-bold text-dreampath-primary">
+        <div className="text-3xl md:text-4xl font-bold text-white">
           {value.toLocaleString()}+
         </div>
         <p className="text-sm text-white/80">{label}</p>
