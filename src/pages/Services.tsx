@@ -1,7 +1,32 @@
 import React, { useState, lazy, Suspense } from "react";
 import PageHeader from "@/components/common/PageHeader";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
-import { ArrowRight, Code, Layout, Globe, Smartphone, Shield, Settings, Database, Cloud, Clock, Sparkle, Star, MapPin, ShieldCheck, TrendingUp } from "lucide-react";
+import LazyServiceCard from "@/components/services/LazyServiceCard";
+import { 
+  Code, 
+  Globe, 
+  Smartphone, 
+  Database, 
+  Lock, 
+  Cloud, 
+  GitBranch, 
+  Server, 
+  Zap, 
+  Cpu, 
+  BarChart3, 
+  LayoutTemplate, 
+  Box, 
+  ShoppingCart, 
+  LayoutDashboard, 
+  Layers, 
+  Cable,
+  Layout,
+  Shield,
+  Settings,
+  Clock,
+  Star,
+  ArrowRight,
+  Sparkles
+} from 'lucide-react';
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -35,6 +60,90 @@ const Services = () => {
         "Integration services"
       ],
       value: "custom-software-development"
+    },
+    {
+      icon: <ShoppingCart className="h-10 w-10 text-dreampath-secondary" />,
+      title: "Shopify Development",
+      description: "High-converting e-commerce stores on Shopify with custom themes, apps, and performance optimization to drive sales and enhance customer experience.",
+      features: [
+        "Shopify Plus expertise",
+        "Custom app development",
+        "Conversion optimization",
+        "Third-party integrations"
+      ],
+      value: "shopify-development"
+    },
+    {
+      icon: <LayoutTemplate className="h-10 w-10 text-dreampath-secondary" />,
+      title: "WordPress Development",
+      description: "Powerful, scalable WordPress websites with custom themes, plugins, and enterprise-grade security for businesses of all sizes.",
+      features: [
+        "Headless WordPress",
+        "Custom plugin development",
+        "Performance optimization",
+        "E-commerce solutions"
+      ],
+      value: "wordpress-development"
+    },
+    {
+      icon: <Box className="h-10 w-10 text-dreampath-secondary" />,
+      title: "3D Website Development",
+      description: "Immersive 3D web experiences using WebGL and Three.js for product configurators, portfolios, and virtual showrooms.",
+      features: [
+        "WebGL & Three.js",
+        "3D model integration",
+        "Performance optimization",
+        "Cross-device compatibility"
+      ],
+      value: "3d-website-development"
+    },
+    {
+      icon: <LayoutDashboard className="h-10 w-10 text-dreampath-secondary" />,
+      title: "Wix Studio Development",
+      description: "Professional websites with Wix Studio's advanced capabilities, custom designs, animations, and e-commerce functionality.",
+      features: [
+        "Custom code implementation",
+        "Advanced animations",
+        "E-commerce integration",
+        "Responsive design"
+      ],
+      value: "wix-studio-development"
+    },
+    {
+      icon: <Layers className="h-10 w-10 text-dreampath-secondary" />,
+      title: "Framer Development",
+      description: "Beautiful, interactive websites with Framer's powerful design and development tools, perfect for modern web experiences.",
+      features: [
+        "Custom animations",
+        "Responsive design",
+        "CMS integration",
+        "Visual development"
+      ],
+      value: "framer-development"
+    },
+    {
+      icon: <Smartphone className="h-10 w-10 text-dreampath-secondary" />,
+      title: "Progressive Web Apps",
+      description: "App-like experiences on the web with offline functionality, push notifications, and home screen installation.",
+      features: [
+        "Offline-first approach",
+        "Push notifications",
+        "App store deployment",
+        "Cross-platform"
+      ],
+      value: "progressive-web-apps"
+    },
+    {
+      icon: <Cable className="h-10 w-10 text-dreampath-secondary" />,
+      title: "API Development",
+      description: "Custom API development and integration services to connect your systems and data with REST, GraphQL, and WebSockets.",
+      features: [
+        "API-first approach",
+        "Enterprise integration",
+        "Microservices architecture",
+        "Comprehensive documentation"
+      ],
+      value: "api-development"
     },
     {
       icon: <Globe className="h-10 w-10 text-dreampath-secondary" />,
@@ -167,50 +276,12 @@ const Services = () => {
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {services.map((service, index) => (
-              <Card key={index} className="border hover:shadow-md transition-all duration-300">
-                <CardHeader>
-                  <div className="mb-4">
-                    {service.icon}
-                  </div>
-                  <CardTitle className="text-xl">{service.title}</CardTitle>
-                  <CardDescription className="text-base mt-2 text-gray-600">
-                    {service.description}
-                  </CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <h4 className="font-medium mb-2">Key Features:</h4>
-                  <ul className="space-y-2">
-                    {service.features.map((feature, i) => (
-                      <li key={i} className="flex items-start">
-                        <ArrowRight className="h-5 w-5 text-dreampath-secondary mr-2 mt-0.5 flex-shrink-0" />
-                        <span>{feature}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </CardContent>
-                <CardFooter className="flex justify-between pt-4">
-                  <div>
-                    {service.value === 'reputation-management' ? (
-                      <Link to="/services/reputation-management" className="text-dreampath-secondary hover:text-dreampath-primary inline-flex items-center group">
-                        Learn More
-                        <ArrowRight className="ml-2 h-4 w-4 transform group-hover:translate-x-1 transition-transform" />
-                      </Link>
-                    ) : (
-                      <Link to={`/services/${service.value}`} className="text-dreampath-secondary hover:text-dreampath-primary inline-flex items-center group">
-                        Learn More
-                        <ArrowRight className="ml-2 h-4 w-4 transform group-hover:translate-x-1 transition-transform" />
-                      </Link>
-                    )}
-                  </div>
-                  <Button 
-                    variant="default" 
-                    className="bg-dreampath-primary hover:bg-dreampath-dark"
-                    onClick={() => handleServiceClick((service as any).value || service.title.toLowerCase().replace(/\s+/g, '-'))}
-                  >
-                    Request Info
-                  </Button>
-                </CardFooter>
-              </Card>
+              <LazyServiceCard 
+                key={index} 
+                service={service} 
+                index={index} 
+                handleServiceClick={handleServiceClick} 
+              />
             ))}
           </div>
         </motion.div>
@@ -309,7 +380,7 @@ const Services = () => {
         <section className="section-padding bg-dreampath-primary text-white">
         <motion.div className="container-wide" initial={{ opacity: 0, filter: "blur(12px)" }} animate={{ opacity: 1, filter: "blur(0px)" }} transition={{ duration: 0.6, ease: "easeOut" }}>
           <div className="max-w-3xl mx-auto text-center">
-            <Sparkle className="h-12 w-12 mx-auto mb-6 text-dreampath-accent" />
+            <Sparkles className="h-12 w-12 mx-auto mb-6 text-dreampath-accent" />
             <h2 className="text-3xl md:text-4xl font-bold mb-6">Ready to Start Your Project?</h2>
             <p className="text-xl mb-8">
               Contact us today to discuss how we can help bring your ideas to life with our expert services.

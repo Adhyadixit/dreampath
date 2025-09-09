@@ -271,6 +271,209 @@ const SERVICES_CONTENT: Record<string, {
       { feature: "Outcomes", us: "Measured", competitors: "Vague" },
       { feature: "Alignment", us: "Exec + Eng + Ops", competitors: "Siloed" }
     ]
+  },
+  "shopify-development": {
+    title: "Shopify Development",
+    subtitle: "High-converting e-commerce stores on Shopify",
+    overview: [
+      "Custom Shopify store development that drives sales and enhances customer experience.",
+      "From theme customization to app development and performance optimization."
+    ],
+    whyChooseUs: [
+      "Shopify Plus certified developers",
+      "Custom app development",
+      "Conversion rate optimization",
+      "Seamless third-party integrations"
+    ],
+    benefits: [
+      "Faster time to market",
+      "Mobile-optimized shopping experience",
+      "Scalable architecture for growth",
+      "Built-in security and PCI compliance"
+    ],
+    faqs: [
+      { q: "Can you migrate from another platform?", a: "Yes, we handle seamless migrations from WooCommerce, Magento, and other platforms." },
+      { q: "Do you offer ongoing support?", a: "We provide maintenance plans with regular updates and optimizations." }
+    ],
+    comparison: [
+      { feature: "Customization", us: "Bespoke solutions", competitors: "Template-based" },
+      { feature: "Performance", us: "<2s load time", competitors: "3-5s average" },
+      { feature: "Support", us: "24/7 availability", competitors: "Business hours" }
+    ]
+  },
+  "wordpress-development": {
+    title: "WordPress Development",
+    subtitle: "Powerful, scalable WordPress websites",
+    overview: [
+      "Custom WordPress development for businesses of all sizes.",
+      "We build fast, secure, and SEO-friendly websites with custom themes and plugins."
+    ],
+    whyChooseUs: [
+      "Headless WordPress expertise",
+      "Custom plugin development",
+      "Enterprise-grade security",
+      "Performance optimization"
+    ],
+    benefits: [
+      "Easy content management",
+      "SEO-friendly structure",
+      "Scalable architecture",
+      "Multilingual support"
+    ],
+    faqs: [
+      { q: "Do you handle website maintenance?", a: "Yes, we offer comprehensive maintenance and security packages." },
+      { q: "Can you improve my existing WordPress site?", a: "We can audit and enhance performance, security, and UX." }
+    ],
+    comparison: [
+      { feature: "Security", us: "Enterprise-grade", competitors: "Basic" },
+      { feature: "Performance", us: "Optimized stack", competitors: "Generic setup" },
+      { feature: "Customization", us: "100% custom", competitors: "Pre-built themes" }
+    ]
+  },
+  "3d-website-development": {
+    title: "3D Website Development",
+    subtitle: "Immersive 3D web experiences",
+    overview: [
+      "Create stunning 3D web experiences with WebGL, Three.js, and modern web technologies.",
+      "From product configurators to interactive 3D portfolios and virtual showrooms."
+    ],
+    whyChooseUs: [
+      "WebGL and Three.js experts",
+      "3D modeling integration",
+      "Performance optimization",
+      "Cross-device compatibility"
+    ],
+    benefits: [
+      "Higher engagement rates",
+      "Competitive differentiation",
+      "Better conversion for products",
+      "Memorable brand experiences"
+    ],
+    faqs: [
+      { q: "How does 3D impact performance?", a: "We optimize assets and implement lazy loading for smooth performance." },
+      { q: "Can you convert 3D models for web?", a: "Yes, we prepare 3D assets for optimal web performance." }
+    ],
+    comparison: [
+      { feature: "Performance", us: "60fps smooth", competitors: "<30fps" },
+      { feature: "Compatibility", us: "Cross-browser", competitors: "Limited" },
+      { feature: "Integration", us: "Seamless", competitors: "Clunky" }
+    ]
+  },
+  "wix-studio-development": {
+    title: "Wix Studio Development",
+    subtitle: "Professional websites with Wix Studio",
+    overview: [
+      "Leverage Wix Studio's advanced capabilities for business websites.",
+      "Custom designs, animations, and functionality tailored to your brand."
+    ],
+    whyChooseUs: [
+      "Wix Studio experts",
+      "Custom code implementation",
+      "Advanced animations",
+      "E-commerce integration"
+    ],
+    benefits: [
+      "Faster development",
+      "Easy content management",
+      "Responsive design",
+      "Built-in hosting"
+    ],
+    faqs: [
+      { q: "Can you migrate my existing Wix site?", a: "Yes, we can upgrade and enhance your current Wix site." },
+      { q: "Do you offer training?", a: "We provide comprehensive training on managing your Wix Studio site." }
+    ],
+    comparison: [
+      { feature: "Customization", us: "Advanced", competitors: "Basic" },
+      { feature: "Support", us: "Dedicated", competitors: "Community" },
+      { feature: "Performance", us: "Optimized", competitors: "Standard" }
+    ]
+  },
+  "framer-development": {
+    title: "Framer Development",
+    subtitle: "Interactive websites with Framer",
+    overview: [
+      "Create beautiful, interactive websites with Framer's powerful design and development tools.",
+      "Ideal for startups and businesses looking for cutting-edge web experiences."
+    ],
+    whyChooseUs: [
+      "Framer experts",
+      "Custom animations",
+      "Responsive design",
+      "CMS integration"
+    ],
+    benefits: [
+      "Lightning-fast sites",
+      "Visual development",
+      "Easy updates",
+      "Great for MVPs"
+    ],
+    faqs: [
+      { q: "Can you build e-commerce with Framer?", a: "Yes, we can integrate e-commerce functionality using third-party tools." },
+      { q: "Is Framer good for SEO?", a: "With proper implementation, Framer sites can be fully SEO-friendly." }
+    ],
+    comparison: [
+      { feature: "Interactivity", us: "Advanced", competitors: "Basic" },
+      { feature: "Speed", us: "Optimized", competitors: "Standard" },
+      { feature: "Flexibility", us: "Custom code", competitors: "Template-based" }
+    ]
+  },
+  "progressive-web-apps": {
+    title: "Progressive Web Apps (PWA)",
+    subtitle: "App-like experiences on the web",
+    overview: [
+      "Build fast, reliable, and engaging Progressive Web Apps for your business.",
+      "Offline functionality, push notifications, and home screen installation."
+    ],
+    whyChooseUs: [
+      "PWA specialists",
+      "Offline-first approach",
+      "Push notifications",
+      "App store deployment"
+    ],
+    benefits: [
+      "Lower development cost",
+      "Cross-platform",
+      "No app store fees",
+      "Automatic updates"
+    ],
+    faqs: [
+      { q: "Do PWAs work on all devices?", a: "PWAs work across all modern browsers and devices." },
+      { q: "Can PWAs be listed in app stores?", a: "Yes, we can package PWAs for app store submission." }
+    ],
+    comparison: [
+      { feature: "Cost", us: "70% less", competitors: "Native apps" },
+      { feature: "Reach", us: "Broader", competitors: "Limited" },
+      { feature: "Maintenance", us: "Simpler", competitors: "Complex" }
+    ]
+  },
+  "api-development": {
+    title: "API Development & Integration",
+    subtitle: "Seamless system connectivity",
+    overview: [
+      "Custom API development and integration services to connect your systems and data.",
+      "REST, GraphQL, and WebSockets for real-time applications."
+    ],
+    whyChooseUs: [
+      "API-first approach",
+      "Enterprise integration",
+      "Microservices architecture",
+      "Comprehensive documentation"
+    ],
+    benefits: [
+      "Improved efficiency",
+      "Data consistency",
+      "Scalable infrastructure",
+      "Better security"
+    ],
+    faqs: [
+      { q: "Do you provide API documentation?", a: "Yes, we create comprehensive API documentation for all our projects." },
+      { q: "Can you work with legacy systems?", a: "We specialize in modernizing and integrating legacy systems." }
+    ],
+    comparison: [
+      { feature: "Reliability", us: "99.99% uptime", competitors: "Variable" },
+      { feature: "Security", us: "OAuth2/JWT", competitors: "Basic auth" },
+      { feature: "Performance", us: "Optimized", competitors: "Standard" }
+    ]
   }
 };
 

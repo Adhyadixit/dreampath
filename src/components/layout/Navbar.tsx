@@ -42,7 +42,25 @@ const Navbar = () => {
         // If we're already on home, just scroll to the section
         const element = document.querySelector(path);
         if (element) {
-          element.scrollIntoView({ behavior: 'smooth' });
+          // Add a small timeout to ensure the menu is closed before scrolling
+          setTimeout(() => {
+            element.scrollIntoView({ 
+              behavior: 'smooth',
+              block: 'start'
+            });
+          }, 100);
+        } else if (path === '#reviews') {
+          // If element not found and it's the reviews section, try scrolling to it after a short delay
+          // This handles cases where the reviews section is loaded dynamically
+          setTimeout(() => {
+            const reviewsSection = document.querySelector('#reviews');
+            if (reviewsSection) {
+              reviewsSection.scrollIntoView({ 
+                behavior: 'smooth',
+                block: 'start'
+              });
+            }
+          }, 500);
         }
       }
     } else {

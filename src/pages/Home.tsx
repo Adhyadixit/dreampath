@@ -1,93 +1,53 @@
-import { useEffect, useState, lazy, Suspense, useRef } from "react";
+import React, { Suspense } from 'react';
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
 import { Check, ArrowRight, Code, Layout, Globe, Smartphone, Shield, Settings, Users, Award, Zap } from "lucide-react";
-import { motion, useInView } from "framer-motion";
+import { motion } from "framer-motion";
+import LazySection from "@/components/common/LazySection";
 
 // Lazy load heavy components
-const ReviewsMarqueeLazy = lazy(() => import("@/components/home/ReviewsMarquee"));
-const ServiceKeywordsLazy = lazy(() => import("@/components/services/ServiceKeywords"));
-const LazySection = lazy(() => import("@/components/common/LazySection"));
+const ReviewsMarqueeLazy = React.lazy(() => import("@/components/home/ReviewsMarquee"));
+const ServiceKeywordsLazy = React.lazy(() => import("@/components/services/ServiceKeywords"));
+const ServicesSectionLazy = React.lazy(() => import("@/components/home/ServicesSection"));
 
-// Simple animation utility
-const fadeIn: Record<string, any> = {
-  initial: { opacity: 0, y: 20 },
-  animate: { 
+// Simple animation variants for better performance
+const fadeIn = {
+  hidden: { opacity: 0, y: 20 },
+  visible: { 
     opacity: 1, 
     y: 0,
-    transition: {
-      duration: 0.5,
-      ease: "easeOut"
-    }
-  },
+    transition: { duration: 0.5, ease: "easeOut" }
+  }
 };
 
-// Default hero image URL - Futuristic tech/AI theme
-const heroImageUrl = "https://images.unsplash.com/photo-1635070041078-e363dbe005cb?q=80&w=2070&auto=format&fit=crop&w=1920";
+// Optimized hero image - Using WebP format for better performance
+const heroImageUrl = "https://images.unsplash.com/photo-1635070041078-e363dbe005cb?q=80&w=1920&auto=format&fit=crop&fm=webp";
 
-// Function to get reliable tech logo URLs
+// Tech stack logos - Using a simple object for better performance
+const techLogos: Record<string, string> = {
+  'React': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg',
+  'Node.js': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nodejs/nodejs-original.svg',
+  'Python': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg',
+  'AWS': 'https://uxwing.com/wp-content/themes/uxwing/download/brands-and-social-media/aws-icon.png',
+  'Flutter': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/flutter/flutter-original.svg',
+  'MongoDB': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mongodb/mongodb-original.svg',
+  'Angular': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/angularjs/angularjs-original.svg',
+  'Vue.js': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/vuejs/vuejs-original.svg',
+  'TypeScript': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/typescript/typescript-original.svg',
+  'Go': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/go/go-original-wordmark.svg',
+  'Docker': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/docker/docker-original.svg',
+  'Kubernetes': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/kubernetes/kubernetes-plain.svg'
+};
+
+// Simple function to get tech logo URL
 const getTechLogoUrl = (tech: string): string => {
-  const logos: Record<string, string> = {
-    'React': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg',
-    'Node.js': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nodejs/nodejs-original.svg',
-    'Python': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg',
-    'AWS': 'https://uxwing.com/wp-content/themes/uxwing/download/brands-and-social-media/aws-icon.png',
-    'Flutter': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/flutter/flutter-original.svg',
-    'MongoDB': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mongodb/mongodb-original.svg',
-    'Angular': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/angularjs/angularjs-original.svg',
-    'Vue.js': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/vuejs/vuejs-original.svg',
-    'TypeScript': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/typescript/typescript-original.svg',
-    'Go': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/go/go-original-wordmark.svg',
-    'Docker': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/docker/docker-original.svg',
-    'Kubernetes': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/kubernetes/kubernetes-plain.svg'
-  };
-  
-  return logos[tech] || `https://ui-avatars.com/api/?name=${tech}&background=0D8ABC&color=fff`;
+  return techLogos[tech] || `https://ui-avatars.com/api/?name=${tech}&background=0D8ABC&color=fff`;
 };
 
 const Home = () => {
-  const [mounted, setMounted] = useState(false);
-  const [isVisible, setIsVisible] = useState(false);
-  
-  useEffect(() => {
-    setMounted(true);
-    
-    // Simple scroll animation handler
-    const handleScroll = () => {
-      const elements = document.querySelectorAll('.scroll-animate');
-      elements.forEach((el) => {
-        const rect = el.getBoundingClientRect();
-        const isVisible = (rect.top <= window.innerHeight * 0.9) && 
-                         (rect.bottom >= 0);
-        
-        if (isVisible) {
-          el.classList.add('animate-in');
-        }
-      });
-    };
-    
-    // Debounce scroll handler
-    let ticking = false;
-    const onScroll = () => {
-      if (!ticking) {
-        window.requestAnimationFrame(() => {
-          handleScroll();
-          ticking = false;
-        });
-        ticking = true;
-      }
-    };
-    
-    // Initial check
-    handleScroll();
-    
-    window.addEventListener('scroll', onScroll, { passive: true });
-    
-    return () => {
-      window.removeEventListener('scroll', onScroll);
-    };
-  }, []);
+  // Remove unnecessary state and effects for scroll animations
+  // Let CSS handle the animations for better performance
 
   const services = [
     {
@@ -123,56 +83,19 @@ const Home = () => {
   ];
 
   const Counter = ({ value, label, icon }: { value: number; label: string; icon: React.ReactNode }) => {
-    const [count, setCount] = useState(0);
-    const ref = useRef<HTMLDivElement>(null);
-    const isInView = useInView(ref, {
-      once: true,
-      amount: 0.5,
-    });
-
-    useEffect(() => {
-      if (isInView) {
-        const duration = 2000; // 2 seconds
-        const step = Math.ceil(value / (duration / 16)); // 60fps
-        
-        let current = 0;
-        const counter = setInterval(() => {
-          current += step;
-          if (current >= value) {
-            setCount(value);
-            clearInterval(counter);
-          } else {
-            setCount(current);
-          }
-        }, 16);
-
-        return () => clearInterval(counter);
-      }
-    }, [isInView, value]);
-
     return (
       <motion.div
-        ref={ref}
-        initial="hidden"
-        animate={isInView ? "visible" : "hidden"}
-        variants={{
-          hidden: { opacity: 0, y: 20 },
-          visible: { 
-            opacity: 1, 
-            y: 0,
-            transition: {
-              duration: 0.5,
-              ease: "easeOut"
-            }
-          }
-        }}
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.5, ease: "easeOut" }}
         className="text-center p-6 rounded-lg bg-white/10 backdrop-blur-sm border border-white/20"
       >
         <div className="flex justify-center mb-4">
           {icon}
         </div>
         <div className="text-3xl md:text-4xl font-bold text-dreampath-primary">
-          {count.toLocaleString()}+
+          {value.toLocaleString()}+
         </div>
         <p className="text-sm text-white/80">{label}</p>
       </motion.div>
@@ -213,9 +136,7 @@ const Home = () => {
           style={{
             backgroundImage: `url(${heroImageUrl})`,
             backgroundSize: "cover",
-            backgroundPosition: "center",
-            // Remove fixed attachment on mobile to fix iOS issues
-            backgroundAttachment: window.innerWidth >= 768 ? "fixed" : "scroll"
+            backgroundPosition: "center"
           }}
         />
         {/* Enhanced gradient overlay */}
@@ -229,38 +150,26 @@ const Home = () => {
         
         <div className="container-wide relative z-10 text-white h-full flex items-center">
           <div className="max-w-4xl text-left px-4 sm:px-6 md:px-8 w-full">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6 }}
-              className="inline-block px-4 py-2 mb-5 md:mb-6 text-base md:text-base font-medium text-brand-100 bg-brand-500/20 backdrop-blur-sm rounded-full border border-brand-400/20"
+            <div
+              className="inline-block px-4 py-2 mb-5 md:mb-6 text-base md:text-base font-medium text-brand-100 bg-brand-500/20 backdrop-blur-sm rounded-full border border-brand-400/20 animate-fade-up"
             >
               Welcome to the Future of Technology
-            </motion.div>
-            
-            <motion.h1 
-              className="text-6xl sm:text-7xl md:text-8xl font-bold leading-tight bg-clip-text text-transparent bg-gradient-to-r from-white to-brand-100 pb-4 md:pb-6"
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.2 }}
+            </div>
+
+            <h1 
+              className="text-6xl sm:text-7xl md:text-8xl font-bold leading-tight bg-clip-text text-transparent bg-gradient-to-r from-white to-brand-100 pb-4 md:pb-6 animate-fade-up animate-delay-200"
             >
               AI Powered Digital Solutions
-            </motion.h1>
-            
-            <motion.p 
-              className="mt-4 md:mt-6 text-xl md:text-2xl text-brand-100 max-w-3xl mx-auto leading-relaxed"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.4 }}
+            </h1>
+
+            <p 
+              className="mt-4 md:mt-6 text-xl md:text-2xl text-brand-100 max-w-3xl mx-auto leading-relaxed animate-fade-up animate-delay-400"
             >
               We build intelligent, scalable solutions that drive business growth through cutting-edge AI, cloud, and web3 technologies.
-            </motion.p>
-            
-            <motion.div 
-              className="mt-4 md:mt-10 flex flex-wrap justify-center gap-2 md:gap-4"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.6 }}
+            </p>
+
+            <div 
+              className="mt-4 md:mt-10 flex flex-wrap justify-center gap-2 md:gap-4 animate-fade-up animate-delay-600"
             >
               <Button 
                 asChild
@@ -273,29 +182,10 @@ const Home = () => {
                 </Link>
               </Button>
               
-              <Button 
-                variant="outline"
-                size="lg"
-                className="text-base md:text-lg px-6 md:px-8 py-5 md:py-6 rounded-xl border-2 border-white/20 bg-white/5 backdrop-blur-sm hover:bg-white/10 hover:border-white/30 transition-all duration-300 transform hover:scale-105"
-                onClick={() => {
-                  // Use requestAnimationFrame to ensure the DOM is ready
-                  requestAnimationFrame(() => {
-                    const element = document.getElementById('reviews');
-                    if (element) {
-                      // Add a small delay to ensure smooth scrolling on mobile
-                      setTimeout(() => {
-                        element.scrollIntoView({ 
-                          behavior: 'smooth',
-                          block: 'start'
-                        });
-                      }, 100);
-                    }
-                  });
-                }}
-              >
-                See Client Success
+              <Button asChild variant="outline" size="lg" className="text-base md:text-lg px-6 md:px-8 py-5 md:py-6 rounded-xl border-2 border-white/20 bg-white/5 backdrop-blur-sm hover:bg-white/10 hover:border-white/30 transition-all duration-300 transform hover:scale-105">
+                <a href="#reviews">See Client Success</a>
               </Button>
-            </motion.div>
+            </div>
             
             {/* Tech stack pills */}
             <motion.div 
@@ -461,8 +351,10 @@ const Home = () => {
       </LazySection>
 
       {/* Reviews / Testimonials */}
+      {/* Persistent anchor for hash navigation, even before lazy content mounts */}
+      <div id="reviews" className="h-0 scroll-mt-24 md:scroll-mt-28" aria-hidden="true" />
       <LazySection minHeightClassName="min-h-[520px]" className="w-full [content-visibility:auto] [contain-intrinsic-size:560px]" threshold={0.4} rootMargin="0px 0px -1% 0px">
-        <section id="reviews" className="py-16 bg-white overflow-hidden">
+        <section className="py-16 bg-white overflow-hidden">
           <Suspense fallback={<div className="container-wide"><div className="h-64 rounded-lg bg-gray-50" /></div>}>
             <ReviewsMarqueeLazy />
           </Suspense>
@@ -585,7 +477,8 @@ const Home = () => {
         <motion.div className="container-wide relative z-10" initial={{ opacity: 0, filter: "blur(12px)" }} animate={{ opacity: 1, filter: "blur(0px)" }} transition={{ duration: 0.6, ease: "easeOut" }}>
           <motion.div
             initial={{ opacity: 0, y: 20 }}
-            animate={isVisible ? { opacity: 1, y: 0 } : {}}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
             transition={{ duration: 0.8, ease: "easeOut" }}
             className="text-center max-w-3xl mx-auto mb-16"
           >
@@ -602,7 +495,8 @@ const Home = () => {
             <div className="order-2 md:order-1">
               <motion.div
                 initial={{ opacity: 0, x: -50 }}
-                animate={isVisible ? { opacity: 1, x: 0 } : {}}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
                 transition={{ duration: 0.5, delay: 0.2 }}
               >
                 <h3 className="text-3xl font-bold mb-6 text-dreampath-primary">
@@ -648,7 +542,8 @@ const Home = () => {
             <div className="order-1 md:order-2">
               <motion.div
                 initial={{ opacity: 0, y: 50 }}
-                animate={isVisible ? { opacity: 1, y: 0 } : {}}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
                 transition={{ duration: 0.5, delay: 0.4 }}
                 className="relative"
               >
@@ -697,75 +592,11 @@ const Home = () => {
       </section>
       </LazySection>
 
-      {/* Services section */}
+      {/* Services section (lazy-loaded) */}
       <LazySection minHeightClassName="min-h-[900px]" className="w-full [content-visibility:auto] [contain-intrinsic-size:960px]" threshold={0.4} rootMargin="0px 0px -1% 0px">
-      <section className="section-padding bg-white relative overflow-hidden">
-        <div className="absolute top-0 left-0 w-full h-20 bg-gradient-to-b from-white to-transparent z-10"></div>
-        
-        {/* Animated background elements */}
-        <div className="absolute inset-0 overflow-hidden">
-          <div className="absolute top-1/4 left-1/4 w-64 h-64 bg-brand-100 rounded-full mix-blend-multiply filter blur-3xl opacity-70 animate-float"></div>
-          <div className="absolute bottom-1/4 right-1/3 w-80 h-80 bg-teal-100 rounded-full mix-blend-multiply filter blur-3xl opacity-70 animate-float-delayed"></div>
-        </div>
-        
-        <motion.div className="container-wide relative z-10" initial={{ opacity: 0, filter: "blur(12px)" }} animate={{ opacity: 1, filter: "blur(0px)" }} transition={{ duration: 0.6, ease: "easeOut" }}>
-          <div className="text-center max-w-3xl mx-auto mb-16 scroll-animate">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={isVisible ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.5 }}
-            >
-              <h2 className="text-4xl font-bold mb-6 text-dreampath-primary">
-                Our Services
-              </h2>
-              <p className="text-xl text-gray-700">
-                We offer a comprehensive range of software development services 
-                to help businesses transform their operations and achieve their goals.
-              </p>
-            </motion.div>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {services.map((service, index) => (
-              <motion.div
-                key={index}
-                custom={index}
-                variants={cardVariants}
-                initial="hidden"
-                animate={isVisible ? "visible" : "hidden"}
-                className="scroll-animate"
-              >
-                <Card className="h-full border border-gray-100 hover:border-dreampath-secondary transition-all duration-300 hover:shadow-xl group">
-                  <CardHeader>
-                    <div className="mb-4 rounded-full bg-dreampath-light p-3 w-16 h-16 flex items-center justify-center group-hover:bg-dreampath-secondary/20 transition-colors duration-300">
-                      {service.icon}
-                    </div>
-                    <CardTitle className="text-2xl">{service.title}</CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <p className="text-gray-600">{service.description}</p>
-                  </CardContent>
-                  <CardFooter>
-                    <Link to="/services" className="text-dreampath-secondary hover:text-dreampath-primary inline-flex items-center group">
-                      Learn More 
-                      <ArrowRight className="ml-2 h-4 w-4 transform group-hover:translate-x-1 transition-transform" />
-                    </Link>
-                  </CardFooter>
-                </Card>
-              </motion.div>
-            ))}
-          </div>
-
-          <div className="text-center mt-12">
-            <Link to="/services">
-              <Button className="bg-dreampath-primary hover:bg-dreampath-dark relative overflow-hidden group">
-                <span className="relative z-10">View All Services</span>
-                <div className="absolute inset-0 bg-dreampath-secondary transform scale-x-0 group-hover:scale-x-100 transition-transform origin-left"></div>
-              </Button>
-            </Link>
-          </div>
-        </motion.div>
-      </section>
+        <Suspense fallback={<div className="container-wide"><div className="h-[480px] rounded-xl bg-gray-50" /></div>}>
+          <ServicesSectionLazy />
+        </Suspense>
       </LazySection>
 
       {/* Technology Section */}
@@ -779,7 +610,8 @@ const Home = () => {
         <motion.div className="container-wide relative z-10" initial={{ opacity: 0, filter: "blur(12px)" }} animate={{ opacity: 1, filter: "blur(0px)" }} transition={{ duration: 0.6, ease: "easeOut" }}>
           <motion.div
             initial={{ opacity: 0, y: 20 }}
-            animate={isVisible ? { opacity: 1, y: 0 } : {}}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
             transition={{ duration: 0.5 }}
             className="text-center max-w-3xl mx-auto mb-16"
           >
@@ -797,7 +629,8 @@ const Home = () => {
               <motion.div
                 key={index}
                 initial={{ opacity: 0, y: 20 }}
-                animate={isVisible ? { opacity: 1, y: 0 } : {}}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
                 transition={{ duration: 0.5, delay: index * 0.05 }}
                 className="flex flex-col items-center"
               >
@@ -829,7 +662,8 @@ const Home = () => {
         <motion.div className="container-wide relative z-10" initial={{ opacity: 0, filter: "blur(12px)" }} animate={{ opacity: 1, filter: "blur(0px)" }} transition={{ duration: 0.6, ease: "easeOut" }}>
           <motion.div
             initial={{ opacity: 0, y: 20 }}
-            animate={isVisible ? { opacity: 1, y: 0 } : {}}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
             transition={{ duration: 0.5 }}
             className="text-center max-w-3xl mx-auto mb-12"
           >
@@ -879,7 +713,8 @@ const Home = () => {
         <div className="container-wide relative z-10">
           <motion.div
             initial={{ opacity: 0, y: 20, filter: "blur(10px)" }}
-            animate={isVisible ? { opacity: 1, y: 0, filter: "blur(0px)" } : {}}
+            whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+            viewport={{ once: true }}
             transition={{ duration: 0.6, ease: "easeOut" }}
             className="text-center max-w-3xl mx-auto"
           >
