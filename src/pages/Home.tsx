@@ -155,20 +155,19 @@ const Home = () => {
         <div className="container-wide relative z-10 text-white h-full flex items-center">
           <div className="max-w-4xl text-left px-4 sm:px-6 md:px-8 w-full">
             <div
-              className="inline-block px-4 py-2 mb-5 md:mb-6 text-base md:text-base font-medium text-brand-100 bg-brand-500/20 backdrop-blur-sm rounded-full border border-brand-400/20 animate-fade-up"
+              className="inline-block px-4 py-2 mb-5 md:mb-6 text-base md:text-base font-medium text-brand-100 bg-brand-500/20 backdrop-blur-sm rounded-full border border-brand-400/20"
             >
               Welcome to the Future of Technology
             </div>
 
             <h1 
-              className="text-6xl sm:text-7xl md:text-8xl font-bold leading-tight bg-clip-text text-transparent bg-gradient-to-r from-white to-brand-100 pb-4 md:pb-6 animate-fade-up animate-delay-200"
-              style={{ contain: 'paint' }}  // Improves LCP by containing the paint area
+              className="text-6xl sm:text-7xl md:text-8xl font-bold leading-tight text-white pb-4 md:pb-6"
             >
               AI Powered Digital Solutions
             </h1>
 
             <p 
-              className="mt-4 md:mt-6 text-xl md:text-2xl text-brand-100 max-w-3xl mx-auto leading-relaxed animate-fade-up animate-delay-400"
+              className="mt-4 md:mt-6 text-xl md:text-2xl text-brand-100 max-w-3xl mx-auto leading-relaxed"
             >
               We build intelligent, scalable solutions that drive business growth through cutting-edge AI, cloud, and web3 technologies.
             </p>
