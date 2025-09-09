@@ -31,6 +31,7 @@ import EdTechApps from "./services/EdTechApps";
 import Blogs from "./Blogs";
 import SubmitBlog from "./SubmitBlog";
 import CityService from "./CityService";
+import ServiceDetail from "./ServiceDetail";
 
 const Index = () => {
   return (
@@ -40,6 +41,7 @@ const Index = () => {
       <Route path="/" element={<Home />} />
       <Route path="/about" element={<About />} />
       <Route path="/services" element={<Services />} />
+      <Route path="/services/:slug" element={<ServiceDetail />} />
       <Route path="/portfolio" element={<Portfolio />} />
       <Route path="/contact" element={<Contact />} />
       <Route path="/signup" element={<SignUp />} />

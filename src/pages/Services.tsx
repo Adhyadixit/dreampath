@@ -33,7 +33,8 @@ const Services = () => {
         "Enterprise solutions",
         "Legacy system modernization",
         "Integration services"
-      ]
+      ],
+      value: "custom-software-development"
     },
     {
       icon: <Globe className="h-10 w-10 text-dreampath-secondary" />,
@@ -44,7 +45,8 @@ const Services = () => {
         "Progressive web apps (PWAs)",
         "E-commerce solutions",
         "Content management systems"
-      ]
+      ],
+      value: "web-development"
     },
     {
       icon: <Smartphone className="h-10 w-10 text-dreampath-secondary" />,
@@ -55,7 +57,8 @@ const Services = () => {
         "Cross-platform solutions",
         "App store optimization",
         "Maintenance and updates"
-      ]
+      ],
+      value: "mobile-app-development"
     },
     {
       icon: <Layout className="h-10 w-10 text-dreampath-secondary" />,
@@ -66,7 +69,8 @@ const Services = () => {
         "Wireframing and prototyping",
         "Visual design",
         "Usability testing"
-      ]
+      ],
+      value: "ui-ux-design"
     },
     {
       icon: <Database className="h-10 w-10 text-dreampath-secondary" />,
@@ -77,7 +81,8 @@ const Services = () => {
         "Data migration",
         "Database administration",
         "BI and reporting solutions"
-      ]
+      ],
+      value: "database-development"
     },
     {
       icon: <Shield className="h-10 w-10 text-dreampath-secondary" />,
@@ -88,7 +93,8 @@ const Services = () => {
         "Penetration testing",
         "Secure coding practices",
         "Compliance solutions"
-      ]
+      ],
+      value: "cybersecurity"
     },
     {
       icon: <Cloud className="h-10 w-10 text-dreampath-secondary" />,
@@ -99,7 +105,8 @@ const Services = () => {
         "Infrastructure as Code",
         "Serverless applications",
         "Cloud optimization"
-      ]
+      ],
+      value: "cloud-solutions"
     },
     {
       icon: <Settings className="h-10 w-10 text-dreampath-secondary" />,
@@ -110,7 +117,8 @@ const Services = () => {
         "Infrastructure automation",
         "Containerization",
         "Monitoring and logging"
-      ]
+      ],
+      value: "devops-solutions"
     },
     {
       icon: <Clock className="h-10 w-10 text-dreampath-secondary" />,
@@ -121,7 +129,8 @@ const Services = () => {
         "Technology assessment",
         "Digital transformation",
         "Vendor selection"
-      ]
+      ],
+      value: "it-consulting"
     },
     {
       icon: <Star className="h-10 w-10 text-dreampath-secondary" />,
@@ -187,7 +196,7 @@ const Services = () => {
                         <ArrowRight className="ml-2 h-4 w-4 transform group-hover:translate-x-1 transition-transform" />
                       </Link>
                     ) : (
-                      <Link to="/services" className="text-dreampath-secondary hover:text-dreampath-primary inline-flex items-center group">
+                      <Link to={`/services/${service.value}`} className="text-dreampath-secondary hover:text-dreampath-primary inline-flex items-center group">
                         Learn More
                         <ArrowRight className="ml-2 h-4 w-4 transform group-hover:translate-x-1 transition-transform" />
                       </Link>
@@ -196,7 +205,7 @@ const Services = () => {
                   <Button 
                     variant="default" 
                     className="bg-dreampath-primary hover:bg-dreampath-dark"
-                    onClick={() => handleServiceClick(service.title.toLowerCase().replace(/\s+/g, '-'))}
+                    onClick={() => handleServiceClick((service as any).value || service.title.toLowerCase().replace(/\s+/g, '-'))}
                   >
                     Request Info
                   </Button>
