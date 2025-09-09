@@ -1,4 +1,4 @@
-import React, { Suspense } from 'react';
+import React, { Suspense, useEffect, useState } from 'react';
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
@@ -128,10 +128,10 @@ const Home = () => {
       {/* Parallax Hero Section */}
       <section
         id="hero"
-        className="relative min-h-[90vh] md:min-h-screen overflow-hidden flex items-start pt-32 md:pt-40 pb-16"
+        className="relative min-h-[90vh] md:min-h-screen overflow-hidden flex items-start pt-28 md:pt-40 pb-16"
       >
-        {/* Optimized LCP image with fetchpriority="high" */}
-        <div className="absolute inset-0">
+        {/* Optimized LCP image with fetchpriority="high". Hidden on mobile so text becomes LCP. */}
+        <div className="absolute inset-0 hidden md:block">
           <img
             src={heroImageUrl}
             alt="AI and technology solutions"
@@ -141,21 +141,21 @@ const Home = () => {
             height="1080"
             decoding="async"
             loading="eager"
+            srcSet="
+              https://images.unsplash.com/photo-1635070041078-e363dbe005cb?q=60&w=1280&auto=format&fit=crop&fm=webp 1280w,
+              https://images.unsplash.com/photo-1635070041078-e363dbe005cb?q=80&w=1920&auto=format&fit=crop&fm=webp 1920w,
+              https://images.unsplash.com/photo-1635070041078-e363dbe005cb?q=80&w=2560&auto=format&fit=crop&fm=webp 2560w
+            "
+            sizes="(max-width: 1024px) 100vw, 100vw"
           />
         </div>
-        {/* Enhanced gradient overlay */}
+        {/* Gradient overlay (kept lightweight) */}
         <div className="absolute inset-0 bg-gradient-to-br from-indigo-950/95 via-purple-900/85 to-violet-800/90" />
-        
-        {/* Animated grid overlay */}
-        <div className="absolute inset-0 opacity-20" style={{
-          backgroundImage: 'linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px)',
-          backgroundSize: '40px 40px',
-        }} />
         
         <div className="container-wide relative z-10 text-white h-full flex items-center">
           <div className="max-w-4xl text-left px-4 sm:px-6 md:px-8 w-full">
             <div
-              className="inline-block px-4 py-2 mb-5 md:mb-6 text-base md:text-base font-medium text-brand-100 bg-brand-500/20 backdrop-blur-sm rounded-full border border-brand-400/20"
+              className="inline-block px-4 py-2 mb-5 md:mb-6 text-base md:text-base font-medium text-brand-100 bg-brand-500/10 rounded-full border border-brand-400/20"
             >
               Welcome to the Future of Technology
             </div>
@@ -173,7 +173,7 @@ const Home = () => {
             </p>
 
             <div 
-              className="mt-4 md:mt-10 flex flex-wrap justify-center gap-2 md:gap-4 animate-fade-up animate-delay-600"
+              className="mt-4 md:mt-10 flex flex-wrap justify-center gap-2 md:gap-4"
             >
               <Button 
                 asChild
@@ -191,24 +191,37 @@ const Home = () => {
               </Button>
             </div>
             
-            {/* Tech stack pills */}
-            <motion.div 
-              className="mt-6 md:mt-8 w-full overflow-x-auto px-4 pb-6 md:pb-8"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.8, delay: 0.8 }}
-            >
-              <div className="flex flex-nowrap gap-2.5 md:gap-3 w-max max-w-full mx-auto">
-                {['AI/ML', 'Blockchain', 'Cloud Native', 'IoT', 'AR/VR', 'Web3'].map((tech) => (
-                  <span 
-                    key={tech} 
-                    className="flex-shrink-0 px-3 md:px-4 py-1.5 md:py-2 bg-white/5 backdrop-blur-sm rounded-full text-xs md:text-sm font-medium text-brand-100 border border-white/10 whitespace-nowrap"
-                  >
-                    {tech}
-                  </span>
-                ))}
-              </div>
-            </motion.div>
+            {/* Tech stack pills (deferred to idle to avoid impacting LCP) */}
+            {(() => {
+              const [showEnhancements, setShowEnhancements] = useState(false);
+              useEffect(() => {
+                const onIdle = (cb: () => void) =>
+                  'requestIdleCallback' in window
+                    ? (window as any).requestIdleCallback(cb, { timeout: 2000 })
+                    : setTimeout(cb, 800);
+                onIdle(() => setShowEnhancements(true));
+              }, []);
+              if (!showEnhancements) return null;
+              return (
+                <motion.div 
+                  className="mt-6 md:mt-8 w-full overflow-x-auto px-4 pb-6 md:pb-8"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ duration: 0.4 }}
+                >
+                  <div className="flex flex-nowrap gap-2.5 md:gap-3 w-max max-w-full mx-auto">
+                    {['AI/ML', 'Blockchain', 'Cloud Native', 'IoT', 'AR/VR', 'Web3'].map((tech) => (
+                      <span 
+                        key={tech} 
+                        className="px-3 md:px-4 py-2 md:py-2.5 text-sm md:text-base rounded-full bg-white/10 border border-white/15 text-white/90 whitespace-nowrap backdrop-blur-[1px]"
+                      >
+                        {tech}
+                      </span>
+                    ))}
+                  </div>
+                </motion.div>
+              );
+            })()}
           </div>
         </div>
         {/* floating accents */}
