@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+ 
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -9,16 +9,11 @@ import Footer from "./components/layout/Footer";
 import Index from "./pages/Index";
 import BackToTopButton from "./components/common/BackToTopButton";
 import LazyChatWidget from "./components/chat/LazyChatWidget";
-import { initGTM } from "@/lib/gtm";
 import GTMProvider from "@/components/analytics/GTMProvider";
 
 const queryClient = new QueryClient();
 
 const App = () => {
-  // Initialize GTM on app load
-  useEffect(() => {
-    initGTM();
-  }, []);
 
   return (
     <QueryClientProvider client={queryClient}>
