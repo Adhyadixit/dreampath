@@ -8,7 +8,7 @@ import Navbar from "./components/layout/Navbar";
 import Footer from "./components/layout/Footer";
 import Index from "./pages/Index";
 import BackToTopButton from "./components/common/BackToTopButton";
-import ChatWidget from "./components/chat/ChatWidget";
+import LazyChatWidget from "./components/chat/LazyChatWidget";
 import { initGTM } from "@/lib/gtm";
 import GTMProvider from "@/components/analytics/GTMProvider";
 
@@ -34,7 +34,7 @@ const App = () => {
               <Toaster />
               <Sonner />
               <BackToTopButton />
-              <ChatWidget />
+              <LazyChatWidget />
             </div>
           </GTMProvider>
         </TooltipProvider>
