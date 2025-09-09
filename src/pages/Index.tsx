@@ -2,8 +2,8 @@ import React from "react";
 import { Routes, Route } from "react-router-dom";
 import Home from "./Home";
 import About from "./About";
-import Services from "./Services";
 import Portfolio from "./Portfolio";
+import Services from "./Services";
 import Contact from "./Contact";
 import SignUp from "./SignUp";
 import Login from "./Login";
@@ -15,7 +15,6 @@ import UserAccount from "./UserAccount";
 import NotFound from "./NotFound";
 import ScrollToTop from "@/components/common/ScrollToTop";
 import ServiceKeywords from "./ServiceKeywords";
-import SupabaseTest from "./SupabaseTest";
 import ReputationManagement from "./services/ReputationManagement";
 import DatingApp from "./services/DatingApp";
 import FoodDeliveryApp from "./services/FoodDeliveryApp";
@@ -83,7 +82,6 @@ const Index = () => {
       <Route path="/ridehailingapps" element={<RideHailingApps />} />
       <Route path="/homeservicesapps" element={<HomeServicesApps />} />
       <Route path="/edtechapps" element={<EdTechApps />} />
-      <Route path="/supabase-test" element={<SupabaseTest />} />
       <Route path="/blogs" element={<Blogs />} />
       <Route path="/submit-blog" element={<SubmitBlog />} />
       <Route path="*" element={<NotFound />} />
