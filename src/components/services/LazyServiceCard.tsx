@@ -1,5 +1,5 @@
 import React from 'react';
-import { motion } from 'framer-motion';
+import { motion, Variants } from 'framer-motion';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
@@ -21,7 +21,7 @@ interface LazyServiceCardProps {
 
 const LazyServiceCard: React.FC<LazyServiceCardProps> = ({ service, index, handleServiceClick }) => {
 
-  const cardVariants = {
+  const cardVariants: Variants = {
     hidden: { opacity: 0, y: 20, filter: "blur(10px)" },
     visible: { 
       opacity: 1, 
@@ -29,8 +29,9 @@ const LazyServiceCard: React.FC<LazyServiceCardProps> = ({ service, index, handl
       filter: "blur(0px)",
       transition: { 
         duration: 0.6, 
-        ease: "easeOut",
-        delay: (index % 3) * 0.1 // Stagger animation
+        ease: [0.16, 1, 0.3, 1], // Using cubic-bezier values for easeOutBack
+        delay: (index % 3) * 0.1, // Stagger animation
+        filter: { duration: 0.6, ease: [0.16, 1, 0.3, 1] } // Explicit filter animation
       }
     },
   };
